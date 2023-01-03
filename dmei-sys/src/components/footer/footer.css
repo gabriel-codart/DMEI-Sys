@@ -1,0 +1,11 @@
+footer{
+    display: grid;
+    justify-content: center;
+    text-align: center;
+    padding: 25px;
+    border-top: 1px solid gray;
+}
+footer div{
+    display: flex;
+    justify-content: space-around;
+}

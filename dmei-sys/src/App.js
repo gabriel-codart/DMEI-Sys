@@ -1,17 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
-function App() {
+import UserRoutes from './routes/routes.js';
+import NavBar from './components/navbar/navbar.js';
+import Footer from './components/footer/footer.js';
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Teste de aplicação React
-        </p>
-      </header>
-    </div>
-  );
-}
+    <BrowserRouter>
 
-export default App;
+      <NavBar/>
+
+      <UserRoutes/>
+
+      <Footer/>
+
+    </BrowserRouter>
+  );
+};
