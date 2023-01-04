@@ -2,21 +2,32 @@
     justify-content: center;
     text-align: center;
     margin: auto;
-    padding-top: 230px;
+    padding-top: 50px;
     padding-bottom: 230px;
 }
 
-.users{
+.users-list-top{
     display: grid;
-    max-width: 50%;
-    grid-template-columns: 50px 100px 100px;
+    max-width: 650px;
+    grid-template-columns: 50px 100px 100px 200px 80px 80px;
     padding: 15px;
     margin: auto;
     margin-top: 15px;
+    border-top: 1px solid gray;
+}
+.users-list{
+    display: grid;
+    max-width: 650px;
+    grid-template-columns: 50px 100px 100px 200px 80px 80px;
+    padding: 15px;
+    margin: auto;
+    margin-bottom: 15px;
     border: 1px solid gray;
     border-radius: 10px;
 }
-
-.users p{
+.users-list p{
     margin: 0;
+}
+.users-list button{
+    margin: 0px 20px;
 }
