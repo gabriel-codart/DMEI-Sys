@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import { Button } from "reactstrap";
+import { Button, Form, Input } from "reactstrap";
 import { RiDeleteBin2Line } from 'react-icons/ri';
 import { BiEdit } from 'react-icons/bi';
 
@@ -18,6 +18,10 @@ export default function Home() {
     return(
         <div className="home" onLoad={getUsers()}>
             <h1>Users</h1>
+            <Form className="search-user">
+                <Input id='search-user'></Input>
+                <Button />
+            </Form>
             <ul className="users-list-top">
                 <p>id</p>
                 <p>nickname</p>
