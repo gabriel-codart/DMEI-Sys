@@ -1,0 +1,12 @@
+.create_users{
+    max-width: 500px;
+    margin: auto;
+}
+
+.create_users label{ 
+    margin-top: 15px;
+}
+
+.create_users button{
+    margin-top: 20px;
+}

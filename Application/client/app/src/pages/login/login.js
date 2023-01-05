@@ -16,9 +16,9 @@ export default function Login() {
             for (let i = 0; i < res.data.length; i++) {
                 if (nickname === res.data[i].nickname && password === res.data[i].password) {
                     alert('Você está logado!');
-                    navigate('/home');
+                    navigate('/users');
                 } else {
-                    console.log(res.data[i].nickname + ' // ' + res.data[i].password);
+                    alert('User or password incorrect!')
                 };
             };
         });

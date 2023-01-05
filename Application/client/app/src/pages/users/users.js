@@ -4,9 +4,9 @@ import { Button, Form, Input } from "reactstrap";
 import { RiDeleteBin2Line } from 'react-icons/ri';
 import { BiEdit } from 'react-icons/bi';
 
-import './home.css';
+import './users.css';
 
-export default function Home() {
+export default function Users() {
     const [usersList, setUsersList] = useState([]);
 
     const getUsers = () => {
@@ -16,7 +16,7 @@ export default function Home() {
     };
 
     return(
-        <div className="home" onLoad={getUsers()}>
+        <div className="users" onLoad={getUsers()}>
             <h1>Users</h1>
             <Form className="search-user">
                 <Input id='search-user'></Input>

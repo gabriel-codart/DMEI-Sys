@@ -30,21 +30,24 @@ const id = req.params.id;
     });   });
 
 
+
+// Route for creating a user
+app.post('/user/create', (req,res)=> {
+
+const nickname = req.body.nickname;
+const password = req.body.password;
+const realname = req.body.realname;
+
+db.query("INSERT INTO users (nickname, password, realname) VALUES (?,?,?)",
+    [nickname, password, realname], (err,result)=>{
+    if(err) {
+    console.log(err)
+    } 
+    console.log(result)
+    });
+})
+
 /*
-// Route for creating the post
-app.post('/api/create', (req,res)=> {
-
-const username = req.body.userName;
-const title = req.body.title;
-const text = req.body.text;
-
-db.query("INSERT INTO posts (title, post_text, user_name) VALUES (?,?,?)",[title,text,username], (err,result)=>{
-   if(err) {
-   console.log(err)
-   } 
-   console.log(result)
-});   })
-
 // Route to like a post
 app.post('/api/like/:id',(req,res)=>{
 
