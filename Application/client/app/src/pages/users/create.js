@@ -3,8 +3,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, Label } from "reactstrap";
 
-import './users.css';
-import './create.css';
+import '../styles/create-update.css';
 
 export default function CreateUser() {
     const navigate = useNavigate();
@@ -28,14 +27,18 @@ export default function CreateUser() {
         });
     };
 
+    const cancelAdd = () => {
+        navigate('/users');
+    }
+
     return(
-        <div className="users">
+        <div className="create">
             <h1>Create user</h1>
 
-            <Form className="create_users"> 
+            <Form className="form-create"> 
                 <Label>Nickname:</Label>
                 <Input
-                    placeholder="nickname"
+                    placeholder="Nickname"
                     type='text'
                     onChange={(event) =>{
                         setNickname(event.target.value);
@@ -43,20 +46,22 @@ export default function CreateUser() {
                 />
                 <Label>Password:</Label>
                 <Input 
-                    placeholder="password"
+                    placeholder="Password"
                     type='text'
                     onChange={(event) =>{
                         setPassword(event.target.value);
                     }}
-                    ></Input>
+                />
                 <Label>Realname:</Label>
                 <Input 
-                    placeholder="realname"
+                    placeholder="Realname"
                     type='text'
                     onChange={(event) =>{
                         setRealname(event.target.value);
-                    }}></Input>
+                    }}
+                />
                 <Button color="primary" onClick={addUser}>Adicionar</Button>
+                <Button color="danger" onClick={cancelAdd}>Cancelar</Button>
             </Form>
         </div>
     );

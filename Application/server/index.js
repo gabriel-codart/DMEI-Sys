@@ -66,7 +66,7 @@ db.query("UPDATE posts SET likes = likes + 1 WHERE id = ?",id, (err,result)=>{
 app.delete('/users/delete/:id',(req,res)=>{
     const id = req.params.id;
 
-    db.query("DELETE FROM users WHERE id= ?", id,
+    db.query("DELETE FROM users WHERE id = ?", id,
     (err,result)=>{
     if(err) {
     console.log(err)

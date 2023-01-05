@@ -12,15 +12,16 @@ export default function Login() {
         let nickname = document.getElementById('nickname').value;
         let password = document.getElementById('password').value;
 
-        axios.get('http://localhost:3002/users').then((res) => {
+        axios.get('http://localhost:3002/users')
+        .then((res) => {
             for (let i = 0; i < res.data.length; i++) {
                 if (nickname === res.data[i].nickname && password === res.data[i].password) {
                     alert('Você está logado!');
                     navigate('/users');
-                } else {
-                    alert('User or password incorrect!')
+                    return;
                 };
             };
+            alert('Usuário ou senha incorretos!');
         });
     };
 
@@ -32,11 +33,11 @@ export default function Login() {
                 <h4>Login</h4>
                 <Input
                     id="nickname"
-                    placeholder="nickname">
+                    placeholder="Nickname">
                 </Input>
                 <Input
                     id="password"
-                    placeholder="password"
+                    placeholder="Password"
                     type="password">
                 </Input>
                 <hr />

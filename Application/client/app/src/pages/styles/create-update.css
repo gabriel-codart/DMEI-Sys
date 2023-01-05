@@ -1,0 +1,20 @@
+.create{
+    justify-content: center;
+    text-align: center;
+    margin: auto;
+    padding-top: 80px;
+    padding-bottom: 120px;
+}
+
+.form-create{
+    max-width: 600px;
+    margin: auto;
+}
+
+.form-create label{ 
+    margin-top: 20px;
+}
+
+.form-create button{
+    margin: 30px 20px;
+}
