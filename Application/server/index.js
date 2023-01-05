@@ -27,28 +27,29 @@ const id = req.params.id;
     console.log(err)
     } 
     res.send(result)
-    });   });
-
+    });
+});
 
 
 // Route for creating a user
-app.post('/user/create', (req,res)=> {
+app.post('/users/create', (req,res)=> {
 
 const nickname = req.body.nickname;
 const password = req.body.password;
 const realname = req.body.realname;
 
 db.query("INSERT INTO users (nickname, password, realname) VALUES (?,?,?)",
-    [nickname, password, realname], (err,result)=>{
+    [nickname, password, realname],
+    (err,result)=>{
     if(err) {
     console.log(err)
     } 
-    console.log(result)
+    res.send(result)
     });
 })
 
 /*
-// Route to like a post
+// Route to update a user
 app.post('/api/like/:id',(req,res)=>{
 
 const id = req.params.id;
@@ -58,17 +59,22 @@ db.query("UPDATE posts SET likes = likes + 1 WHERE id = ?",id, (err,result)=>{
    console.log(result)
     });    
 });
-
-// Route to delete a post
-
-app.delete('/api/delete/:id',(req,res)=>{
-const id = req.params.id;
-
-db.query("DELETE FROM posts WHERE id= ?", id, (err,result)=>{
-if(err) {
-console.log(err)
-        } }) })
 */
+
+// Route to delete a user
+
+app.delete('/users/delete/:id',(req,res)=>{
+    const id = req.params.id;
+
+    db.query("DELETE FROM users WHERE id= ?", id,
+    (err,result)=>{
+    if(err) {
+    console.log(err)
+    } 
+    res.send(result)
+    });
+})
+
 
 app.listen(PORT, ()=>{
     console.log(`Server is running on ${PORT}`)

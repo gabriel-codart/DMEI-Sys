@@ -11,7 +11,7 @@ export default function UserRoutes() {
         <Routes>
             <Route path="/" element={<Login/>}/>
             <Route path="/users" element={<Users/>}/>
-            <Route path="/create_user" element={<CreateUser/>}/>
+            <Route path="/users/create" element={<CreateUser/>}/>
         </Routes>
     )
 };

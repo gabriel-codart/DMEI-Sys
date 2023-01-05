@@ -14,6 +14,11 @@ export default function Users() {
             setUsersList(res.data);
         });
     };
+    const deleteUser = (id) => {
+        axios.delete('http://localhost:3002/users/delete/'+id).then((res) => {
+            alert('Usuário removido!');
+        });
+    }
 
     return(
         <div className="users" onLoad={getUsers()}>
@@ -36,7 +41,7 @@ export default function Users() {
                         <p>{val.password}</p>
                         <p>{val.realname}</p>
                         <Button color="primary"><BiEdit/></Button>
-                        <Button color="danger"><RiDeleteBin2Line/></Button>
+                        <Button color="danger" onClick={deleteUser(val.id)}><RiDeleteBin2Line/></Button>
                     </ul>
                 )
             })}

@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import axios from 'axios';
-import { Alert, Button, Form, Input, Label } from "reactstrap";
-import { RiDeleteBin2Line } from 'react-icons/ri';
-import { BiEdit } from 'react-icons/bi';
+import { useNavigate } from "react-router-dom";
+import { Button, Form, Input, Label } from "reactstrap";
 
 import './users.css';
 import './create.css';
-import { useNavigate } from "react-router-dom";
 
 export default function CreateUser() {
     const navigate = useNavigate();
@@ -16,18 +14,18 @@ export default function CreateUser() {
     const [realname, setRealname ] = useState("");
 
     const addUser = () => {
-        axios.post("http://localhost:3002/user/create", {
+        axios.post("http://localhost:3002/users/create", {
             nickname: nickname,
             password: password,
             realname: realname,
-        }).then((res) => {
-            console.log(res);
-            Alert("Adicionado!");
-        }).catch((err) => {
-            console.log
-            Alert("Error!")
         })
-        navigate("/users");
+        .then(function (r) {
+            alert('Adicionado!');
+            navigate('/users');
+        })
+        .catch(function (e) {
+            alert('Erro!');
+        });
     };
 
     return(
