@@ -3,7 +3,7 @@ const db = require('./config/db')
 const cors = require('cors')
 
 const app = express();
-const  PORT = 3002;
+const  PORT = 3000;
 app.use(cors());
 app.use(express.json())
 
@@ -43,7 +43,7 @@ db.query("INSERT INTO users (nickname, password, realname) VALUES (?,?,?)",
     (err,result)=>{
     if(err) {
     console.log(err)
-    } 
+    }
     res.send(result)
     });
 })

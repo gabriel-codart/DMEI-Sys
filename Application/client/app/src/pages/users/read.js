@@ -18,20 +18,17 @@ export default function Users() {
         });
     };
     const deleteUser = (id) => {
-        axios.delete(`http://localhost:3002/users/delete/${id}`)
         .then((res) => {
             alert('Usuário removido!');
         });
     }
     const updateUser = (id) => {
-        navigate(`/users/${id}/update`);
     }
     const addUser = () => {
         navigate('/users/create');
     }
 
     return(
-        <div className="read" onLoad={getUsers()}>
             <div className='read-title'>
                 <h1>Usuários</h1>
                 <Button color='primary' onClick={addUser}>Adicionar</Button>
