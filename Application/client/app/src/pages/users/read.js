@@ -10,25 +10,32 @@ import '../styles/read.css';
 export default function Users() {
     const navigate = useNavigate();
     const [usersList, setUsersList] = useState([]);
-
+    
     const getUsers = () => {
-        axios.get('http://localhost:3002/users')
+        
+        axios.get('http://localhost:3000/users', )
         .then((res) => {
             setUsersList(res.data);
         });
     };
     const deleteUser = (id) => {
+        axios.delete(`http://localhost:3000/users/delete/${id}`)
         .then((res) => {
             alert('Usuário removido!');
         });
     }
     const updateUser = (id) => {
+        navigate(`/users/update/${id}`);
     }
     const addUser = () => {
         navigate('/users/create');
     }
 
     return(
+        <div className="read" 
+
+        onLoad={getUsers()}
+        >
             <div className='read-title'>
                 <h1>Usuários</h1>
                 <Button color='primary' onClick={addUser}>Adicionar</Button>
