@@ -33,7 +33,7 @@ export default function CreateUser() {
 
     return(
         <div className="create">
-            <h1>Create user</h1>
+            <h1>Create User</h1>
 
             <Form className="form-create"> 
                 <Label>Nickname:</Label>

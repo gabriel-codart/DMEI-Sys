@@ -1,36 +1,35 @@
 import React, { useState } from 'react';
 import {
-  Collapse,
+  Dropdown,
+  DropdownItem,
+  DropdownToggle,
+  DropdownMenu,
   Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
+  NavbarBrand
 } from 'reactstrap';
 
 import './navbar.css';
 
 export default function NavBar() {
-  const [collapsed, setCollapsed] = useState(true);
-
-  const toggleNavbar = () => setCollapsed(!collapsed);
+  //Botao Dropdown
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const toggle = () => setDropdownOpen((prevState) => !prevState);
 
   return (
     <div>
       <Navbar>
-        <NavbarBrand href="/home">Home</NavbarBrand>
-        <NavbarToggler onClick={toggleNavbar} className="me-2"  />
-        <Collapse isOpen={!collapsed} navbar>
-          <Nav navbar>
-            <NavItem>
-              <NavLink href="/components/">Components</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
-            </NavItem>
-          </Nav>
-        </Collapse>
+        <NavbarBrand>DMEIsys</NavbarBrand>
+
+        <Dropdown isOpen={dropdownOpen} toggle={toggle} direction={'down'}>
+          <DropdownToggle caret color="white">
+            Mais
+          </DropdownToggle>
+
+          <DropdownMenu>
+              <DropdownItem>Opções</DropdownItem>
+              <DropdownItem>Sair</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </Navbar>
     </div>
   );

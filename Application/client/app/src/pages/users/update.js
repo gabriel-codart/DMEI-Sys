@@ -40,11 +40,12 @@ export default function UpdateUser() {
 
     return(
         <div className="create" onLoad={getUser()}>
-            <h1>Update User{id}</h1>
+            <h1>Update User</h1>
 
             {userData?.map((val, key) => {
                 return (
-                    <Form className="form-create" key={key}> 
+                    <Form className="form-create" key={key}>
+                        <h5>Id: <strong>{val.id}</strong></h5>
                         <Label>Nickname:</Label>
                         <Input
                             id="nickname"

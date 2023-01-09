@@ -18,14 +18,15 @@ db.query("SELECT * FROM users", (err,result)=>{
 });
 
 // Route to get one user
-app.get("/users/:id", (req,res)=>{
+app.get("/users/:val", (req,res)=>{
 
-const id = req.params.id;
- db.query("SELECT * FROM users WHERE id = ?", id, 
- (err,result)=>{
+const val = req.params.val + '%';
+db.query(`SELECT * FROM users WHERE nickname LIKE ?`, val, 
+    (err,result)=>{
     if(err) {
     console.log(err)
-    } 
+    }
+    console.log(result)
     res.send(result)
     });
 });

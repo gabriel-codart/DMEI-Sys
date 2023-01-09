@@ -11,12 +11,26 @@ export default function Users() {
     const navigate = useNavigate();
     const [usersList, setUsersList] = useState([]);
     
-    const getUsers = () => {
-        axios.get('http://localhost:3002/users', )
+    /*const getUsers = () => {
+        axios.get('http://localhost:3002/users',)
+        .then((res) => {
+            setUsersList(res.data);
+        });
+    };*/
+
+    const getUsersWhere = () => {
+        let val = '';
+
+        if (document.getElementById('searched-val') != null) {
+            val = document.getElementById('searched-val').value;
+        }
+
+        axios.get(`http://localhost:3002/users/${val}`,)
         .then((res) => {
             setUsersList(res.data);
         });
     };
+
     const deleteUser = (id) => {
         axios.delete(`http://localhost:3002/users/${id}/delete`)
         .then((res) => {
@@ -31,18 +45,15 @@ export default function Users() {
     }
 
     return(
-        <div className="read" 
-
-        onLoad={getUsers()}
-        >
+        <div className="read" onLoad={getUsersWhere()}>
             <div className='read-title'>
                 <h1>Usuários</h1>
                 <Button color='primary' onClick={addUser}>Adicionar</Button>
             </div>
             
             <Form className="read-search">
-                <Input placeholder='Pesquise aqui'></Input>
-                <Button color='primary'><BiSearch /></Button>
+                <Input placeholder='Pesquise aqui' id="searched-val"></Input>
+                <Button color='primary' onClick={getUsersWhere}><BiSearch /></Button>
             </Form>
             <ul className="read-list-top">
                 <p>ID</p>
