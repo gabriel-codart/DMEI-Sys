@@ -1,8 +1,8 @@
 div.login{
-    justify-content: center;
     text-align: center;
     padding-top: 120px;
     padding-bottom: 120px;
+    margin: auto;
 }
 
 div.login form{

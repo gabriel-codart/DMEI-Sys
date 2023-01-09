@@ -3,7 +3,7 @@ const db = require('./config/db')
 const cors = require('cors')
 
 const app = express();
-const  PORT = 3000;
+const  PORT = 3002;
 app.use(cors());
 app.use(express.json())
 
@@ -48,22 +48,28 @@ db.query("INSERT INTO users (nickname, password, realname) VALUES (?,?,?)",
     });
 })
 
-/*
-// Route to update a user
-app.post('/api/like/:id',(req,res)=>{
 
+// Route to update a user
+app.put('/users/:id/update',(req,res)=>{
 const id = req.params.id;
-db.query("UPDATE posts SET likes = likes + 1 WHERE id = ?",id, (err,result)=>{
+
+const nickname = req.body.nickname;
+const password = req.body.password;
+const realname = req.body.realname;
+
+    db.query("UPDATE users SET nickname = ?, password = ?, realname = ? WHERE id = ?",
+    [nickname, password, realname, id],
+    (err,result)=>{
     if(err) {
-   console.log(err)   } 
-   console.log(result)
+    console.log(err)
+    } 
+    res.send(result)
     });    
 });
-*/
+
 
 // Route to delete a user
-
-app.delete('/users/delete/:id',(req,res)=>{
+app.delete('/users/:id/delete',(req,res)=>{
     const id = req.params.id;
 
     db.query("DELETE FROM users WHERE id = ?", id,

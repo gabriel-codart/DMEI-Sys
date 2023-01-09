@@ -12,20 +12,19 @@ export default function Users() {
     const [usersList, setUsersList] = useState([]);
     
     const getUsers = () => {
-        
-        axios.get('http://localhost:3000/users', )
+        axios.get('http://localhost:3002/users', )
         .then((res) => {
             setUsersList(res.data);
         });
     };
     const deleteUser = (id) => {
-        axios.delete(`http://localhost:3000/users/delete/${id}`)
+        axios.delete(`http://localhost:3002/users/${id}/delete`)
         .then((res) => {
             alert('Usuário removido!');
         });
     }
     const updateUser = (id) => {
-        navigate(`/users/update/${id}`);
+        navigate(`/users/${id}/update/`);
     }
     const addUser = () => {
         navigate('/users/create');

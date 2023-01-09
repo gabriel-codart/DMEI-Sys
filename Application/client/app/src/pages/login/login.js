@@ -12,7 +12,7 @@ export default function Login() {
         let nickname = document.getElementById('nickname').value;
         let password = document.getElementById('password').value;
 
-        axios.get('http://localhost:3000/users')
+        axios.get('http://localhost:3002/users')
         .then((res) => {
             for (let i = 0; i < res.data.length; i++) {
                 if (nickname === res.data[i].nickname && password === res.data[i].password) {
