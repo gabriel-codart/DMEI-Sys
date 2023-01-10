@@ -3,7 +3,7 @@ const db = require('./config/db')
 const cors = require('cors')
 
 const app = express();
-const  PORT = 3002;
+const PORT = 3002;
 app.use(cors());
 app.use(express.json())
 
@@ -12,21 +12,35 @@ app.get("/users", (req,res)=>{
 db.query("SELECT * FROM users", (err,result)=>{
     if(err) {
     console.log(err)
-    } 
+    }
     res.send(result)
     });
 });
 
-// Route to get one user
-app.get("/users/:val", (req,res)=>{
+// Route to get one user by nickname
+app.get("/users/nick=:nickname", (req,res)=>{
 
-const val = req.params.val + '%';
-db.query(`SELECT * FROM users WHERE nickname LIKE ?`, val, 
+const nickname = req.params.nickname + '%';
+
+db.query(`SELECT * FROM users WHERE nickname LIKE ?`, nickname, 
     (err,result)=>{
     if(err) {
     console.log(err)
     }
-    console.log(result)
+    res.send(result)
+    });
+});
+
+
+// Route to get one user by id
+app.get("/users/:id", (req,res)=>{
+
+const id = req.params.id;
+db.query(`SELECT * FROM users WHERE id = ?`, id, 
+    (err,result)=>{
+    if(err) {
+    console.log(err)
+    }
     res.send(result)
     });
 });
@@ -58,7 +72,7 @@ const nickname = req.body.nickname;
 const password = req.body.password;
 const realname = req.body.realname;
 
-    db.query("UPDATE users SET nickname = ?, password = ?, realname = ? WHERE id = ?",
+db.query("UPDATE users SET nickname = ?, password = ?, realname = ? WHERE id = ?",
     [nickname, password, realname, id],
     (err,result)=>{
     if(err) {
@@ -71,9 +85,9 @@ const realname = req.body.realname;
 
 // Route to delete a user
 app.delete('/users/:id/delete',(req,res)=>{
-    const id = req.params.id;
+const id = req.params.id;
 
-    db.query("DELETE FROM users WHERE id = ?", id,
+db.query("DELETE FROM users WHERE id = ?", id,
     (err,result)=>{
     if(err) {
     console.log(err)

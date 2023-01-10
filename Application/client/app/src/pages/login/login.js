@@ -1,11 +1,14 @@
 import React from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../contexts/useAuth";
 import { Form, Input, Button } from "reactstrap";
 
 import './login.css';
 
 export default function Login() {
+    const { signin } = useAuth();
+
     const navigate = useNavigate();
 
     const verifyUser = () => {
@@ -16,11 +19,14 @@ export default function Login() {
         .then((res) => {
             for (let i = 0; i < res.data.length; i++) {
                 if (nickname === res.data[i].nickname && password === res.data[i].password) {
+                    signin(nickname);
                     alert('Você está logado!');
                     navigate('/users');
                     return;
                 };
             };
+        })
+        .catch((err) => {
             alert('Usuário ou senha incorretos!');
         });
     };

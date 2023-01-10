@@ -1,59 +1,66 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { Button, Form, Input } from "reactstrap";
 import { RiDeleteBin2Line } from 'react-icons/ri';
-import { BiEdit, BiSearch } from 'react-icons/bi';
+import { BiEdit } from 'react-icons/bi';
 
 import '../styles/read.css';
 
 export default function Users() {
     const navigate = useNavigate();
+
     const [usersList, setUsersList] = useState([]);
-    
-    /*const getUsers = () => {
-        axios.get('http://localhost:3002/users',)
-        .then((res) => {
-            setUsersList(res.data);
-        });
-    };*/
+    const [searchedNick, setSearchedNick] = useState('');
 
-    const getUsersWhere = () => {
-        let val = '';
+    //Get users by search
+    useEffect(() => {
+        if (searchedNick === '') {
+            axios.get(`http://localhost:3002/users/`,)
+            .then((res) => {
+                setUsersList(res.data);
+            });
+        } else{
+            axios.get(`http://localhost:3002/users/nick=${searchedNick}`,)
+            .then((res) => {
+                setUsersList(res.data);
+            });
+        };
+    }, [searchedNick]);
 
-        if (document.getElementById('searched-val') != null) {
-            val = document.getElementById('searched-val').value;
-        }
-
-        axios.get(`http://localhost:3002/users/${val}`,)
-        .then((res) => {
-            setUsersList(res.data);
-        });
-    };
-
+    //Delete user
     const deleteUser = (id) => {
         axios.delete(`http://localhost:3002/users/${id}/delete`)
         .then((res) => {
             alert('Usuário removido!');
         });
     }
+
+    //Update user
     const updateUser = (id) => {
         navigate(`/users/${id}/update/`);
     }
+
+    //Add user
     const addUser = () => {
         navigate('/users/create');
     }
 
     return(
-        <div className="read" onLoad={getUsersWhere()}>
+        <div className="read">
             <div className='read-title'>
                 <h1>Usuários</h1>
                 <Button color='primary' onClick={addUser}>Adicionar</Button>
             </div>
             
             <Form className="read-search">
-                <Input placeholder='Pesquise aqui' id="searched-val"></Input>
-                <Button color='primary' onClick={getUsersWhere}><BiSearch /></Button>
+                <Input
+                    placeholder='Pesquise aqui'
+                    type="text"
+                    onChange={(event) => {
+                        setSearchedNick(event.target.value);
+                    }}
+                />
             </Form>
             <ul className="read-list-top">
                 <p>ID</p>

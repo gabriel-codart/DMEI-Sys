@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, Input, Label } from "reactstrap";
@@ -6,19 +6,21 @@ import { Button, Form, Input, Label } from "reactstrap";
 import '../styles/create-update.css';
 
 export default function UpdateUser() {
-
-    let {id} = useParams();
     const navigate = useNavigate();
 
+    const {id} = useParams();
+    const [userId] = useState(id);
     const [userData, setUserData] = useState([]);
 
-    const getUser = () => {
-        axios.get(`http://localhost:3002/users/${id}`)
+    //Get the user data
+    useEffect(() => {
+        axios.get(`http://localhost:3002/users/${userId}`)
         .then((res) => {
             setUserData(res.data);
         });
-    };
+    }, [userId]);
 
+    //Confirm update
     const updateUser = () => {
         axios.put(`http://localhost:3002/users/${id}/update`,{
             nickname: document.getElementById('nickname').value,
@@ -34,12 +36,13 @@ export default function UpdateUser() {
         });
     };
 
+    //Cancel update
     const cancelUpdate = () => {
         navigate('/users');
     }
 
     return(
-        <div className="create" onLoad={getUser()}>
+        <div className="create">
             <h1>Update User</h1>
 
             {userData?.map((val, key) => {
