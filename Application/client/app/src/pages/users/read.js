@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { confirmAlert } from "react-confirm-alert";
 import axios from 'axios';
 import { Button, Form, Input } from "reactstrap";
 import { RiDeleteBin2Line } from 'react-icons/ri';
 import { BiEdit } from 'react-icons/bi';
 
 import '../styles/read.css';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default function Users() {
     const navigate = useNavigate();
@@ -13,15 +15,19 @@ export default function Users() {
     const [usersList, setUsersList] = useState([]);
     const [searchedNick, setSearchedNick] = useState('');
 
+    //Get all users
+    const getAll = () => {
+        axios.get(`http://10.10.136.109:3002/users/`,)
+        .then((res) => {
+            setUsersList(res.data);
+        });
+    }
     //Get users by search
     useEffect(() => {
         if (searchedNick === '') {
-            axios.get(`http://localhost:3002/users/`,)
-            .then((res) => {
-                setUsersList(res.data);
-            });
+            getAll();
         } else{
-            axios.get(`http://localhost:3002/users/nick=${searchedNick}`,)
+            axios.get(`http://10.10.136.109:3002/users/nick=${searchedNick}`,)
             .then((res) => {
                 setUsersList(res.data);
             });
@@ -29,8 +35,26 @@ export default function Users() {
     }, [searchedNick]);
 
     //Delete user
+    const dialogDelete = (id) => {
+        confirmAlert({
+            title: 'Confirme a remoção',
+            message: 'Você tem certeza?',
+            buttons: [
+                {
+                label: 'Sim',
+                onClick: () => {
+                        deleteUser(id);
+                        getAll();
+                    }
+                },
+                {
+                label: 'Não'
+                }
+            ]
+        });
+    };
     const deleteUser = (id) => {
-        axios.delete(`http://localhost:3002/users/${id}/delete`)
+        axios.delete(`http://10.10.136.109:3002/users/${id}/delete`)
         .then((res) => {
             alert('Usuário removido!');
         });
@@ -49,7 +73,7 @@ export default function Users() {
     return(
         <div className="read">
             <div className='read-title'>
-                <h1>Usuários</h1>
+                <h1>Users</h1>
                 <Button color='primary' onClick={addUser}>Adicionar</Button>
             </div>
             
@@ -78,8 +102,18 @@ export default function Users() {
                             <p>{val.realname}</p>
                         </div>
                         <div className='read-buttons'>
-                            <Button color="info" onClick={() => {updateUser(val.id)}}><BiEdit/></Button>
-                            <Button color="danger" onClick={() => {deleteUser(val.id)}}><RiDeleteBin2Line/></Button>
+                            <Button
+                                title="Editar"
+                                color="info"
+                                onClick={() => {updateUser(val.id)}}>
+                                    <BiEdit/>
+                            </Button>
+                            <Button
+                                title="Deletar"
+                                color="danger"
+                                onClick={() => {dialogDelete(val.id)}}>
+                                    <RiDeleteBin2Line/>
+                            </Button>
                         </div>
                     </ul>
                 )

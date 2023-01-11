@@ -11,11 +11,14 @@ app.use(express.json())
 {
     // Route to get all Users
     app.get("/users", (req,res)=>{
-    db.query("SELECT * FROM users", (err,result)=>{
+    db.query("SELECT * FROM users",
+        (err,result)=>{
         if(err) {
-        console.log(err)
+            res.send(err)
+            console.log(err)
+        } else{
+            res.send(result)
         }
-        res.send(result)
         });
     });
 
@@ -114,7 +117,7 @@ app.use(express.json())
     // Route to get one Entities by name
     app.get("/entities/name=:name", (req,res)=>{
 
-    const name = req.params.name + '%';
+    const name = '%' + req.params.name + '%';
 
     db.query(`SELECT * FROM entities WHERE name LIKE ?`, name, 
         (err,result)=>{
@@ -139,26 +142,27 @@ app.use(express.json())
     });
 
 
-    // Route for creating a User
-    app.post('/users/create', (req,res)=> {
+    // Route for creating a Entity
+    app.post('/entities/create', (req,res)=> {
 
     const code = req.body.code;
     const name = req.body.name;
     const phone = req.body.phone;
     const zone = req.body.zone;
 
-    db.query("INSERT INTO users (code, name, phone, zone_adress) VALUES (?,?,?,?)",
+    db.query("INSERT INTO entities (code, name, phone, zone_adress) VALUES (?,?,?,?)",
         [code, name, phone, zone],
         (err,result)=>{
         if(err) {
-        console.log(err)
+            res.send(err)
+        } else{
+            res.send(result)
         }
-        res.send(result)
         });
     })
 
 
-    // Route to update a User
+    // Route to update a Entity
     app.put('/entities/:id/update',(req,res)=>{
     const id = req.params.id;
 

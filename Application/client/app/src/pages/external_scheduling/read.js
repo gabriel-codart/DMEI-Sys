@@ -16,12 +16,12 @@ export default function OuterSched() {
     //Get users by search
     useEffect(() => {
         if (searchedNick === '') {
-            axios.get(`http://localhost:3002/users/`,)
+            axios.get(`http://10.10.136.109:3002/users/`,)
             .then((res) => {
                 setOuterSchedList(res.data);
             });
         } else{
-            axios.get(`http://localhost:3002/users/nick=${searchedNick}`,)
+            axios.get(`http://10.10.136.109:3002/users/nick=${searchedNick}`,)
             .then((res) => {
                 setOuterSchedList(res.data);
             });
@@ -30,7 +30,7 @@ export default function OuterSched() {
 
     //Delete user
     const deleteOuterSched = (id) => {
-        axios.delete(`http://localhost:3002/users/${id}/delete`)
+        axios.delete(`http://10.10.136.109:3002/users/${id}/delete`)
         .then((res) => {
             alert('Usuário removido!');
         });

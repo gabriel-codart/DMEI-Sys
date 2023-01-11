@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
     ListGroup,
     ListGroupItem,
@@ -91,13 +92,13 @@ export default function SideMenu() {
                         Entidades
                     </ListGroupItem>
                     <Collapse isOpen={!entities}>
-                        <ListGroupItem href="#" tag="a">
-                            Listar
+                        <ListGroupItem tag="a">
+                            <Link to='/entities'>Listar</Link>
                         </ListGroupItem>
-                        <ListGroupItem href="#" tag="a">
-                            Adicionar
+                        <ListGroupItem tag="a">
+                            <Link to='/entities/create'>Adicionar</Link>
                         </ListGroupItem>
-                        <ListGroupItem href="#" tag="a">
+                        <ListGroupItem tag="a">
                             Lixeira
                         </ListGroupItem>
                     </Collapse>
@@ -108,10 +109,10 @@ export default function SideMenu() {
                     </ListGroupItem>
                     <Collapse isOpen={!users}>
                         <ListGroupItem href="/users" tag="a">
-                            Listar
+                            <Link to='/users'>Listar</Link>
                         </ListGroupItem>
                         <ListGroupItem href="/users/create" tag="a">
-                            Adicionar
+                            <Link to='/users/create'>Adicionar</Link>
                         </ListGroupItem>
                         <ListGroupItem href="#" tag="a">
                             Lixeira
