@@ -14,7 +14,10 @@ export default function App() {
 
       <NavBar/>
 
-      <div style={{display:'flex'}}>
+      <div style={{
+          display:'flex',
+          minHeight: '570px'
+        }}>
         <SideMenu/>
         <UserRoutes/>
       </div>

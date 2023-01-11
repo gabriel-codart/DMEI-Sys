@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { confirmAlert } from "react-confirm-alert";
 import axios from 'axios';
 import { Button, Form, Input } from "reactstrap";
 import { RiDeleteBin2Line } from 'react-icons/ri';
-import { BiEdit } from 'react-icons/bi';
+import { IoMdOpen } from 'react-icons/io';
 
 import '../styles/read.css';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default function Entities() {
     const navigate = useNavigate();
@@ -13,15 +15,19 @@ export default function Entities() {
     const [entitiesList, setEntitiesList] = useState([]);
     const [searchedName, setSearchedName] = useState('');
 
-    //Get users by search
+    //Get all entities
+    const getAll = () => {
+        axios.get(`http://10.10.136.109:3002/entities/`,)
+        .then((res) => {
+            setEntitiesList(res.data);
+        });
+    }
+    //Get entities by search
     useEffect(() => {
         if (searchedName === '') {
-            axios.get(`http://localhost:3002/entities/`,)
-            .then((res) => {
-                setEntitiesList(res.data);
-            });
+            getAll();
         } else{
-            axios.get(`http://localhost:3002/entities/name=${searchedName}`,)
+            axios.get(`http://10.10.136.109:3002/entities/name=${searchedName}`,)
             .then((res) => {
                 setEntitiesList(res.data);
             });
@@ -29,16 +35,34 @@ export default function Entities() {
     }, [searchedName]);
 
     //Delete user
+    const dialogDelete = (id) => {
+        confirmAlert({
+            title: 'Confirme a remoção',
+            message: 'Você tem certeza?',
+            buttons: [
+                {
+                label: 'Sim',
+                onClick: () => {
+                        deleteEntity(id);
+                        getAll();
+                    }
+                },
+                {
+                label: 'Não'
+                }
+            ]
+        });
+    };
     const deleteEntity = (id) => {
-        axios.delete(`http://localhost:3002/entities/${id}/delete`)
+        axios.delete(`http://10.10.136.109:3002/entities/${id}/delete`)
         .then((res) => {
-            alert('Usuário removido!');
+            alert('Entidade deletada!');
         });
     }
 
-    //Update user
-    const updateEntity = (id) => {
-        navigate(`/entities/${id}/update/`);
+    //Open user
+    const openEntity = (id) => {
+        navigate(`/entities/${id}`);
     }
 
     //Add user
@@ -49,7 +73,7 @@ export default function Entities() {
     return(
         <div className="read">
             <div className='read-title'>
-                <h1>Usuários</h1>
+                <h1>Entities</h1>
                 <Button color='primary' onClick={addEntity}>Adicionar</Button>
             </div>
             
@@ -75,11 +99,21 @@ export default function Entities() {
                             <p>{val.code}</p>
                             <p>{val.name}</p>
                             <p>{val.phone}</p>
-                            <p>{val.zone}</p>
+                            <p>{val.zone_adress}</p>
                         </div>
                         <div className='read-buttons'>
-                            <Button color="info" onClick={() => {updateEntity(val.id)}}><BiEdit/></Button>
-                            <Button color="danger" onClick={() => {deleteEntity(val.id)}}><RiDeleteBin2Line/></Button>
+                            <Button
+                                title="Ver Mais"
+                                color="info"
+                                onClick={() => {openEntity(val.id)}}>
+                                    <IoMdOpen/>
+                            </Button>
+                            <Button
+                                title="Deletar"
+                                color="danger"
+                                onClick={() => {dialogDelete(val.id)}}>
+                                    <RiDeleteBin2Line/>
+                            </Button>
                         </div>
                     </ul>
                 )

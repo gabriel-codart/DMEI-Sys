@@ -14,7 +14,7 @@ export default function UpdateUser() {
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://localhost:3002/users/${userId}`)
+        axios.get(`http://10.10.136.109:3002/users/${userId}`)
         .then((res) => {
             setUserData(res.data);
         });
@@ -22,7 +22,7 @@ export default function UpdateUser() {
 
     //Confirm update
     const updateUser = () => {
-        axios.put(`http://localhost:3002/users/${id}/update`,{
+        axios.put(`http://10.10.136.109:3002/users/${id}/update`,{
             nickname: document.getElementById('nickname').value,
             password: document.getElementById('password').value,
             realname: document.getElementById('realname').value,

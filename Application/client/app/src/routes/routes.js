@@ -10,6 +10,9 @@ import CreateUser from '../pages/users/create.js';
 import UpdateUser from '../pages/users/update.js';
 
 import Entities from '../pages/entities/read.js';
+import CreateEntity from '../pages/entities/create.js';
+import UpdateEntity from '../pages/entities/update.js';
+import Entity from '../pages/entities/entity.js';
 
 const Private = ({ Item }) => {
     const { signed } = useAuth();
@@ -26,8 +29,9 @@ export default function UserRoutes() {
             <Route path="/users/:id/update" element={<Private Item={UpdateUser}/>}/>
 
             <Route path="/entities" element={<Private Item={Entities}/>}/>
-            <Route path="/entities/create" element={<Private Item={CreateUser}/>}/>
-            <Route path="/entities/:id/update" element={<Private Item={UpdateUser}/>}/>
+            <Route path="/entities/create" element={<Private Item={CreateEntity}/>}/>
+            <Route path="/entities/:id/update" element={<Private Item={UpdateEntity}/>}/>
+            <Route path="/entities/:id" element={<Private Item={Entity}/>}/>
         </Routes>
     )
 };

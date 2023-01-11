@@ -14,7 +14,7 @@ export default function UpdateEntity() {
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://localhost:3002/entities/${entityId}`)
+        axios.get(`http://10.10.136.109:3002/entities/${entityId}`)
         .then((res) => {
             setEntityData(res.data);
         });
@@ -22,7 +22,8 @@ export default function UpdateEntity() {
 
     //Confirm update
     const updateEntity = () => {
-        axios.put(`http://localhost:3002/entities/${id}/update`,{
+        axios.put(`http://10.10.136.109:3002/entities/${id}/update`,{
+            code: document.getElementById('code').value,
             name: document.getElementById('name').value,
             phone: document.getElementById('phone').value,
             zone: document.getElementById('zone').value,
@@ -49,6 +50,13 @@ export default function UpdateEntity() {
                 return (
                     <Form className="form-create" key={key}>
                         <h5>Id: <strong>{val.id}</strong></h5>
+                        <Label>Code:</Label>
+                        <Input
+                            id="code"
+                            defaultValue={val.code}
+                            placeholder="Code"
+                            type='text'
+                        />
                         <Label>Name:</Label>
                         <Input
                             id="name"
@@ -59,14 +67,14 @@ export default function UpdateEntity() {
                         <Label>Phone:</Label>
                         <Input
                             id="phone"
-                            defaultValue={val.password}
+                            defaultValue={val.phone}
                             placeholder="Phone"
                             type='text'
                         />
                         <Label>Zone:</Label>
                         <Input
                             id="zone"
-                            defaultValue={val.zone}
+                            defaultValue={val.zone_adress}
                             placeholder="Zone"
                             type='text'
                         />

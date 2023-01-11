@@ -14,18 +14,23 @@ export default function CreateEntity() {
     const [zone, setZone ] = useState("");
 
     const addEntity = () => {
-        axios.post("http://localhost:3002/entities/create", {
+        axios.post("http://10.10.136.109:3002/entities/create", {
             code: code,
             name: name,
             phone: phone,
             zone: zone,
         })
         .then(function (r) {
-            alert('Adicionado!');
+            console.log(r.data.code)
+            if (r.data.code === 'ER_DUP_ENTRY') {
+                alert('Erro, código já cadastrado!');
+            } else {
+                alert('Adicionado!');
+            }
             navigate('/entities');
         })
         .catch(function (e) {
-            alert('Erro!');
+            alert('Erro de conexão!');
         });
     };
 
@@ -38,7 +43,7 @@ export default function CreateEntity() {
             <h1>Create Entity</h1>
 
             <Form className="form-create"> 
-            <Label>Code:</Label>
+                <Label>Code:</Label>
                 <Input
                     placeholder="Code"
                     type='text'
@@ -57,7 +62,7 @@ export default function CreateEntity() {
                 />
                 <Label>Phone:</Label>
                 <Input 
-                    placeholder="Password"
+                    placeholder="Phone"
                     type='text'
                     onChange={(event) =>{
                         setPhone(event.target.value);
