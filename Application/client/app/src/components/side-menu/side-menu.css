@@ -1,9 +1,6 @@
 .side-menu-border{
-    border-right: 1px solid rgba(0, 0, 0, 0.3);
+    border-right: 1px solid rgba(0, 0, 0, 0.5);
 }
 .side-menu{
-    width: 200px;
-}
-.side-menu a:hover{
-    color: black;
+    width: 300px;
 }

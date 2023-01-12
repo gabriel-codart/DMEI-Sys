@@ -32,10 +32,10 @@ export default function CreateUser() {
     }
 
     return(
-        <div className="create">
+        <div className="create-update">
             <h1>Create User</h1>
 
-            <Form className="form-create"> 
+            <Form className="form-create-update"> 
                 <Label>Nickname:</Label>
                 <Input
                     placeholder="Nickname"

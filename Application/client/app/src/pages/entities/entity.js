@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, FormGroup, Label } from "reactstrap";
+import { BiEdit } from 'react-icons/bi';
+import { RiDeleteBin2Line } from "react-icons/ri";
 
-import '../styles/create-update.css';
+import '../styles/read-one.css';
+import { confirmAlert } from "react-confirm-alert";
 
 export default function UpdateEntity() {
     const navigate = useNavigate();
@@ -22,45 +25,82 @@ export default function UpdateEntity() {
 
     //Go to update
     const goToUpdate = (id) => {
-        navigate(`/entities/${id}`)
+        navigate(`/entities/${id}/update`)
     };
 
-    //Back to entities
+    //Delete Entity
+    const dialogDelete = (id) => {
+        confirmAlert({
+            title: 'Confirme a remoção',
+            message: 'Você tem certeza?',
+            buttons: [
+                {
+                label: 'Sim',
+                onClick: () => {
+                        deleteEntity(id);
+                        navigate('/entities');
+                    }
+                },
+                {
+                label: 'Não'
+                }
+            ]
+        });
+    };
+    const deleteEntity = (id) => {
+        axios.delete(`http://10.10.136.109:3002/entities/${id}/delete`)
+        .then((res) => {
+            alert('Entidade deletada!');
+        });
+    }
+
+    //Back to Entities Menu
     const goBack = () => {
         navigate('/entities');
     }
 
     return(
-        <div className="create">
+        <div className="read-one">
             <h1>Entity</h1>
 
             {entityData?.map((val, key) => {
                 return (
-                    <Form className="form-create" key={key}>
+                    <Form className="form-read-one" key={key}>
                         <h5>Id: <strong>{val.id}</strong></h5>
 
                         <div style={{
                             display:'grid',
                             gridTemplateColumns:'200px 50px 200px'
                         }}>
-                            <FormGroup>
+                            <FormGroup className="column">
                                 <Label>Code: {val.code}</Label>
                                 <Label>Name: {val.name}</Label>
                                 <Label>Phone: {val.phone}</Label>
-                                <Label>Zone: {val.zone_adress}</Label>
-                                <Label>Atributo: sdsaj</Label>
+                                <Label>Manager Name: {val.name_manager}</Label>
+                                <Label>Manager Phone: {val.phone_manager}</Label>
                             </FormGroup>
                             <br/>
-                            <FormGroup>
-                                <Label>Code: {val.code}</Label>
-                                <Label>Name: {val.name}</Label>
-                                <Label>Phone: {val.phone}</Label>
+                            <FormGroup className="column">
+                                <Label>CEP: {val.cep_adress}</Label>
+                                <Label>Street: {val.street_adress}</Label>
+                                <Label>Number: {val.number_adress}</Label>
+                                <Label>District: {val.district_adress}</Label>
                                 <Label>Zone: {val.zone_adress}</Label>
-                                <Label>Atributo: asndkjas</Label>
                             </FormGroup>
                         </div>
 
-                        <Button color="info" onClick={goToUpdate(val.id)}>Editar</Button>
+                        <Button
+                            title="Editar"
+                            color="info"
+                            onClick={() => {goToUpdate(val.id)}}>
+                                <BiEdit/>
+                        </Button>
+                        <Button
+                            title="Deletar"
+                            color="danger"
+                            onClick={() => {dialogDelete(val.id)}}>
+                                <RiDeleteBin2Line/>
+                        </Button>
                         <Button color="secondary" onClick={goBack}>Voltar</Button>
                     </Form>
                 )

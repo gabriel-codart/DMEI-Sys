@@ -25,7 +25,7 @@ app.use(express.json())
     // Route to get one User by nickname
     app.get("/users/nick=:nickname", (req,res)=>{
 
-    const nickname = req.params.nickname + '%';
+    const nickname = '%' + req.params.nickname + '%';
 
     db.query(`SELECT * FROM users WHERE nickname LIKE ?`, nickname, 
         (err,result)=>{
@@ -148,10 +148,20 @@ app.use(express.json())
     const code = req.body.code;
     const name = req.body.name;
     const phone = req.body.phone;
-    const zone = req.body.zone;
+    const name_manager = req.body.name_manager;
+    const phone_manager = req.body.phone_manager;
 
-    db.query("INSERT INTO entities (code, name, phone, zone_adress) VALUES (?,?,?,?)",
-        [code, name, phone, zone],
+    const cep_adress = req.body.cep_adress;
+    const street_adress = req.body.street_adress;
+    const number_adress = req.body.number_adress;
+    const district_adress = req.body.district_adress;
+    const zone_adress = req.body.zone_adress;
+
+    db.query(["INSERT INTO entities (code, name, phone, name_manager, phone_manager, "+
+        "cep_adress, street_adress, number_adress, district_adress, zone_adress) "+
+        "VALUES (?,?,?,?,?,?,?,?,?,?)"],
+        [code, name, phone, name_manager, phone_manager,
+        cep_adress, street_adress, number_adress, district_adress, zone_adress],
         (err,result)=>{
         if(err) {
             res.send(err)
@@ -169,18 +179,28 @@ app.use(express.json())
     const code = req.body.code;
     const name = req.body.name;
     const phone = req.body.phone;
-    const zone = req.body.zone;
+    const name_manager = req.body.name_manager;
+    const phone_manager = req.body.phone_manager;
 
-    db.query("UPDATE entities SET code = ?, name = ?, phone = ?, zone_adress = ? WHERE id = ?",
-        [code, name, phone, zone, id],
+    const cep_adress = req.body.cep_adress;
+    const street_adress = req.body.street_adress;
+    const number_adress = req.body.number_adress;
+    const district_adress = req.body.district_adress;
+    const zone_adress = req.body.zone_adress;
+
+    db.query(["UPDATE entities SET code = ?, name = ?, phone = ?, name_manager = ?, phone_manager = ?, "+
+        "cep_adress = ?, street_adress = ?, number_adress = ?, district_adress = ?, zone_adress = ? "+
+        "WHERE id = ?"],
+        [code, name, phone, name_manager, phone_manager,
+        cep_adress, street_adress, number_adress, district_adress, zone_adress, id],
         (err,result)=>{
         if(err) {
-        console.log(err)
-        } 
-        res.send(result)
-        });    
-    });
-
+            res.send(err)
+        } else{
+            res.send(result)
+        }
+        });
+    })
 
     // Route to delete a Entity
     app.delete('/entities/:id/delete',(req,res)=>{

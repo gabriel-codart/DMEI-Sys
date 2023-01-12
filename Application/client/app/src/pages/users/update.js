@@ -42,12 +42,12 @@ export default function UpdateUser() {
     }
 
     return(
-        <div className="create">
+        <div className="create-update">
             <h1>Update User</h1>
 
             {userData?.map((val, key) => {
                 return (
-                    <Form className="form-create" key={key}>
+                    <Form className="form-create-update" key={key}>
                         <h5>Id: <strong>{val.id}</strong></h5>
                         <Label>Nickname:</Label>
                         <Input

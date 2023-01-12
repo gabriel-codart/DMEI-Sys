@@ -1,4 +1,4 @@
-.create-update{
+.read-one{
     justify-content: center;
     text-align: center;
     margin: auto;
@@ -6,19 +6,23 @@
     padding-bottom: 120px;
 }
 
-.form-create-update{
-    max-width: 900px;
+.form-read-one{
+    max-width: 600px;
     margin: auto;
 }
-.form-create-update .columns{
+.form-read-one .column{
     display: grid;
-    grid-template-columns: 300px 50px 300px;
 }
 
-.form-create-update label{ 
+.form-read-one label{ 
     margin-top: 20px;
 }
 
-.form-create-update button{
+.form-read-one button{
     margin: 30px 20px;
+}
+
+.form-read-one svg{
+    width: 25px;
+    height: auto;
 }

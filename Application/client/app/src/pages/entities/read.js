@@ -15,14 +15,14 @@ export default function Entities() {
     const [entitiesList, setEntitiesList] = useState([]);
     const [searchedName, setSearchedName] = useState('');
 
-    //Get all entities
+    //Get all Entities
     const getAll = () => {
         axios.get(`http://10.10.136.109:3002/entities/`,)
         .then((res) => {
             setEntitiesList(res.data);
         });
     }
-    //Get entities by search
+    //Get Entities by search
     useEffect(() => {
         if (searchedName === '') {
             getAll();
@@ -34,7 +34,7 @@ export default function Entities() {
         };
     }, [searchedName]);
 
-    //Delete user
+    //Delete Entity
     const dialogDelete = (id) => {
         confirmAlert({
             title: 'Confirme a remoção',
@@ -60,12 +60,12 @@ export default function Entities() {
         });
     }
 
-    //Open user
+    //Open Entity
     const openEntity = (id) => {
         navigate(`/entities/${id}`);
     }
 
-    //Add user
+    //Add Entity
     const addEntity = () => {
         navigate('/entities/create');
     }

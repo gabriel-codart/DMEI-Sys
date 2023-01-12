@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Form, Input, Label } from "reactstrap";
+import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 
 import '../styles/create-update.css';
 
@@ -26,7 +26,13 @@ export default function UpdateEntity() {
             code: document.getElementById('code').value,
             name: document.getElementById('name').value,
             phone: document.getElementById('phone').value,
-            zone: document.getElementById('zone').value,
+            name_manager: document.getElementById('name_manager').value,
+            phone_manager: document.getElementById('phone_manager').value,
+            cep_adress: document.getElementById('cep_adress').value,
+            street_adress: document.getElementById('street_adress').value,
+            number_adress: document.getElementById('number_adress').value,
+            district_adress: document.getElementById('district_adress').value,
+            zone_adress: document.getElementById('zone_adress').value
         })
         .then(function (r) {
             alert('Atualizado!');
@@ -43,41 +49,100 @@ export default function UpdateEntity() {
     }
 
     return(
-        <div className="create">
+        <div className="create-update">
             <h1>Update Entity</h1>
 
             {entityData?.map((val, key) => {
                 return (
-                    <Form className="form-create" key={key}>
+                    <Form className="form-create-update" key={key}>
                         <h5>Id: <strong>{val.id}</strong></h5>
-                        <Label>Code:</Label>
-                        <Input
-                            id="code"
-                            defaultValue={val.code}
-                            placeholder="Code"
-                            type='text'
-                        />
-                        <Label>Name:</Label>
-                        <Input
-                            id="name"
-                            defaultValue={val.name}
-                            placeholder="Name"
-                            type='text'
-                        />
-                        <Label>Phone:</Label>
-                        <Input
-                            id="phone"
-                            defaultValue={val.phone}
-                            placeholder="Phone"
-                            type='text'
-                        />
-                        <Label>Zone:</Label>
-                        <Input
-                            id="zone"
-                            defaultValue={val.zone_adress}
-                            placeholder="Zone"
-                            type='text'
-                        />
+
+                        <div className="columns">
+                            <FormGroup>
+                                <Label>Code:</Label>
+                                <Input
+                                    id="code"
+                                    defaultValue={val.code}
+                                    placeholder="Code"
+                                    type='text'
+                                />
+
+                                <Label>Name:</Label>
+                                <Input
+                                    id="name"
+                                    defaultValue={val.name}
+                                    placeholder="Name"
+                                    type='text'
+                                />
+
+                                <Label>Phone:</Label>
+                                <Input
+                                    id="phone"
+                                    defaultValue={val.phone}
+                                    placeholder="Phone"
+                                    type='text'
+                                />
+
+                                <Label>Manager Name:</Label>
+                                <Input
+                                    id="name_manager"
+                                    defaultValue={val.name_manager}
+                                    placeholder="Manager Name"
+                                    type='text'
+                                />
+                                
+                                <Label>Manager Phone:</Label>
+                                <Input
+                                    id="phone_manager"
+                                    defaultValue={val.phone_manager}
+                                    placeholder="Manager Phone"
+                                    type='text'
+                                />
+                            </FormGroup>
+                            <br/>
+                            <FormGroup>
+                                <Label>CEP:</Label>
+                                <Input
+                                    id="cep_adress"
+                                    defaultValue={val.cep_adress}
+                                    placeholder="CEP"
+                                    type='text'
+                                />
+
+                                <Label>Street:</Label>
+                                <Input
+                                    id="street_adress"
+                                    defaultValue={val.street_adress}
+                                    placeholder="Street"
+                                    type='text'
+                                />
+
+                                <Label>Number:</Label>
+                                <Input
+                                    id="number_adress"
+                                    defaultValue={val.number_adress}
+                                    placeholder="Number"
+                                    type='number'
+                                />
+
+                                <Label>District:</Label>
+                                <Input
+                                    id="district_adress"
+                                    defaultValue={val.district_adress}
+                                    placeholder="District"
+                                    type='text'
+                                />
+
+                                <Label>Zone:</Label>
+                                <Input
+                                    id="zone_adress"
+                                    defaultValue={val.zone_adress}
+                                    placeholder="Zone"
+                                    type='text'
+                                />
+                            </FormGroup>
+                        </div>
+                        
                         <Button color="primary" onClick={updateEntity}>Atualizar</Button>
                         <Button color="danger" onClick={cancelUpdate}>Cancelar</Button>
                     </Form>
