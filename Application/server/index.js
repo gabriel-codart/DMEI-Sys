@@ -22,17 +22,20 @@ app.use(express.json())
         });
     });
 
-    // Route to get one User by nickname
-    app.get("/users/nick=:nickname", (req,res)=>{
+    // Route to get one User by limit
+    app.get("/users/page=:page/perPage=:perPage", (req,res)=>{
 
-    const nickname = '%' + req.params.nickname + '%';
+    const page = Number(req.params.page) * 10;
+    const perPage = Number(req.params.perPage);
 
-    db.query(`SELECT * FROM users WHERE nickname LIKE ?`, nickname, 
+    db.query(`SELECT * FROM users LIMIT ?, ?`, [page, perPage], 
         (err,result)=>{
         if(err) {
-        console.log(err)
+            res.send(err)
+            console.log(err)
+        } else{
+            res.send(result)
         }
-        res.send(result)
         });
     });
 

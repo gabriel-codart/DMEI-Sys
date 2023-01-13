@@ -4,3 +4,7 @@ body{
     font-family: 'Comfortaa', cursive;
     margin: 0;
 }
+svg{
+    width: 18px;
+    height: auto;
+}

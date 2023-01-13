@@ -14,8 +14,6 @@ import CreateEntity from '../pages/entities/create.js';
 import UpdateEntity from '../pages/entities/update.js';
 import Entity from '../pages/entities/entity.js';
 
-import TesteTable from '../pages/teste-table/teste-table.js';
-
 const Private = ({ Item }) => {
     const { signed } = useAuth();
     return signed > 0 ? <Item/> : <Login/>;
@@ -25,7 +23,6 @@ export default function UserRoutes() {
     return (
         <Routes>
             <Route path="/" element={<Login/>}/>
-            <Route path="/teste-table" element={<TesteTable/>}/>
 
             <Route path="/users" element={<Private Item={Users}/>}/>
             <Route path="/users/create" element={<Private Item={CreateUser}/>}/>
