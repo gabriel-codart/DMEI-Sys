@@ -25,8 +25,9 @@ app.use(express.json())
     // Route to get one User by limit
     app.get("/users/page=:page/perPage=:perPage", (req,res)=>{
 
-    const page = Number(req.params.page) * 10;
     const perPage = Number(req.params.perPage);
+    const page = Number(req.params.page) * perPage;
+    
 
     db.query(`SELECT * FROM users LIMIT ?, ?`, [page, perPage], 
         (err,result)=>{
@@ -65,9 +66,10 @@ app.use(express.json())
         [nickname, password, realname],
         (err,result)=>{
         if(err) {
-        console.log(err)
+            res.send(err);
+        } else{
+            res.send(result);
         }
-        res.send(result)
         });
     })
 
@@ -84,9 +86,10 @@ app.use(express.json())
         [nickname, password, realname, id],
         (err,result)=>{
         if(err) {
-        console.log(err)
-        } 
-        res.send(result)
+            res.send(err);
+        } else{
+            res.send(result);
+        }
         });    
     });
 
@@ -117,21 +120,24 @@ app.use(express.json())
         });
     });
 
-    // Route to get one Entities by name
-    app.get("/entities/name=:name", (req,res)=>{
+    // Route to get one User by limit
+    app.get("/entities/page=:page/perPage=:perPage", (req,res)=>{
 
-    const name = '%' + req.params.name + '%';
-
-    db.query(`SELECT * FROM entities WHERE name LIKE ?`, name, 
-        (err,result)=>{
-        if(err) {
-        console.log(err)
-        }
-        res.send(result)
+        const page = Number(req.params.page) * 10;
+        const perPage = Number(req.params.perPage);
+    
+        db.query(`SELECT * FROM entities LIMIT ?, ?`, [page, perPage], 
+            (err,result)=>{
+            if(err) {
+                res.send(err)
+                console.log(err)
+            } else{
+                res.send(result)
+            }
         });
     });
 
-    // Route to get one User by id
+    // Route to get one Entity by id
     app.get("/entities/:id", (req,res)=>{
 
     const id = req.params.id;
@@ -160,16 +166,15 @@ app.use(express.json())
     const district_adress = req.body.district_adress;
     const zone_adress = req.body.zone_adress;
 
-    db.query(["INSERT INTO entities (code, name, phone, name_manager, phone_manager, "+
-        "cep_adress, street_adress, number_adress, district_adress, zone_adress) "+
-        "VALUES (?,?,?,?,?,?,?,?,?,?)"],
-        [code, name, phone, name_manager, phone_manager,
-        cep_adress, street_adress, number_adress, district_adress, zone_adress],
+    console.log(zone_adress)
+
+    db.query("INSERT INTO entities (code, name, phone, name_manager, phone_manager, cep_adress, street_adress, number_adress, district_adress, zone_adress) VALUES (?,?,?,?,?,?,?,?,?,?)",
+        [code, name, phone, name_manager, phone_manager,cep_adress, street_adress, number_adress, district_adress, zone_adress],
         (err,result)=>{
         if(err) {
-            res.send(err)
+            res.send(err);
         } else{
-            res.send(result)
+            res.send(result);
         }
         });
     })
@@ -191,11 +196,8 @@ app.use(express.json())
     const district_adress = req.body.district_adress;
     const zone_adress = req.body.zone_adress;
 
-    db.query(["UPDATE entities SET code = ?, name = ?, phone = ?, name_manager = ?, phone_manager = ?, "+
-        "cep_adress = ?, street_adress = ?, number_adress = ?, district_adress = ?, zone_adress = ? "+
-        "WHERE id = ?"],
-        [code, name, phone, name_manager, phone_manager,
-        cep_adress, street_adress, number_adress, district_adress, zone_adress, id],
+    db.query("UPDATE entities SET code = ?, name = ?, phone = ?, name_manager = ?, phone_manager = ?, cep_adress = ?, street_adress = ?, number_adress = ?, district_adress = ?, zone_adress = ? WHERE id = ?",
+        [code, name, phone, name_manager, phone_manager, cep_adress, street_adress, number_adress, district_adress, zone_adress, id],
         (err,result)=>{
         if(err) {
             res.send(err)

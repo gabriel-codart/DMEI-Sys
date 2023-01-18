@@ -12,7 +12,7 @@ export default function App() {
 
       <div style={{
           display:'flex',
-          minHeight: '570px'
+          height:'100%'
         }}>
         <SideMenu/>
         <UserRoutes/>

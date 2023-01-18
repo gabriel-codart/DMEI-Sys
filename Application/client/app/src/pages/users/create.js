@@ -19,8 +19,12 @@ export default function CreateUser() {
             realname: realname,
         })
         .then(function (r) {
-            alert('Adicionado!');
-            navigate('/users');
+            if (r.data.code === 'ER_DUP_ENTRY') {
+                alert('Erro, nickname já cadastrado!');
+            } else {
+                alert('Adicionado!');
+                navigate('/users');
+            }
         })
         .catch(function (e) {
             alert('Erro!');

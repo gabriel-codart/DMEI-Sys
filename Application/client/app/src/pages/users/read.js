@@ -5,15 +5,15 @@ import DataTable from 'react-data-table-component';
 
 import { confirmAlert } from "react-confirm-alert";
 import { Button, Form, Input } from "reactstrap";
+import { MdClear } from 'react-icons/md';
 import { RiDeleteBin2Line } from 'react-icons/ri';
 import { BiEdit } from 'react-icons/bi';
 
 import '../styles/read.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-export default function TesteTable() {
+export default function Users() {
     const navigate = useNavigate();
-
 
     const [page, setPage] = useState(1);
     const [totalRows, setTotalRows] = useState(0);
@@ -21,25 +21,23 @@ export default function TesteTable() {
 
     const [usersList, setUsersList] = useState([]);
     const [filterText, setFilterText] = useState("");
-    
-    console.log('page = ',page, '\nperPage = ',perPage);
 
-    //Get all users
-    const getAll = () => {
-        if (page === 1){
-            setPage(0);
-        }
-        axios.get(`http://10.10.136.109:3002/users/`,)
+
+    //Getting users
+    useEffect(() => {
+        console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
+
+        axios.get(`http://10.10.136.109:3002/users/page=${(page-1)}/perPage=${perPage}`,)
         .then((res) => {
             setUsersList(res.data);
-            setTotalRows(res.data.count());
-            console.log(res.data);
         });
-    }
-    useEffect(() => {
-        getAll();
-    });
-    //Get users by search
+
+        axios.get('http://10.10.136.109:3002/users/')
+        .then((res) => {
+            setTotalRows(res.data.length);
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filterText, page, perPage]);
 
     //Delete user
     const dialogDelete = (id) => {
@@ -51,7 +49,7 @@ export default function TesteTable() {
                 label: 'Sim',
                 onClick: () => {
                         deleteUser(id);
-                        getAll();
+                        setFilterText("");
                     }
                 },
                 {
@@ -169,7 +167,7 @@ export default function TesteTable() {
                     }}
                 />
                 <Button onClick={handleClear}>
-                    X
+                    <MdClear/>
                 </Button>
             </Form>
 
@@ -178,10 +176,16 @@ export default function TesteTable() {
             <DataTable
                 columns={columns}
                 data={tableData}
-                selectableRows
                 pagination
                 paginationServer
                 paginationTotalRows={totalRows}
+                paginationComponentOptions={{
+                    rowsPerPageText: 'Filas por página',
+                    rangeSeparatorText: 'de',
+                    selectAllRowsItem: true,
+                    selectAllRowsItemText: 'Todos',
+                }}
+                paginationRowsPerPageOptions={[10,50,100]}
                 onChangeRowsPerPage={handlePerRowsChange}
                 onChangePage={handlePageChange}
             />

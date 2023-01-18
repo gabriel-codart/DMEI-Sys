@@ -35,8 +35,12 @@ export default function UpdateEntity() {
             zone_adress: document.getElementById('zone_adress').value
         })
         .then(function (r) {
-            alert('Atualizado!');
-            navigate('/entities');
+            if (r.data.code === 'ER_DUP_ENTRY') {
+                alert('Erro, nickname já cadastrado!');
+            } else {
+                alert('Atulizado!');
+                navigate('/entities');
+            }
         })
         .catch(function (e) {
             alert('Erro!');

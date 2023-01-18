@@ -1,7 +1,9 @@
 .read{
     justify-content: center;
     text-align: center;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
     padding: 20px;
 }
 

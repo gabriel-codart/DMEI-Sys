@@ -17,29 +17,27 @@ export default function Login() {
 
         axios.get('http://10.10.136.109:3002/users')
         .then((res) => {
-            console.log(res);
             for (let i = 0; i < res.data.length; i++) {
                 if (nickname === res.data[i].nickname && password === res.data[i].password) {
+                    console.log("Um");
                     signin(nickname);
                     alert('Você está logado!');
                     navigate('/entities');
                     return;
-                } else {
-                    console.log(res);
                 };
             };
+            alert('Usuário ou senha incorretos!');
         })
         .catch((err) => {
-            alert('Usuário ou senha incorretos!');
+            alert('Erro na conexão!');
         });
     };
 
     return(
         <div className="login">
-            <h1>DMEIsys</h1>
-
             <Form>
-                <h4>Login</h4>
+                <h1>DMEIsys</h1>
+                <hr />
                 <Input
                     id="nickname"
                     placeholder="Nickname">
@@ -52,6 +50,8 @@ export default function Login() {
                 <hr />
                 <Button color="primary" onClick={verifyUser}>Entrar</Button>
             </Form>
+            <br/>
+            <Button color="secondary">Entrar como Anônimo</Button>
 
         </div>
     );

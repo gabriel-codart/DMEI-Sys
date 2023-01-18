@@ -28,8 +28,12 @@ export default function UpdateUser() {
             realname: document.getElementById('realname').value,
         })
         .then(function (r) {
-            alert('Atualizado!');
-            navigate('/users');
+            if (r.data.code === 'ER_DUP_ENTRY') {
+                alert('Erro, nickname já cadastrado!');
+            } else {
+                alert('Atulizado!');
+                navigate('/users');
+            }
         })
         .catch(function (e) {
             alert('Erro!');

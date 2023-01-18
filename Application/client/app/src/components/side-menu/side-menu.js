@@ -1,14 +1,10 @@
 import React from 'react';
+import { Sidebar, Menu, SubMenu, MenuItem } from 'react-pro-sidebar';
+import { BsBarChartFill } from 'react-icons/bs';
+import { MdAddBox } from 'react-icons/md';
+import { FaUsers, FaBuilding, FaListUl } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import {
-    Sidebar,
-    SidebarHeader,
-    SidebarBody,
-    MenuBar,
-    MenuItem,
-    SubMenuBar,
-    SidebarFooter
-} from 'react-sidebar-pro/lib';
+
 
 import useAuth from '../../contexts/useAuth';
 
@@ -18,47 +14,38 @@ export default function SideMenu() {
     const { signed } = useAuth();
 
     return (
-        <div className='side-menu-border'>
+        <div>
             {signed ? (
             <div className='side-menu'>
-                <Sidebar className="sidebar_custom">
-                    <SidebarHeader>
-                        DMEIsys
-                    </SidebarHeader>
-                    <SidebarBody>
-                        <MenuBar>
-                            <MenuItem
-                                to='/'
-                                text='Dashboard'
-                            />
-                            <MenuItem
-                                to='/'
-                                text='Projects'
-                            />
-                            
-                            <SubMenuBar label="Entities">
-                                <li>
-                                    <Link className='menu_item' to='/entities'> List </Link>
-                                </li>
-                                <li>
-                                    <Link className='menu_item' to='/entities/create'> Add </Link>
-                                </li>
-                            </SubMenuBar>
+                <Sidebar className='side-bar'>
+                    <Menu transitionDuration={1000}>
+                        <h1 className='title'>DMEIsys</h1>
+                        <hr/>
 
-                            <SubMenuBar label="Users">
-                                <li>
-                                    <Link className='menu_item' to='/users'> List </Link>
-                                </li>
-                                <li>
-                                    <Link className='menu_item' to='/users/create'> Add </Link>
-                                </li>
-                            </SubMenuBar>
-                        </MenuBar>
-                    </SidebarBody>
+                        <Link to={'/users/create'}>
+                            <MenuItem icon={<BsBarChartFill />}>Adicionar</MenuItem>
+                        </Link>
+                        <hr/>
 
-                    <SidebarFooter>
-                        @DMEI_sys criado com React.js
-                    </SidebarFooter>
+                        <SubMenu label="Entidades" icon={<FaBuilding />}>
+                            <Link to={'/entities'}>
+                                <MenuItem icon={<FaListUl />}>Listar</MenuItem>
+                            </Link>
+                            <Link to={'/entities/create'}>
+                                <MenuItem icon={<MdAddBox />}>Adicionar</MenuItem>
+                            </Link>
+                        </SubMenu>
+
+                        <SubMenu label="Usuários" icon={<FaUsers />}>
+                            <Link to={'/users'}>
+                                <MenuItem icon={<FaListUl />}>Listar</MenuItem>
+                            </Link>
+                            <Link to={'/users/create'}>
+                                <MenuItem icon={<MdAddBox />}>Adicionar</MenuItem>
+                            </Link>
+                        </SubMenu>
+                        <hr/>
+                    </Menu>
                 </Sidebar>
             </div>
             ) : ('')}

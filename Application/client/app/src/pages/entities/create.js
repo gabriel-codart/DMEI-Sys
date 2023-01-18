@@ -19,19 +19,20 @@ export default function CreateEntity() {
     const [number_adress, setNumber_adress] = useState("");
     const [street_adress, setStreet_adress] = useState("");
 
+    console.log(code, name);
 
     const addEntity = () => {
         axios.post("http://10.10.136.109:3002/entities/create", {
             code: code,
             name: name,
             phone: phone,
-            zone: zone_adress,
             name_manager: name_manager,
             phone_manager: phone_manager,
-            district_adress: district_adress,
             cep_adress: cep_adress,
+            street_adress: street_adress,
             number_adress: number_adress,
-            street_adress: street_adress,       
+            district_adress: district_adress,
+            zone_adress: zone_adress
         })
         .then(function (r) {
             console.log(r.data.code)
@@ -39,8 +40,8 @@ export default function CreateEntity() {
                 alert('Erro, código já cadastrado!');
             } else {
                 alert('Adicionado!');
+                navigate('/entities');
             }
-            navigate('/entities');
         })
         .catch(function (e) {
             alert('Erro de conexão!');
