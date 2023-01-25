@@ -14,7 +14,7 @@ export default function UpdateEntity() {
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.109:3002/entities/${entityId}`)
+        axios.get(`http://10.10.136.100:3002/entities/${entityId}`)
         .then((res) => {
             setEntityData(res.data);
         });
@@ -22,7 +22,7 @@ export default function UpdateEntity() {
 
     //Confirm update
     const updateEntity = () => {
-        axios.put(`http://10.10.136.109:3002/entities/${id}/update`,{
+        axios.put(`http://10.10.136.100:3002/entities/${id}/update`,{
             code: document.getElementById('code').value,
             name: document.getElementById('name').value,
             phone: document.getElementById('phone').value,
@@ -59,7 +59,9 @@ export default function UpdateEntity() {
             {entityData?.map((val, key) => {
                 return (
                     <Form className="form-create-update" key={key}>
+                        <hr/>
                         <h5>Id: <strong>{val.id}</strong></h5>
+                        <hr/>
 
                         <div className="columns">
                             <FormGroup>
@@ -146,6 +148,7 @@ export default function UpdateEntity() {
                                 />
                             </FormGroup>
                         </div>
+                        <hr/>
                         
                         <Button color="primary" onClick={updateEntity}>Atualizar</Button>
                         <Button color="danger" onClick={cancelUpdate}>Cancelar</Button>

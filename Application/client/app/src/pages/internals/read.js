@@ -3,102 +3,81 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import DataTable from 'react-data-table-component';
 
-import { confirmAlert } from "react-confirm-alert";
 import { Button, Form, Input } from "reactstrap";
 import { MdClear, MdOpenInNew } from 'react-icons/md';
-import { RiDeleteBin2Line } from 'react-icons/ri';
 
 import '../styles/read.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-export default function Entities() {
+export default function Internals() {
     const navigate = useNavigate();
 
     const [page, setPage] = useState(1);
     const [totalRows, setTotalRows] = useState(0);
     const [perPage, setPerPage] = useState(10);
 
-    const [entitiesList, setEntitiesList] = useState([]);
+    const [internalsList, setInternalsList] = useState([]);
     const [filterText, setFilterText] = useState("");
 
 
     //Getting users
     useEffect(() => {
-        console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
+        //console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
 
-        axios.get(`http://10.10.136.100:3002/entities/page=${(page-1)}/perPage=${perPage}`,)
+        axios.get(`http://10.10.136.100:3002/internals/page=${(page-1)}/perPage=${perPage}`,)
         .then((res) => {
-            setEntitiesList(res.data);
             console.log(res.data);
+            setInternalsList(res.data);
         });
 
-        axios.get('http://10.10.136.100:3002/entities/')
+        axios.get('http://10.10.136.100:3002/internals/')
         .then((res) => {
             setTotalRows(res.data.length);
-            console.log(res.data);
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText, page, perPage]);
 
-    //Delete user
-    const dialogDelete = (id) => {
-        confirmAlert({
-            title: 'Confirme a remoção',
-            message: 'Você tem certeza?',
-            buttons: [
-                {
-                label: 'Sim',
-                onClick: () => {
-                        deleteEntity(id);
-                        setFilterText("");
-                    }
-                },
-                {
-                label: 'Não'
-                }
-            ]
-        });
-    };
-    const deleteEntity = (id) => {
-        axios.delete(`http://10.10.136.100:3002/entities/${id}/delete`)
-        .then((res) => {
-            alert('Entidade removida!');
-        });
-    }
 
-    //Open Entity
-    const goToEntity = (id) => {
-        navigate(`/entities/${id}`);
+    //Open Internal
+    const openInternal = (id) => {
+        navigate(`/internals/${id}`);
     }
 
     //Add user
     const goToAdd = () => {
-        navigate('/entities/create');
+        navigate('/internals/create');
     }
 
     //Config Table and Search
     const columns = [
         {
-            name: 'Code',
-            selector: row => row.code,
-            width: '100px',
+            name: 'Id',
+            selector: row => row.id,
+            width: '50px',
             center: 'yes'
         },
         {
-            name: 'Name',
-            selector: row => row.name,
+            name: 'User',
+            selector: row => row.user,
             sortable: true,
             width: '150px',
             center: 'yes'
         },
         {
-            name: 'Phone',
-            selector: row => row.phone,
+            name: 'Machine',
+            selector: row => row.machine,
             center: 'yes'
         },
         {
-            name: 'Name-Manager',
-            selector: row => row.name_manager,
+            name: 'Problem',
+            selector: row => row.problem,
+            sortable: true,
+            width: '200px',
+            center: 'yes'
+        },
+        {
+            name: 'Service',
+            selector: row => row.service_performed,
             sortable: true,
             width: '200px',
             center: 'yes'
@@ -107,34 +86,24 @@ export default function Entities() {
             name: 'Open',
             selector: row => <Button
                                 color="info"
-                                onClick={() => goToEntity(row.id)}
+                                onClick={() => openInternal(row.id)}
                             >
                                 <MdOpenInNew/>
                             </Button>,
             center: 'yes'
         },
-        {
-            name: 'Remove',
-            selector: row => <Button
-                                color="danger"
-                                onClick={() => dialogDelete(row.id)}
-                            >
-                                <RiDeleteBin2Line/>
-                            </Button>,
-            center: 'yes'
-        },
     ];
-    const tableData = entitiesList?.filter(
-      (entities) =>
-        entities.name && entities.name.toLowerCase().includes(filterText.toLowerCase())
+    const tableData = internalsList?.filter(
+      (internal) =>
+        internal.user && internal.user.toLowerCase().includes(filterText.toLowerCase())
     )
-    .map((entities) => {
+    .map((internal) => {
       return {
-        id: entities.id,
-        code: entities.code,
-        name: entities.name,
-        phone: entities.phone,
-        name_manager: entities.name_manager
+        id: internal.id,
+        machine: internal.machine,
+        user: internal.user,
+        problem: internal.problem,
+        service_performed: internal.service_performed,
       };
     });
 
@@ -155,7 +124,7 @@ export default function Entities() {
     return(
         <div className="read">
             <div className='read-title'>
-                <h1>Entities</h1>
+                <h1>Serviços Internos</h1>
                 <Button color='primary' onClick={goToAdd}>Adicionar</Button>
             </div>
 

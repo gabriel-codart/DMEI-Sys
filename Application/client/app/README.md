@@ -13,7 +13,7 @@ Run it to import all modules of the application.\
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://10.10.136.109:3000](http://10.10.136.109:3000) to view it in your browser.
+Open [http://10.10.136.100:3000](http://10.10.136.100:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.

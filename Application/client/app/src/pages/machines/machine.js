@@ -8,27 +8,29 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import '../styles/read-one.css';
 import { confirmAlert } from "react-confirm-alert";
 
-export default function Entity() {
+export default function Machine() {
     const navigate = useNavigate();
 
     const {id} = useParams();
-    const [entityId] = useState(id);
-    const [entityData, setEntityData] = useState([]);
+    const [machineId] = useState(id);
+    const [machineData, setMachineData] = useState([]);
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/entities/${entityId}`)
+        axios.get(`http://10.10.136.100:3002/machines/${machineId}`)
         .then((res) => {
-            setEntityData(res.data);
+            //console.log(res);
+            setMachineData(res.data);
         });
-    }, [entityId]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id]);
 
     //Go to update
     const goToUpdate = (id) => {
-        navigate(`/entities/${id}/update`)
+        navigate(`/machines/${id}/update`)
     };
 
-    //Delete Entity
+    //Delete Machine
     const dialogDelete = (id) => {
         confirmAlert({
             title: 'Confirme a remoção',
@@ -37,7 +39,7 @@ export default function Entity() {
                 {
                 label: 'Sim',
                 onClick: () => {
-                        deleteEntity(id);
+                        deleteMachine(id);
                         navigate('/entities');
                     }
                 },
@@ -47,8 +49,8 @@ export default function Entity() {
             ]
         });
     };
-    const deleteEntity = (id) => {
-        axios.delete(`http://10.10.136.100:3002/entities/${id}/delete`)
+    const deleteMachine = (id) => {
+        axios.delete(`http://10.10.136.100:3002/machines/${id}/delete`)
         .then((res) => {
             alert('Entidade deletada!');
         });
@@ -56,14 +58,14 @@ export default function Entity() {
 
     //Back to Entities Menu
     const goBack = () => {
-        navigate('/entities');
+        navigate('/machines');
     }
 
     return(
         <div className="read-one">
-            <h1>Entity</h1>
+            <h1>Machine</h1>
 
-            {entityData?.map((val, key) => {
+            {machineData?.map((val, key) => {
                 return (
                     <Form className="form-read-one" key={key}>
                         <hr/>
@@ -72,22 +74,22 @@ export default function Entity() {
 
                         <div style={{
                             display:'grid',
-                            gridTemplateColumns:'250px 20px 250px'
+                            gridTemplateColumns:'300px 20px 300px'
                         }}>
                             <FormGroup className="column">
-                                <Label>Code: {val.code}</Label>
-                                <Label>Name: {val.name}</Label>
-                                <Label>Phone: {val.phone}</Label>
-                                <Label>Manager Name: {val.name_manager}</Label>
-                                <Label>Manager Phone: {val.phone_manager}</Label>
+                                <Label>Número de Série: {val.num_serial}</Label>
+                                <Label>Modelo: {val.model}</Label>
+                                <Label>Descrição: {val.description}</Label>
                             </FormGroup>
                             <br/>
                             <FormGroup className="column">
-                                <Label>CEP: {val.cep_adress}</Label>
-                                <Label>Street: {val.street_adress}</Label>
-                                <Label>Number: {val.number_adress}</Label>
-                                <Label>District: {val.district_adress}</Label>
-                                <Label>Zone: {val.zone_adress}</Label>
+                                <Label>Entidade: {val.entities_name}</Label>
+                                <Label>Tipo: {val.type_machine_name}</Label>
+                                {val.status === 1 ?
+                                    <Label>Status: Ativo</Label>
+                                    :
+                                    <Label>Status: Inativo</Label>
+                                }
                             </FormGroup>
                         </div>
                         <hr/>

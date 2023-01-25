@@ -13,7 +13,7 @@ export default function CreateUser() {
     const [realname, setRealname ] = useState("");
 
     const addUser = () => {
-        axios.post("http://10.10.136.109:3002/users/create", {
+        axios.post("http://10.10.136.100:3002/users/create", {
             nickname: nickname,
             password: password,
             realname: realname,
@@ -39,7 +39,8 @@ export default function CreateUser() {
         <div className="create-update">
             <h1>Create User</h1>
 
-            <Form className="form-create-update"> 
+            <Form className="form-create-update">
+                <hr/>
                 <Label>Nickname:</Label>
                 <Input
                     placeholder="Nickname"
@@ -64,6 +65,8 @@ export default function CreateUser() {
                         setRealname(event.target.value);
                     }}
                 />
+                <hr/>
+                
                 <Button color="primary" onClick={addUser}>Adicionar</Button>
                 <Button color="danger" onClick={cancelAdd}>Cancelar</Button>
             </Form>

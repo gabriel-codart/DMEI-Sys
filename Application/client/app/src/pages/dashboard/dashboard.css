@@ -1,0 +1,13 @@
+.dashboard{
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    display: grid;
+    padding: 50px;
+}
+.col{
+    text-align: center;
+}
+.recharts-responsive-container{
+    margin: auto;
+}

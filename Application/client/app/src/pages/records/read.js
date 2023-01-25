@@ -1,137 +1,84 @@
 import { React, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import DataTable from 'react-data-table-component';
 
-import { confirmAlert } from "react-confirm-alert";
 import { Button, Form, Input } from "reactstrap";
-import { MdClear, MdOpenInNew } from 'react-icons/md';
-import { RiDeleteBin2Line } from 'react-icons/ri';
+import { MdClear } from 'react-icons/md';
 
 import '../styles/read.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-export default function Users() {
-    const navigate = useNavigate();
+export default function Records() {
 
     const [page, setPage] = useState(1);
     const [totalRows, setTotalRows] = useState(0);
     const [perPage, setPerPage] = useState(10);
 
-    const [usersList, setUsersList] = useState([]);
+    const [recordsList, setRecordsList] = useState([]);
     const [filterText, setFilterText] = useState("");
 
 
-    //Getting users
+    //Getting records
     useEffect(() => {
         console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
 
-        axios.get(`http://10.10.136.100:3002/users/page=${(page-1)}/perPage=${perPage}`,)
+        axios.get(`http://10.10.136.100:3002/records/page=${(page-1)}/perPage=${perPage}`,)
         .then((res) => {
-            setUsersList(res.data);
+            setRecordsList(res.data);
         });
 
-        axios.get('http://10.10.136.100:3002/users/')
+        axios.get('http://10.10.136.100:3002/records/')
         .then((res) => {
             setTotalRows(res.data.length);
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText, page, perPage]);
 
-    //Delete user
-    const dialogDelete = (id) => {
-        confirmAlert({
-            title: 'Confirme a remoção',
-            message: 'Você tem certeza?',
-            buttons: [
-                {
-                label: 'Sim',
-                onClick: () => {
-                        deleteUser(id);
-                        setFilterText("");
-                    }
-                },
-                {
-                label: 'Não'
-                }
-            ]
-        });
-    };
-    const deleteUser = (id) => {
-        axios.delete(`http://10.10.136.100:3002/users/${id}/delete`)
-        .then((res) => {
-            alert('Usuário removido!');
-        });
-    }
-
-    //Update user
-    const openUser = (id) => {
-        navigate(`/users/${id}`);
-    }
-
-    //Add user
-    const goToAdd = () => {
-        navigate('/users/create');
-    }
-
     //Config Table and Search
     const columns = [
         {
-            name: 'Id',
+            name: 'Record',
             selector: row => row.id,
-            width: '50px',
+            width: '100px',
             center: 'yes'
         },
         {
-            name: 'Nickname',
-            selector: row => row.nickname,
-            sortable: true,
-            width: '150px',
+            name: 'Machine',
+            selector: row => row.machine,
+            width: '140px',
             center: 'yes'
         },
         {
-            name: 'Password',
-            selector: row => row.password,
+            name: 'Entity',
+            selector: row => row.entity,
             center: 'yes'
         },
         {
-            name: 'Realname',
-            selector: row => row.realname,
+            name: 'Datetime',
+            id: 'date',
+            selector: row => row.date,
             sortable: true,
             width: '200px',
             center: 'yes'
         },
         {
-            name: 'Open',
-            selector: row => <Button
-                                color="info"
-                                onClick={() => openUser(row.id)}
-                            >
-                                <MdOpenInNew/>
-                            </Button>,
-            center: 'yes'
-        },
-        {
-            name: 'Remove',
-            selector: row => <Button
-                                color="danger"
-                                onClick={() => dialogDelete(row.id)}
-                            >
-                                <RiDeleteBin2Line/>
-                            </Button>,
+            name: 'Action',
+            selector: row => row.action,
+            width: '140px',
             center: 'yes'
         },
     ];
-    const tableData = usersList?.filter(
-      (user) =>
-        user.nickname && user.nickname.toLowerCase().includes(filterText.toLowerCase())
+    const tableData = recordsList?.filter(
+      (record) =>
+        String(record.machine) && String(record.machine).toLowerCase().includes(filterText.toLowerCase())
     )
-    .map((user) => {
+    .map((record) => {
       return {
-        id: user.id,
-        nickname: user.nickname,
-        password: user.password,
-        realname: user.realname,
+        id: record.id,
+        machine: record.machine,
+        entity: record.entity,
+        date: record.date,
+        action: record.action,
       };
     });
 
@@ -152,8 +99,8 @@ export default function Users() {
     return(
         <div className="read">
             <div className='read-title'>
-                <h1>Users</h1>
-                <Button color='primary' onClick={goToAdd}>Adicionar</Button>
+                <h1>Registros</h1>
+                <br/>
             </div>
 
             <Form className="read-search">
@@ -185,6 +132,8 @@ export default function Users() {
                     selectAllRowsItemText: 'Todos',
                 }}
                 paginationRowsPerPageOptions={[2,10,50,100]}
+                defaultSortFieldId={'date'}
+                defaultSortAsc={false}
                 onChangeRowsPerPage={handlePerRowsChange}
                 onChangePage={handlePageChange}
             />

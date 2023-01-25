@@ -14,7 +14,7 @@ export default function UpdateUser() {
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.109:3002/users/${userId}`)
+        axios.get(`http://10.10.136.100:3002/users/${userId}`)
         .then((res) => {
             setUserData(res.data);
         });
@@ -22,7 +22,7 @@ export default function UpdateUser() {
 
     //Confirm update
     const updateUser = () => {
-        axios.put(`http://10.10.136.109:3002/users/${id}/update`,{
+        axios.put(`http://10.10.136.100:3002/users/${id}/update`,{
             nickname: document.getElementById('nickname').value,
             password: document.getElementById('password').value,
             realname: document.getElementById('realname').value,
@@ -52,7 +52,10 @@ export default function UpdateUser() {
             {userData?.map((val, key) => {
                 return (
                     <Form className="form-create-update" key={key}>
+                        <hr/>
                         <h5>Id: <strong>{val.id}</strong></h5>
+                        <hr/>
+
                         <Label>Nickname:</Label>
                         <Input
                             id="nickname"
@@ -74,6 +77,8 @@ export default function UpdateUser() {
                             placeholder="Realname"
                             type='text'
                         />
+                        <hr/>
+                        
                         <Button color="primary" onClick={updateUser}>Atualizar</Button>
                         <Button color="danger" onClick={cancelUpdate}>Cancelar</Button>
                     </Form>

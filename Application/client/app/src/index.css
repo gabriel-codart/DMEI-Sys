@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;500;700&display=swap');
 
 html, body, div#root{
+    background: linear-gradient(90deg, #ddd, #fff 50%, #ddd);
     height: 100%;
 }
 body{
@@ -11,7 +12,24 @@ a{
     text-decoration: none;
     color: black;
 }
-svg{
-    width: 18px;
-    height: auto;
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+scrollbar-width: auto;
+scrollbar-color: #b3b3b3 #646464;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+background: #646464;
+}
+
+*::-webkit-scrollbar-thumb {
+background-color: #b3b3b3;
+border: 3px none #ffffff;
 }

@@ -15,14 +15,14 @@ export default function Login() {
         let nickname = document.getElementById('nickname').value;
         let password = document.getElementById('password').value;
 
-        axios.get('http://10.10.136.109:3002/users')
+        axios.get('http://10.10.136.100:3002/users')
         .then((res) => {
             for (let i = 0; i < res.data.length; i++) {
                 if (nickname === res.data[i].nickname && password === res.data[i].password) {
                     console.log("Um");
                     signin(nickname);
                     alert('Você está logado!');
-                    navigate('/entities');
+                    navigate('/dashboard');
                     return;
                 };
             };

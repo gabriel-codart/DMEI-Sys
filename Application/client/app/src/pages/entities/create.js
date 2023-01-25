@@ -22,7 +22,7 @@ export default function CreateEntity() {
     console.log(code, name);
 
     const addEntity = () => {
-        axios.post("http://10.10.136.109:3002/entities/create", {
+        axios.post("http://10.10.136.100:3002/entities/create", {
             code: code,
             name: name,
             phone: phone,
@@ -57,6 +57,7 @@ export default function CreateEntity() {
             <h1>Create Entity</h1>
             
             <Form className="form-create-update"> 
+                <hr/>
                 <div className="columns">
                     <FormGroup>
                         <Label>Code:</Label>
@@ -152,6 +153,8 @@ export default function CreateEntity() {
                         />
                     </FormGroup>
                 </div>
+                <hr/>
+                
                 <Button color="primary" onClick={addEntity}>Adicionar</Button>
                 <Button color="danger" onClick={cancelAdd}>Cancelar</Button>
             </Form>

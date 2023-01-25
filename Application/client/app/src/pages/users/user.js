@@ -8,27 +8,27 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import '../styles/read-one.css';
 import { confirmAlert } from "react-confirm-alert";
 
-export default function Entity() {
+export default function User() {
     const navigate = useNavigate();
 
     const {id} = useParams();
-    const [entityId] = useState(id);
-    const [entityData, setEntityData] = useState([]);
+    const [userId] = useState(id);
+    const [userData, setUserData] = useState([]);
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/entities/${entityId}`)
+        axios.get(`http://10.10.136.100:3002/users/${userId}`)
         .then((res) => {
-            setEntityData(res.data);
+            setUserData(res.data);
         });
-    }, [entityId]);
+    }, [userId]);
 
     //Go to update
     const goToUpdate = (id) => {
-        navigate(`/entities/${id}/update`)
+        navigate(`/users/${id}/update`)
     };
 
-    //Delete Entity
+    //Delete User
     const dialogDelete = (id) => {
         confirmAlert({
             title: 'Confirme a remoção',
@@ -37,7 +37,7 @@ export default function Entity() {
                 {
                 label: 'Sim',
                 onClick: () => {
-                        deleteEntity(id);
+                        deleteUser(id);
                         navigate('/entities');
                     }
                 },
@@ -47,49 +47,35 @@ export default function Entity() {
             ]
         });
     };
-    const deleteEntity = (id) => {
-        axios.delete(`http://10.10.136.100:3002/entities/${id}/delete`)
+    const deleteUser = (id) => {
+        axios.delete(`http://10.10.136.100:3002/users/${id}/delete`)
         .then((res) => {
-            alert('Entidade deletada!');
+            alert('Usuário deletado!');
         });
     }
 
-    //Back to Entities Menu
+    //Back to Users Menu
     const goBack = () => {
-        navigate('/entities');
+        navigate('/users');
     }
 
     return(
         <div className="read-one">
-            <h1>Entity</h1>
+            <h1>Usuário</h1>
 
-            {entityData?.map((val, key) => {
+            {userData?.map((val, key) => {
                 return (
                     <Form className="form-read-one" key={key}>
                         <hr/>
                         <h5>Id: <strong>{val.id}</strong></h5>
                         <hr/>
 
-                        <div style={{
-                            display:'grid',
-                            gridTemplateColumns:'250px 20px 250px'
-                        }}>
-                            <FormGroup className="column">
-                                <Label>Code: {val.code}</Label>
-                                <Label>Name: {val.name}</Label>
-                                <Label>Phone: {val.phone}</Label>
-                                <Label>Manager Name: {val.name_manager}</Label>
-                                <Label>Manager Phone: {val.phone_manager}</Label>
-                            </FormGroup>
-                            <br/>
-                            <FormGroup className="column">
-                                <Label>CEP: {val.cep_adress}</Label>
-                                <Label>Street: {val.street_adress}</Label>
-                                <Label>Number: {val.number_adress}</Label>
-                                <Label>District: {val.district_adress}</Label>
-                                <Label>Zone: {val.zone_adress}</Label>
-                            </FormGroup>
-                        </div>
+                        <Label>Nickname: {val.nickname}</Label>
+                        <br/>
+                        <Label>Password: {val.password}</Label>
+                        <br/>
+                        <Label>Realname: {val.realname}</Label>
+
                         <hr/>
 
                         <Button
