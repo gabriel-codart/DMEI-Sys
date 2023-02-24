@@ -1,17 +1,28 @@
 .read-one{
+    height: 100%;
+    width: 100%;
     justify-content: center;
     text-align: center;
     margin: auto;
-    padding-top: 80px;
-    padding-bottom: 120px;
+    padding: 80px;
+    overflow-y: auto;
 }
 
 .form-read-one{
     max-width: 600px;
     margin: auto;
 }
+
+.form-read-one .group-columns{
+    display: grid;
+    grid-template-columns: 290px 20px 290px;
+}
 .form-read-one .column{
     display: grid;
+    grid-template-rows: none;
+}
+.form-read-one .column .card{
+    padding: 20px;
 }
 
 .form-read-one label{ 
@@ -25,4 +36,11 @@
 .form-read-one svg{
     width: 25px;
     height: auto;
+}
+
+.zone-box, .status-box{
+    color: white;
+    padding: 8px;
+    border: none;
+    border-radius: 5px !important;
 }

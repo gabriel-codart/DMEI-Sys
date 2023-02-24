@@ -1,0 +1,37 @@
+import React from "react";
+import { Col, Container, Row } from 'reactstrap';
+import ZonesGraph from "./graphs/zones";
+import TechnicianGraph from "./graphs/technicians";
+import HistoryGraph from "./graphs/history";
+
+import '../../styles/read.css';
+import './dashboard.css';
+
+export default function Dashboard() {
+
+    return(
+        <div className="dashboard">
+            <Container>
+                <Row>
+                    <Col>
+                        <h4>Atendimentos</h4>
+                        <h5>Por Zona</h5>
+                        <ZonesGraph/>
+                    </Col>
+                    <Col>
+                        <h4>Conclusões</h4>
+                        <h5>Por Técnicos</h5>
+                        <TechnicianGraph/>
+                    </Col>
+                </Row>
+                <hr/>
+                <Row>
+                    <Col>
+                        <h3>Histórico de Entradas</h3>
+                        <HistoryGraph/>
+                    </Col>
+                </Row>
+            </Container>            
+        </div>
+    );
+};

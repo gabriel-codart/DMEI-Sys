@@ -3,9 +3,27 @@
     height: 100%;
 }
 .side-menu .title{
-    padding: 25px;
+    padding-top: 25px;
+    padding-bottom: 6px;
+    padding-left: 25px;
+    padding-right: 25px;
     margin: auto;
 }
-.side-bar{
-    background: linear-gradient(90deg, #222, #777 50%, #888);
+
+
+/**** Dark ****/
+div#root.dark .side-bar{
+    background-color: #ccc;
+}
+div#root.dark .side-menu svg{
+    filter: invert(1);
+}
+
+
+/**** Light ****/
+div#root.light .side-bar{
+    background-color: #555;
+}
+div#root.light .side-menu svg{
+    filter: invert(0);
 }

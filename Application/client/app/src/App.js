@@ -10,7 +10,8 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
 
-      <div style={{
+      <div
+        style={{
           display:'flex',
           height:'100%'
         }}>

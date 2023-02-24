@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../contexts/useAuth";
-import { Form, Input, Button } from "reactstrap";
+import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 
 import './login.css';
 
 export default function Login() {
-    const { signin } = useAuth();
+    const { signin, signout } = useAuth();
+
+    const ver = useState(true);
+
+    useEffect(() => {
+        signout();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[ver])
 
     const navigate = useNavigate();
 
-    const verifyUser = () => {
+    const login = () => {
         let nickname = document.getElementById('nickname').value;
         let password = document.getElementById('password').value;
 
@@ -19,8 +26,7 @@ export default function Login() {
         .then((res) => {
             for (let i = 0; i < res.data.length; i++) {
                 if (nickname === res.data[i].nickname && password === res.data[i].password) {
-                    console.log("Um");
-                    signin(nickname);
+                    signin(nickname, password, 1);
                     alert('Você está logado!');
                     navigate('/dashboard');
                     return;
@@ -32,6 +38,20 @@ export default function Login() {
             alert('Erro na conexão!');
         });
     };
+    const anonymous = () => {
+        signin("anonymous", "", 2);
+        alert('Você entrou como visitante!');
+        navigate('/anon/dashboard');
+    }
+
+    const [state, setState] = useState(false);
+    useEffect(() => {
+        if (state === false) {
+            document.getElementById('password').type = 'password';
+        } else {
+            document.getElementById('password').type = 'text';
+        }
+    },[state])
 
     return(
         <div className="login">
@@ -47,12 +67,21 @@ export default function Login() {
                     placeholder="Password"
                     type="password">
                 </Input>
+                <FormGroup switch style={{textAlign:'left'}}>
+                    <Input
+                    type="switch"
+                    defaultChecked={false}
+                    onClick={() => {
+                        setState(!state);
+                    }}
+                    />
+                    <Label>Mostrar senha</Label>
+                </FormGroup>
                 <hr />
-                <Button color="primary" onClick={verifyUser}>Entrar</Button>
+                <Button color="primary" onClick={login}>Entrar</Button>
             </Form>
             <br/>
-            <Button color="secondary">Entrar como Anônimo</Button>
-
+            <Button id="anonymous" color="secondary" outline onClick={anonymous}>Entrar como Visitante</Button>
         </div>
     );
 };

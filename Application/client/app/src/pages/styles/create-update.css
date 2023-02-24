@@ -36,3 +36,7 @@
 .form-create-update button{
     margin: 30px 20px;
 }
+.form-create-update .card-body button{
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
