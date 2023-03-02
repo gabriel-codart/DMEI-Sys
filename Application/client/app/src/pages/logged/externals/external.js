@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, Label, Alert, Card } from "reactstrap";
 import { BiEdit } from 'react-icons/bi';
+import { GrDocumentPdf } from 'react-icons/gr';
 
 import '../../styles/read-one.css';
 
@@ -83,6 +84,11 @@ export default function External() {
                             color="primary"
                             onClick={() => {goToUpdate(val.id)}}>
                                 <BiEdit/>
+                        </Button>
+
+                        <Button color="warning"
+                            onClick={() => {navigate('report')}}>
+                            Relatório <GrDocumentPdf/>
                         </Button>
                         <Button color="secondary" onClick={goBack}>Voltar</Button>
                     </Form>

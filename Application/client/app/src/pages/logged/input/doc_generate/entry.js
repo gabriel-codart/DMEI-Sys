@@ -55,9 +55,9 @@ export default function InputGenerateEntry() {
                                 width:'100%',
                                 height:'auto',
                                 background:'white',
-                                padding:'30px',
+                                padding:'30px 80px',
                                 fontFamily:'Times',
-                                fontSize:'10px',
+                                fontSize:'12px',
                                 justifyContent:'center',
                                 textAlign:'center'
                             }}>

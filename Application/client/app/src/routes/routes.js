@@ -21,6 +21,9 @@ import Machines from '../pages/logged/machines/read.js';
 import CreateMachine from '../pages/logged/machines/create.js';
 import UpdateMachine from '../pages/logged/machines/update.js';
 import Machine from '../pages/logged/machines/machine.js';
+import MachineDeactivateDOC from '../pages/logged/machines/deactivate/report.js';
+import MachineDeactivateMenu from '../pages/logged/machines/deactivate/menu.js';
+import MachineDeactivateFinalize from '../pages/logged/machines/deactivate/finalize.js';
 
 import Internals from '../pages/logged/internals/read.js';
 import CreateInternal from '../pages/logged/internals/create.js';
@@ -31,6 +34,7 @@ import Externals from '../pages/logged/externals/read.js';
 import CreateExternal from '../pages/logged/externals/create.js';
 import UpdateExternal from '../pages/logged/externals/update.js';
 import External from '../pages/logged/externals/external.js';
+import ExternalReport from '../pages/logged/externals/doc_generate/report.js';
 
 import Inputs from '../pages/logged/input/read.js';
 import CreateInput from '../pages/logged/input/create.js';
@@ -43,6 +47,7 @@ import InputGenerateEntry from '../pages/logged/input/doc_generate/entry.js';
 import AnonExternals from '../pages/anonymous/externals/read.js';
 import AnonExternal from '../pages/anonymous/externals/external.js';
 import InputGenerateExit from '../pages/logged/input/doc_generate/exit.js';
+
 
 const Private = ({ Logged, Anonymous }) => {
     const { signed } = useAuth();
@@ -87,6 +92,9 @@ export default function UserRoutes() {
             <Route path="/machines/create" element={<Private Logged={CreateMachine}/>}/>
             <Route path="/machines/:id/update" element={<Private Logged={UpdateMachine}/>}/>
             <Route path="/machines/:id" element={<Private Logged={Machine}/>}/>
+            <Route path="/machines/:id/deactivate/" element={<Private Logged={MachineDeactivateMenu}/>}/>
+            <Route path="/machines/:id/deactivate/doc" element={<Private Logged={MachineDeactivateDOC}/>}/>
+            <Route path="/machines/:id/deactivate/finalize" element={<Private Logged={MachineDeactivateFinalize}/>}/>
             <Route path="/machines/records" element={<Private Logged={Records}/>}/>
 
             <Route path="/internals" element={<Private Logged={Internals}/>}/>
@@ -98,6 +106,7 @@ export default function UserRoutes() {
             <Route path="/externals/create" element={<Private Logged={CreateExternal}/>}/>
             <Route path="/externals/:id/update" element={<Private Logged={UpdateExternal}/>}/>
             <Route path="/externals/:id" element={<Private Logged={External}/>}/>
+            <Route path="/externals/:id/report" element={<Private Logged={ExternalReport}/>}/>
 
             <Route path="/inputs" element={<Private Logged={Inputs}/>}/>
             <Route path="/inputs/create" element={<Private Logged={CreateInput}/>}/>

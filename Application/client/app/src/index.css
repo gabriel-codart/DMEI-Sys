@@ -46,6 +46,9 @@ div#root.light button.btn, div#root.light button.btn:hover{
 div#root.light button.btn.btn-warning, div#root.light button.btn.btn-warning:hover{
     color: black;
 }
+div#root.light button.btn.btn-success svg{
+    filter: invert(1);
+}
 div#root.light button.btn path, div#root.light button.btn path:hover{
     filter: grayscale(1);
     color: white;

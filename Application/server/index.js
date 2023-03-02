@@ -1,11 +1,15 @@
 const express = require('express');
+const multer  = require('multer');
 const db = require('./config/db')
 const cors = require('cors')
 
 const app = express();
 const PORT = 3002;
 app.use(cors());
-app.use(express.json())
+app.use(express.json());
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Users Routes
 {
@@ -321,7 +325,7 @@ app.use(express.json())
     app.get("/machines/:id", (req,res)=>{
 
     const id = req.params.id;
-    db.query("SELECT machines.id, machines.num_serial, machines.model, machines.description, machines.id_status_m, status_machine.name as status_name, status_machine.color as status_color, machines.id_entities_m, entities.name AS entities_name, entities.code AS entities_code, machines.id_type_m, type_machine.name AS type_machine_name FROM machines LEFT JOIN entities ON machines.id_entities_m = entities.id LEFT JOIN type_machine ON machines.id_type_m = type_machine.id LEFT JOIN status_machine ON machines.id_status_m = status_machine.id WHERE machines.id = ?", id, 
+    db.query("SELECT machines.*, status_machine.name as status_name, status_machine.color as status_color, entities.name AS entities_name, entities.code AS entities_code, type_machine.name AS type_machine_name FROM machines LEFT JOIN entities ON machines.id_entities_m = entities.id LEFT JOIN type_machine ON machines.id_type_m = type_machine.id LEFT JOIN status_machine ON machines.id_status_m = status_machine.id WHERE machines.id = ?", id, 
         (err,result)=>{
         if(err) {
             //console.log(err);
@@ -399,6 +403,40 @@ app.use(express.json())
     
         db.query("UPDATE machines SET maintenance = ? WHERE id = ?",
             [maintenance, id],
+            (err,result)=>{
+            if(err) {
+                //console.log(err);
+                res.send(err);
+            } else{
+                //console.log(result);
+                res.send(result);
+            }});
+        })
+
+    // Route to Document Deactivate Machine
+    app.patch('/machines/:id/deactivate/doc', upload.single('file'), (req,res)=>{
+        const id = req.params.id;
+
+        const deactivate_doc = req.file.buffer;
+    
+        db.query("UPDATE machines SET deactivate_doc = ? WHERE id = ?",
+            [deactivate_doc, id],
+            (err,result)=>{
+            if(err) {
+                //console.log(err);
+                res.send(err);
+            } else{
+                //console.log(result);
+                res.send(result);
+            }});
+        })
+
+    // Route to Deactivate Machine
+    app.patch('/machines/:id/deactivate', (req,res)=>{
+        const id = req.params.id;
+    
+        db.query("UPDATE machines SET id_status_m = 0, maintenance = 0 WHERE id = ?",
+            [id],
             (err,result)=>{
             if(err) {
                 //console.log(err);
@@ -599,7 +637,7 @@ app.use(express.json())
     app.get("/externals/:id", (req,res)=>{
 
     const id = req.params.id;
-    db.query("SELECT external_scheduling.*, entities.name as entity_name, entities.code as entity_code, machines.num_serial as machine_num, users.realname as user_name FROM external_scheduling LEFT JOIN entities ON entities.id = external_scheduling.id_entity_es LEFT JOIN machines ON machines.id = external_scheduling.id_machine_es LEFT JOIN users ON users.id = external_scheduling.id_user_es WHERE external_scheduling.id = ?", id, 
+    db.query("SELECT external_scheduling.*, entities.name as entity_name, entities.code as entity_code, entities.street_adress as entity_street_adress, entities.number_adress as entity_number_adress, entities.district_adress as entity_district_adress, zone.name as zone_name, machines.num_serial as machine_num, users.realname as user_name FROM external_scheduling LEFT JOIN entities ON entities.id = external_scheduling.id_entity_es LEFT JOIN machines ON machines.id = external_scheduling.id_machine_es LEFT JOIN users ON users.id = external_scheduling.id_user_es LEFT JOIN zone ON zone.id = entities.id_zone_adress WHERE external_scheduling.id = ?", id, 
         (err,result)=>{
         if(err) {
             //console.log(err)

@@ -146,7 +146,7 @@ export default function Input() {
 
                         {val.date_exit ? (
                             <Button color="warning"
-                            onClick={() => {navigate('exit')}}>
+                                onClick={() => {navigate('exit')}}>
                                 Saída <GrDocumentPdf/>
                             </Button>
                         ) : ("")}

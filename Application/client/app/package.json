@@ -9,6 +9,7 @@
     "axios": "^1.2.2",
     "bootstrap": "^5.2.3",
     "generate-pdf-from-react-html": "^1.0.5",
+    "pdf-lib": "^1.17.1",
     "react": "^18.2.0",
     "react-async": "^10.0.1",
     "react-confirm-alert": "^3.0.6",
@@ -21,6 +22,7 @@
     "react-scripts": "^5.0.1",
     "react-select": "^5.7.0",
     "reactstrap": "^9.1.5",
+    "readable-stream": "^4.3.0",
     "recharts": "^2.3.2",
     "web-vitals": "^2.1.4"
   },

@@ -110,13 +110,13 @@ export default function TerminateInput() {
                 service: service,
                 comment: comment,
             })
-            .then(function (r) {
+            .then((r) => {
                 axios.patch(`http://10.10.136.100:3002/machines/${machine}/update/maintenance`, {
                     maintenance: 0,
                 })
                 generatePDF(input.value);
             })
-            .catch(function (e) {
+            .catch((e) => {
                 alert('Erro de Conexão com o Banco!');
             });
         }
