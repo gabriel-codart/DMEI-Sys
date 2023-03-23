@@ -19,7 +19,7 @@ export default function InputGenerateEntry() {
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/inputs/${inputId}`)
+        axios.get(`http://10.10.136.100:3002/api/inputs/${inputId}`)
         .then((res) => {
             setInputData(res.data);
         });
@@ -28,15 +28,15 @@ export default function InputGenerateEntry() {
 
     //Go to update
     const goToUpdate = (id) => {
-        navigate(`/inputs/${id}/update`)
+        navigate(`/dmei-sys/inputs/${id}/update`)
     };
 
     //Go Back to Input
     const goBack = () => {
         if (location.pathname.slice(0,20) === '/inputs/terminateds/') {
-            navigate(`/inputs/terminateds/${id}`);
+            navigate(`/dmei-sys/inputs/terminateds/${id}`);
         } else {
-            navigate(`/inputs/${id}`);
+            navigate(`/dmei-sys/inputs/${id}`);
         }
     };
 
@@ -135,9 +135,7 @@ export default function InputGenerateEntry() {
                         </Button>
                         
                         <Button color="success"
-                            onClick={() =>
-                                pdfFromReact("#DocumentPDF", `OS-${val.id}-ENTRADA`, "p", false, false)
-                            }
+                            onClick={() => pdfFromReact("#DocumentPDF", `OS-${val.id}-ENTRADA`, "p", false, false)}
                         >
                             Gerar PDF <GrDocumentDownload/>
                         </Button>

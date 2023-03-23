@@ -15,7 +15,7 @@ export default function Internal() {
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/internals/${internalId}`)
+        axios.get(`http://10.10.136.100:3002/api/internals/${internalId}`)
         .then((res) => {
             setInternalData(res.data);
         });
@@ -24,12 +24,12 @@ export default function Internal() {
 
     //Go to update
     const goToUpdate = (id) => {
-        navigate(`/internals/${id}/update`)
+        navigate(`/dmei-sys/internals/${id}/update`)
     };
 
     //Back to Entities Menu
     const goBack = () => {
-        navigate('/internals');
+        navigate(`/dmei-sys/internals`);
     }
 
     return(

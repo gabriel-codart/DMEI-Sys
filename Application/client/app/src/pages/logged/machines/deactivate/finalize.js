@@ -13,9 +13,10 @@ export default function MachineDeactivateFinalize() {
 
     const [deactivate_doc, setDeactivate_doc] = useState(null);
     const [docSelected, setDocSelected] = useState(null);
+    const [observation, setObservation ] = useState(null);
 
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/machines/${id}`).then((res) => {
+        axios.get(`http://10.10.136.100:3002/api/machines/${id}`).then((res) => {
             setMachineData(res.data);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -28,30 +29,42 @@ export default function MachineDeactivateFinalize() {
             alert('Erro, o campo Documento está vazio!');
         }
         else{
-            axios.patch(`http://10.10.136.100:3002/machines/${id}/deactivate/doc`, deactivate_doc, {
-                headers: {
-                  'Content-Type': 'multipart/form-data'
-                }
-            })
-            .then((r) => {
-                axios.patch(`http://10.10.136.100:3002/machines/${id}/deactivate`)
+            axios.post("http://10.10.136.100:3002/api/records/create", {
+                id_machine: machineData[0].id,
+                id_entity: machineData[0].id_entities_m,
+                action: "Desativado",
+                deactivate_doc: null,
+                observation: observation,
+            }).then(function (r) {
+                //console.log(r);
+                axios.patch(`http://10.10.136.100:3002/api/machines/${r.data.insertId}/deactivate/doc`, deactivate_doc, {
+                    headers: {
+                    'Content-Type': 'multipart/form-data'
+                    }
+                })
                 .then((r) => {
-                    alert('Desativado com sucesso!');
-                    navigate(`/machines/${id}/`)
+                    //console.log(r);
+                    axios.patch(`http://10.10.136.100:3002/api/machines/${id}/deactivate`)
+                    .then((r) => {
+                        alert('Desativado com sucesso!');
+                        navigate(`/dmei-sys/machines/${id}/`)
+                    })
+                    .catch((e) => {
+                        alert('Erro de Conexão com o Banco!');
+                    });
                 })
                 .catch((e) => {
                     alert('Erro de Conexão com o Banco!');
                 });
+            }).catch(function (e) {
+                //console.log(e);
             })
-            .catch((e) => {
-                alert('Erro de Conexão com o Banco!');
-            });
         };
     };
 
     //Cancel Deactivate
     const cancelDeactivate = () => {
-        navigate(`/machines/${id}/deactivate`);
+        navigate(`/dmei-sys/machines/${id}/deactivate`);
     }
 
     return(
@@ -91,7 +104,23 @@ export default function MachineDeactivateFinalize() {
                                 <hr/>
 
                                 {docSelected ? (
+                                    <>
                                     <p>Desativação Liberada!</p>
+                                    <Label>Observação:</Label>
+                                    <Input
+                                        defaultValue={val.observation}
+                                        value={observation}
+                                        placeholder="Observação"
+                                        type='textarea'
+                                        onChange={(event) =>{
+                                            if (!event.target.value === true) {
+                                                setObservation(null);
+                                            } else {
+                                                setObservation(event.target.value);
+                                            }
+                                        }}
+                                    />
+                                    </>
                                 ) : (
                                     <p>Carregue o Laudo de Desativação para liberar a Desativação da Máquina</p>
                                 )}

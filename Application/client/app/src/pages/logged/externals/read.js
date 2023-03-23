@@ -24,13 +24,13 @@ export default function Externals() {
     useEffect(() => {
         //console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
 
-        axios.get(`http://10.10.136.100:3002/externals/page=${(page-1)}/perPage=${perPage}`,)
+        axios.get(`http://10.10.136.100:3002/api/externals/page=${(page-1)}/perPage=${perPage}`,)
         .then((res) => {
             console.log(res.data);
             setExternalsList(res.data);
         });
 
-        axios.get('http://10.10.136.100:3002/externals/')
+        axios.get('http://10.10.136.100:3002/api/externals/')
         .then((res) => {
             setTotalRows(res.data.length);
         })
@@ -40,12 +40,12 @@ export default function Externals() {
 
     //Open External
     const openExternal = (id) => {
-        navigate(`/externals/${id}`);
+        navigate(`/dmei-sys/externals/${id}`);
     }
 
     //Add user
     const goToAdd = () => {
-        navigate('/externals/create');
+        navigate(`/dmei-sys/externals/create`);
     }
 
     //Config Table and Search

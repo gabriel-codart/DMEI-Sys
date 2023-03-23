@@ -20,8 +20,9 @@ export default function UpdateMachine() {
     const [description, setDescription ] = useState(null);
     const [type, setType ] = useState({value:null, label:"Tipo..."});
     const [status, setStatus ] = useState({value:null, label:"Status..."});
+    const [observation, setObservation ] = useState(null);
 
-    const statusList = [{value: 0, label: 'INATIVO'},
+    const statusList = [{value: 0, label: 'INATIVO', isDisabled: true},
                         {value: 1, label: 'ATIVO'},
                         {value: 2, label: 'AGUARDANDO'}];
     const [typesList, setTypesList] = useState([]);
@@ -30,7 +31,7 @@ export default function UpdateMachine() {
     const [numSerialList, setNumSerialList] = useState([]);
 
     useEffect(() => {
-        axios.get('http://10.10.136.100:3002/machines-types').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/machines-types').then((res) => {
             setTypesList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -38,14 +39,14 @@ export default function UpdateMachine() {
                 }
             }));
         });
-        axios.get('http://10.10.136.100:3002/machines').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/machines').then((res) => {
             setNumSerialList(res.data?.map((obj) => {
                 return {
                     serial: obj.num_serial,
                 }
             }));
         });
-        axios.get('http://10.10.136.100:3002/entities').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/entities').then((res) => {
             setEntitiesNameList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -63,7 +64,7 @@ export default function UpdateMachine() {
                 }
             }));
         });
-        axios.get(`http://10.10.136.100:3002/machines/${machineId}`).then((res) => {
+        axios.get(`http://10.10.136.100:3002/api/machines/${machineId}`).then((res) => {
             setMachineData(res.data);
 
             setNum_serial(res.data[0].num_serial);
@@ -89,7 +90,7 @@ export default function UpdateMachine() {
             alert('Erro, o campo Descrição está vazio!');
         }
         else{
-            axios.patch(`http://10.10.136.100:3002/machines/${id}/update`, {
+            axios.patch(`http://10.10.136.100:3002/api/machines/${id}/update`, {
                 num_serial: num_serial,
                 model: model,
                 description: description,
@@ -102,14 +103,24 @@ export default function UpdateMachine() {
                     alert('Erro, Número de Série já cadastrado!');
                 } else {
                     alert('Atulizado!');
-                    navigate('/machines');
+                    navigate(`/dmei-sys/machines`);
 
-                    //Registra no Historico
-                    if (entity.value !== machineData[0].id_entities_m){
-                        axios.post("http://10.10.136.100:3002/records/create", {
+                    //Registra mudança de Entidade
+                    if (entity.value !== machineData[0].id_entities_m || status.value !== machineData[0].id_status_m){
+                        let action = "";
+                        if (status.value !== machineData[0].id_status_m && status.value === 1) {
+                            action = "Reativado";
+                        } else if (status.value !== machineData[0].id_status_m && status.value === 2) {
+                            action = "Aguardando";
+                        } else {
+                            action = "Atualizado";
+                        };
+                        axios.post("http://10.10.136.100:3002/api/records/create", {
                             id_machine: machineId,
                             id_entity: entity.value,
-                            action: 'Atualizado',
+                            action: action,
+                            deactivate_doc: null,
+                            observation: observation,
                         }).then(function (r) {
                             //console.log(r);
                         }).catch(function (e) {
@@ -132,17 +143,23 @@ export default function UpdateMachine() {
 
         let state = 1;
         while (state === 1) {
+            //Letters
             for (let counter = 0; counter < 3; counter++) {
                 result += letters.charAt(Math.floor(Math.random() * letters.length));
             }
+            //Add A Separation
+            result += '-';
+            //Numbers
             for (let counter = 0; counter < 7; counter++) {
                 result += numbers.charAt(Math.floor(Math.random() * numbers.length));
             }
+            //Check If There's A Duplicated Serial Num
             for (let counter = 0; counter < numSerialList.length; counter++) {
                 if (numSerialList[counter].serial !== result) {
                     state = 0;
                 } else {
                     state = 1;
+                    result = '';
                     break;
                 }
             }
@@ -152,7 +169,7 @@ export default function UpdateMachine() {
 
     //Cancel update
     const cancelUpdate = () => {
-        navigate('/machines');
+        navigate(`/dmei-sys/machines`);
     }
 
     return(
@@ -251,6 +268,25 @@ export default function UpdateMachine() {
                             defaultValue={statusList[status.value]}
                             onChange={setStatus}
                         />
+
+                        {status.value === 2 ? (
+                        <>
+                        <Label>Observação:</Label>
+                        <Input
+                            defaultValue={val.observation}
+                            value={observation}
+                            placeholder="Observação"
+                            type='textarea'
+                            onChange={(event) =>{
+                                if (!event.target.value === true) {
+                                    setObservation(null);
+                                } else {
+                                    setObservation(event.target.value);
+                                }
+                            }}
+                        />
+                        </>
+                        ) : ("")}
 
                         <hr/>
                         

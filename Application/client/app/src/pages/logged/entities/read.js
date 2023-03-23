@@ -24,12 +24,12 @@ export default function Entities() {
 
     //Getting users
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/entities/page=${(page-1)}/perPage=${perPage}`,)
+        axios.get(`http://10.10.136.100:3002/api/entities/page=${(page-1)}/perPage=${perPage}`,)
         .then((res) => {
             setEntitiesList(res.data);
         });
 
-        axios.get('http://10.10.136.100:3002/entities/')
+        axios.get('http://10.10.136.100:3002/api/entities/')
         .then((res) => {
             setTotalRows(res.data.length);
         })
@@ -56,7 +56,7 @@ export default function Entities() {
         });
     };
     const deleteEntity = (id) => {
-        axios.delete(`http://10.10.136.100:3002/entities/${id}/delete`)
+        axios.delete(`http://10.10.136.100:3002/api/entities/${id}/delete`)
         .then((res) => {
             alert('Entidade removida!');
         });
@@ -64,12 +64,12 @@ export default function Entities() {
 
     //Open Entity
     const goToEntity = (id) => {
-        navigate(`/entities/${id}`);
+        navigate(`/dmei-sys/entities/${id}`);
     }
 
     //Add user
     const goToAdd = () => {
-        navigate('/entities/create');
+        navigate(`/dmei-sys/entities/create`);
     }
 
     //Config Table and Search
@@ -83,6 +83,7 @@ export default function Entities() {
         {
             name: 'Nome',
             selector: row => row.name,
+            width: '300px',
             sortable: true,
             center: 'yes'
         },

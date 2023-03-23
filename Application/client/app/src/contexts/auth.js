@@ -6,9 +6,9 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     //Login
-    const signin = (nickname, password, type) => {
-        setUser({nickname, password, type});
-        localStorage.setItem("user", JSON.stringify({nickname: nickname, password: password, type: type}));
+    const signin = (id, nickname, password, type) => {
+        setUser({id, nickname, password, type});
+        localStorage.setItem("user", JSON.stringify({id: id, nickname: nickname, password: password, type: type}));
         return;
     }
 

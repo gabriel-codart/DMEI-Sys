@@ -1,9 +1,11 @@
 import { React, useEffect, useState } from "react";
 import axios from 'axios';
 import DataTable from 'react-data-table-component';
+import { PDFDocument } from 'pdf-lib';
 
-import { Button, Form, Input } from "reactstrap";
+import { Button, Form, Input, UncontrolledPopover, PopoverHeader, PopoverBody } from "reactstrap";
 import { MdClear } from "react-icons/md";
+import { GrDocumentPdf, GrTextAlignCenter } from 'react-icons/gr';
 
 import '../../styles/read.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -17,23 +19,38 @@ export default function Records() {
     const [recordsList, setRecordsList] = useState([]);
     const [filterText, setFilterText] = useState("");
 
-
     //Getting records
     useEffect(() => {
         console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
 
-        axios.get(`http://10.10.136.100:3002/records/page=${(page-1)}/perPage=${perPage}`,)
+        axios.get(`http://10.10.136.100:3002/api/records/page=${(page-1)}/perPage=${perPage}`,)
         .then((res) => {
             console.log(res)
             setRecordsList(res.data);
         });
 
-        axios.get('http://10.10.136.100:3002/records/')
+        axios.get('http://10.10.136.100:3002/api/records/')
         .then((res) => {
             setTotalRows(res.data.length);
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterText, page, perPage]);
+
+    //Download Deactivate Document
+    async function downloadDeadDoc(buffer, id) {
+        const pdfDoc = await PDFDocument.load(new Uint8Array(buffer.data));
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `M-${id}-LAUDO(Assinado).pdf`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    };
 
     //Config Table and Search
     const columns = [
@@ -45,8 +62,8 @@ export default function Records() {
             center: 'yes'
         },
         {
-            name: 'Máquina',
-            selector: row => row.machine,
+            name: 'Máquina N/S',
+            selector: row => row.machine_serial,
             center: 'yes'
         },
         {
@@ -68,7 +85,40 @@ export default function Records() {
         {
             name: 'Ação',
             selector: row => row.action,
-            width: '160px',
+            width: '140px',
+            center: 'yes'
+        },
+        {
+            name: 'Documento',
+            selector: row => row.action === "Desativado" ?
+                            (<Button
+                                title="Laudo Assinado"
+                                color="warning"
+                                style={{fontFamily:'FontAll'}}
+                                onClick={() => {downloadDeadDoc(row.deactivate_doc, row.machine_id)}}
+                            >
+                                <GrDocumentPdf/>
+                            </Button>) : ("- - - -"),
+            width: '100px',
+            center: 'yes'
+        },
+        {
+            name: 'Obs',
+            selector: row => row.action === "Desativado" || row.action === "Aguardando" ?
+                            (<>
+                            <Button id={`Popover${row.id}`} type="button" title="Observação">
+                                <GrTextAlignCenter/>
+                            </Button>
+                            <br></br>
+                            <UncontrolledPopover
+                                placement="left"
+                                target={`Popover${row.id}`}
+                                trigger="click">
+                                <PopoverHeader>Observação</PopoverHeader>
+                                <PopoverBody>{row.observation}</PopoverBody>
+                            </UncontrolledPopover>
+                            </>) : ("- - - -"),
+            width: '100px',
             center: 'yes'
         },
     ];
@@ -79,10 +129,13 @@ export default function Records() {
     .map((record) => {
       return {
         id: record.id,
-        machine: record.machine,
+        machine_id: record.machine_id,
+        machine_serial: record.machine_serial,
         entity: record.entity,
         date: record.date,
         action: record.action,
+        deactivate_doc: record.deactivate_doc,
+        observation: record.observation
       };
     });
 

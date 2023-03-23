@@ -26,7 +26,7 @@ export default function UpdateExternal() {
     const [usersList, setUsersList] = useState([]);
 
     useEffect(() => {
-        axios.get('http://10.10.136.100:3002/entities').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/entities').then((res) => {
             setEntitiesNameList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -44,7 +44,7 @@ export default function UpdateExternal() {
                 }
             }));
         });
-        axios.get('http://10.10.136.100:3002/users').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/users').then((res) => {
             setUsersList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -52,7 +52,7 @@ export default function UpdateExternal() {
                 }
             }));
         });
-        axios.get(`http://10.10.136.100:3002/externals/${externalId}`).then((res) => {
+        axios.get(`http://10.10.136.100:3002/api/externals/${externalId}`).then((res) => {
             setExternalData(res.data);
 
             setEntity({value: res.data[0].id_entity_es, name: res.data[0].entity_name, code: res.data[0].entity_code});
@@ -66,7 +66,7 @@ export default function UpdateExternal() {
     },[id, externalId])
 
     useEffect(() => {        
-        axios.get(`http://10.10.136.100:3002/machines/entity/${entity.value}`).then((res) => {
+        axios.get(`http://10.10.136.100:3002/api/machines/entity/${entity.value}`).then((res) => {
             setMachinesList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -92,7 +92,7 @@ export default function UpdateExternal() {
             alert('Erro, o campo Data de Agendamento está vazio!');
         }
         else{
-            axios.patch(`http://10.10.136.100:3002/externals/${id}/update`, {
+            axios.patch(`http://10.10.136.100:3002/api/externals/${id}/update`, {
                 entity: entity.value,
                 machine: machine.value,
                 user: user.value,
@@ -102,7 +102,7 @@ export default function UpdateExternal() {
             })
             .then(function (r) {
                 alert('Atulizado!');
-                navigate('/externals');
+                navigate(`/dmei-sys/externals`);
             })
             .catch(function (e) {
                 alert('Erro de Conexão com o Banco!');
@@ -112,7 +112,7 @@ export default function UpdateExternal() {
 
     //Cancel update
     const cancelUpdate = () => {
-        navigate('/externals');
+        navigate(`/dmei-sys/externals`);
     }
 
     return(

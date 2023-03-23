@@ -24,7 +24,7 @@ export default function CreateExternal() {
     const [machinesList, setMachinesList] = useState([]);
     const [usersList, setUsersList] = useState([]);
     useEffect(() => {
-        axios.get('http://10.10.136.100:3002/entities').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/entities').then((res) => {
             setEntitiesNameList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -42,7 +42,7 @@ export default function CreateExternal() {
                 }
             }));
         });
-        axios.get('http://10.10.136.100:3002/users').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/users').then((res) => {
             setUsersList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -53,7 +53,7 @@ export default function CreateExternal() {
     },[ver])
     useEffect(() => {
         if (entity !== '') {
-        axios.get(`http://10.10.136.100:3002/machines/entity/${entity.value}`).then((res) => {
+        axios.get(`http://10.10.136.100:3002/api/machines/entity/${entity.value}`).then((res) => {
             setMachinesList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -71,7 +71,7 @@ export default function CreateExternal() {
 
     //Confirm ADD
     const addExternal = () => {
-        axios.post("http://10.10.136.100:3002/externals/create", {
+        axios.post("http://10.10.136.100:3002/api/externals/create", {
             machine: machine.value,
             entity: entity.value,
             user: user.value,
@@ -105,7 +105,7 @@ export default function CreateExternal() {
             //Alert if the Post was Successful
             else {
                 alert('Adicionado!');
-                navigate('/externals');
+                navigate(`/dmei-sys/externals`);
             }
         })
         .catch(function (e) {
@@ -114,7 +114,7 @@ export default function CreateExternal() {
     };
 
     const cancelAdd = () => {
-        navigate('/externals');
+        navigate(`/dmei-sys/externals`);
     };
 
     return(

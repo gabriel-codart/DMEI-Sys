@@ -20,16 +20,16 @@ export default function CreateMachine() {
     const [type, setType ] = useState({value:null, label:"Tipo..."});
     const [status, setStatus ] = useState({value:null, label:"Status..."});
 
-    const statusList = [{value: 0, label: 'INATIVO'},
+    const statusList = [{value: 0, label: 'INATIVO', isDisabled: true},
                         {value: 1, label: 'ATIVO'},
-                        {value: 2, label: 'AGUARDANDO'}];
+                        {value: 2, label: 'AGUARDANDO', isDisabled: true}];
     const [typesList, setTypesList] = useState([]);
     const [entitiesNameList, setEntitiesNameList] = useState([]);
     const [entitiesCodeList, setEntitiesCodeList] = useState([]);
     const [numSerialList, setNumSerialList] = useState([]);
 
     useEffect(() => {
-        axios.get('http://10.10.136.100:3002/machines-types').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/machines-types').then((res) => {
             setTypesList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -37,14 +37,18 @@ export default function CreateMachine() {
                 }
             }));
         });
-        axios.get('http://10.10.136.100:3002/machines').then((res) => {
-            setNumSerialList(res.data?.map((obj) => {
-                return {
-                    serial: obj.num_serial,
-                }
-            }));
+        axios.get('http://10.10.136.100:3002/api/machines').then((res) => {
+            if (res.data.length !== 0) {
+                setNumSerialList(res.data?.map((obj) => {
+                    return {
+                        serial: obj.num_serial,
+                    }
+                }));
+            } else {
+                setNumSerialList([]);
+            }
         });
-        axios.get('http://10.10.136.100:3002/entities').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/entities').then((res) => {
             setEntitiesNameList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -66,7 +70,7 @@ export default function CreateMachine() {
 
     //Confirm ADD
     const addMachine = () => {
-        axios.post("http://10.10.136.100:3002/machines/create", {
+        axios.post("http://10.10.136.100:3002/api/machines/create", {
             num_serial: num_serial,
             model: model,
             description: description,
@@ -108,8 +112,8 @@ export default function CreateMachine() {
             }
             else {
                 alert('Adicionado!');
-                navigate('/machines');
-                axios.post("http://10.10.136.100:3002/records/create", {
+                navigate(`/dmei-sys/machines`);
+                axios.post("http://10.10.136.100:3002/api/records/create", {
                     id_machine: r.data.insertId,
                     id_entity: entity.value,
                     action: 'Adicionado',
@@ -133,19 +137,29 @@ export default function CreateMachine() {
 
         let state = 1;
         while (state === 1) {
+            //Letters
             for (let counter = 0; counter < 3; counter++) {
                 result += letters.charAt(Math.floor(Math.random() * letters.length));
             }
+            //Add A Separation
+            result += '-';
+            //Numbers
             for (let counter = 0; counter < 7; counter++) {
                 result += numbers.charAt(Math.floor(Math.random() * numbers.length));
             }
-            for (let counter = 0; counter < numSerialList.length; counter++) {
-                if (numSerialList[counter].serial !== result) {
-                    state = 0;
-                } else {
-                    state = 1;
-                    break;
+            //Check If There's A Duplicated Serial Num
+            if (numSerialList.length !== 0) {
+                for (let counter = 0; counter < numSerialList.length; counter++) {
+                    if (numSerialList[counter].serial !== result) {
+                        state = 0;
+                    } else {
+                        state = 1;
+                        result = '';
+                        break;
+                    }
                 }
+            } else {
+                state = 0;
             }
         }
         setNum_serial(result);
@@ -153,7 +167,7 @@ export default function CreateMachine() {
 
     //Cancel
     const cancelAdd = () => {
-        navigate('/machines');
+        navigate(`/dmei-sys/machines`);
     };
 
     return(

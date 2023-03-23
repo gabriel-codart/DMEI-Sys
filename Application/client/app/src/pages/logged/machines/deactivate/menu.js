@@ -16,7 +16,7 @@ export default function MachineDeactivateMenu() {
 
     //Get the Machine data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/machines/${id}`)
+        axios.get(`http://10.10.136.100:3002/api/machines/${id}`)
         .then((res) => {
             setMachineData(res.data);
         });
@@ -25,12 +25,12 @@ export default function MachineDeactivateMenu() {
 
     //Go to update
     const goToUpdate = (id) => {
-        navigate(`/machines/${id}/update`)
+        navigate(`/dmei-sys/machines/${id}/update`)
     };
 
     //Go Back to Machine
     const goBack = () => {
-        navigate(`/machines/${id}`);
+        navigate(`/dmei-sys/machines/${id}`);
     };
 
     return(

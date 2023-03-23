@@ -28,7 +28,7 @@ export default function HistoryGraph() {
   ]
   //Getting Historic
   useEffect(() => {
-    axios.get(`http://10.10.136.100:3002/historic-years`)
+    axios.get(`http://10.10.136.100:3002/api/historic-years`)
     .then((res) => {
       setYearsList(res.data?.map((obj) => {
         return {
@@ -46,7 +46,7 @@ export default function HistoryGraph() {
 
   //Getting Historic
   useEffect(() => {
-    axios.get(`http://10.10.136.100:3002/historic/${year.value}`)
+    axios.get(`http://10.10.136.100:3002/api/historic/${year.value}`)
     .then((res) => {
       setHistoric(res.data?.map((obj) => {
         return {

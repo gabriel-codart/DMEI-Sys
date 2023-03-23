@@ -35,7 +35,7 @@ export default function CreateInput() {
     const [machinesList, setMachinesList] = useState([]);
     const [usersList, setUsersList] = useState([]);
     useEffect(() => {
-        axios.get('http://10.10.136.100:3002/entities').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/entities').then((res) => {
             setEntitiesNameList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -53,7 +53,7 @@ export default function CreateInput() {
                 }
             }));
         });
-        axios.get('http://10.10.136.100:3002/users').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/users').then((res) => {
             setUsersList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -64,7 +64,7 @@ export default function CreateInput() {
     },[ver])
     useEffect(() => {
         if (entity !== '') {
-        axios.get(`http://10.10.136.100:3002/machines/entity/${entity.value}`).then((res) => {
+        axios.get(`http://10.10.136.100:3002/api/machines/entity/${entity.value}`).then((res) => {
             setMachinesList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -77,7 +77,7 @@ export default function CreateInput() {
 
     //On Change Entity
     const onChangeEntity = () => {
-        axios.patch(`http://10.10.136.100:3002/machines/${machine.value}/update/maintenance`, {
+        axios.patch(`http://10.10.136.100:3002/api/machines/${machine.value}/update/maintenance`, {
             maintenance: 0,
         })
         .then((res) => {
@@ -94,13 +94,13 @@ export default function CreateInput() {
                 {
                 label: 'Sim',
                 onClick: () => {
-                    navigate(`/inputs/${insertId}/entry`);
+                    navigate(`/dmei-sys/inputs/${insertId}/entry`);
                     }
                 },
                 {
                 label: 'Não',
                 onClick: () => {
-                    navigate('/inputs');
+                    navigate(`/dmei-sys/inputs`);
                     }
                 },
             ]
@@ -110,7 +110,7 @@ export default function CreateInput() {
     //Confirm ADD
     const addInput = () => {
         //Do the Post Create
-        axios.post("http://10.10.136.100:3002/inputs/create", {
+        axios.post("http://10.10.136.100:3002/api/inputs/create", {
             machine: machine.value,
             entity: entity.value,
             responsable: responsable,
@@ -149,7 +149,7 @@ export default function CreateInput() {
             }
             //Alert if the Post was Successful
             else {
-                axios.patch(`http://10.10.136.100:3002/machines/${machine.value}/update/maintenance`, {
+                axios.patch(`http://10.10.136.100:3002/api/machines/${machine.value}/update/maintenance`, {
                     maintenance: 1,
                 })
                 generatePDF(r.data.insertId);
@@ -162,7 +162,7 @@ export default function CreateInput() {
     };
 
     const cancelAdd = () => {
-        navigate('/inputs');
+        navigate(`/dmei-sys/inputs`);
     };
 
     return(

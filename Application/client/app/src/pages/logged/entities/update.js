@@ -29,7 +29,7 @@ export default function UpdateEntity() {
 
     //Get the user data
     useEffect(() => {
-        axios.get('http://10.10.136.100:3002/zones/all').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/zones/all').then((res) => {
             setZonesList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -37,7 +37,7 @@ export default function UpdateEntity() {
                 }
             }));
         });
-        axios.get(`http://10.10.136.100:3002/entities/${entityId}`)
+        axios.get(`http://10.10.136.100:3002/api/entities/${entityId}`)
         .then((res) => {
             setEntityData(res.data);
 
@@ -88,7 +88,7 @@ export default function UpdateEntity() {
             alert('Erro, o campo Zona está vazio!');
         }
         else{
-            axios.patch(`http://10.10.136.100:3002/entities/${id}/update`,{
+            axios.patch(`http://10.10.136.100:3002/api/entities/${id}/update`,{
                 code: code,
                 name: name,
                 phone: phone,
@@ -107,7 +107,7 @@ export default function UpdateEntity() {
                 } else {
                     console.log(r)
                     alert('Atulizado!');
-                    navigate('/entities');
+                    navigate(`/dmei-sys/entities`);
                 }
             })
             .catch(function (e) {
@@ -127,7 +127,7 @@ export default function UpdateEntity() {
 
     //Cancel update
     const cancelUpdate = () => {
-        navigate('/entities');
+        navigate(`/dmei-sys/entities`);
     }
 
     return(

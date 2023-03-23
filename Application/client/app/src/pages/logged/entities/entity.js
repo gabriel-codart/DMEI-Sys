@@ -17,7 +17,7 @@ export default function Entity() {
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/entities/${entityId}`)
+        axios.get(`http://10.10.136.100:3002/api/entities/${entityId}`)
         .then((res) => {
             setEntityData(res.data);
         });
@@ -25,7 +25,7 @@ export default function Entity() {
 
     //Go to update
     const goToUpdate = (id) => {
-        navigate(`/entities/${id}/update`)
+        navigate(`/dmei-sys/entities/${id}/update`)
     };
 
     //Delete Entity
@@ -38,7 +38,7 @@ export default function Entity() {
                 label: 'Sim',
                 onClick: () => {
                         deleteEntity(id);
-                        navigate('/entities');
+                        navigate(`/dmei-sys/entities`);
                     }
                 },
                 {
@@ -48,7 +48,7 @@ export default function Entity() {
         });
     };
     const deleteEntity = (id) => {
-        axios.delete(`http://10.10.136.100:3002/entities/${id}/delete`)
+        axios.delete(`http://10.10.136.100:3002/api/entities/${id}/delete`)
         .then((res) => {
             alert('Entidade deletada!');
         });
@@ -56,7 +56,7 @@ export default function Entity() {
 
     //Back to Entities Menu
     const goBack = () => {
-        navigate('/entities');
+        navigate(`/dmei-sys/entities`);
     }
 
     return(

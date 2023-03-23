@@ -24,12 +24,12 @@ export default function Internals() {
     useEffect(() => {
         //console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
 
-        axios.get(`http://10.10.136.100:3002/internals/page=${(page-1)}/perPage=${perPage}`,)
+        axios.get(`http://10.10.136.100:3002/api/internals/page=${(page-1)}/perPage=${perPage}`,)
         .then((res) => {
             setInternalsList(res.data);
         });
 
-        axios.get('http://10.10.136.100:3002/internals/')
+        axios.get('http://10.10.136.100:3002/api/internals/')
         .then((res) => {
             setTotalRows(res.data.length);
         })
@@ -39,12 +39,12 @@ export default function Internals() {
 
     //Open Internal
     const openInternal = (id) => {
-        navigate(`/internals/${id}`);
+        navigate(`/dmei-sys/internals/${id}`);
     }
 
     //Add user
     const goToAdd = () => {
-        navigate('/internals/create');
+        navigate(`/dmei-sys/internals/create`);
     }
 
     //Config Table and Search

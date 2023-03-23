@@ -17,27 +17,37 @@ export default function Machine() {
     const [machineId] = useState(id);
     const [machineData, setMachineData] = useState([]);
 
+    const [deactivate_doc, setDeactivate_doc] = useState(null);
+
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/machines/${machineId}`)
+        axios.get(`http://10.10.136.100:3002/api/machines/${machineId}`)
         .then((res) => {
             //console.log(res);
             setMachineData(res.data);
+            if (res.data[0].id_status_m === 0){
+                axios.get(`http://10.10.136.100:3002/api/records/machines/${machineId}/deactivate/doc`)
+                .then((res) => {
+                    //console.log(res);
+                    setDeactivate_doc(res.data[0].deactivate_doc);
+                });
+            }
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
     //Go to update
     const goToUpdate = (id) => {
-        navigate(`/machines/${id}/update`)
+        navigate(`/dmei-sys/machines/${id}/update`)
     };
 
     //Go to update
     const goToDeactivate = (id) => {
-        navigate(`/machines/${id}/deactivate/`)
+        navigate(`/dmei-sys/machines/${id}/deactivate/`)
     };
 
     async function downloadDeadDoc(buffer) {
+        console.log(buffer);
         const pdfDoc = await PDFDocument.load(new Uint8Array(buffer.data));
         const pdfBytes = await pdfDoc.save();
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
@@ -54,7 +64,7 @@ export default function Machine() {
 
     //Back to Entities Menu
     const goBack = () => {
-        navigate('/machines');
+        navigate(`/dmei-sys/machines`);
     };
 
     return(
@@ -107,7 +117,7 @@ export default function Machine() {
                                         title="Laudo Assinado"
                                         color="warning"
                                         style={{fontFamily:'FontAll'}}
-                                        onClick={() => {downloadDeadDoc(val.deactivate_doc)}}
+                                        onClick={() => {downloadDeadDoc(deactivate_doc)}}
                                     >
                                         DOWNLOAD <GrDocumentPdf/>
                                     </Button>

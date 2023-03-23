@@ -35,7 +35,7 @@ export default function UpdateInput() {
     const [usersList, setUsersList] = useState([]);
 
     useEffect(() => {
-        axios.get('http://10.10.136.100:3002/entities').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/entities').then((res) => {
             setEntitiesNameList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -53,7 +53,7 @@ export default function UpdateInput() {
                 }
             }));
         });
-        axios.get('http://10.10.136.100:3002/users').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/users').then((res) => {
             setUsersList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -61,7 +61,7 @@ export default function UpdateInput() {
                 }
             }));
         });
-        axios.get(`http://10.10.136.100:3002/inputs/${inputId}`).then((res) => {
+        axios.get(`http://10.10.136.100:3002/api/inputs/${inputId}`).then((res) => {
             setInputData(res.data);
 
             setEntity({value: res.data[0].id_entity_ie, name: res.data[0].entity_name, code:res.data[0].entity_code});
@@ -78,7 +78,7 @@ export default function UpdateInput() {
     },[id, inputId])
 
     useEffect(() => {        
-        axios.get(`http://10.10.136.100:3002/machines/entity/${entity.value}`)
+        axios.get(`http://10.10.136.100:3002/api/machines/entity/${entity.value}`)
         .then((res) => {
             setMachinesList(res.data?.map((obj) => {
                 return {
@@ -92,7 +92,7 @@ export default function UpdateInput() {
 
     //On Change Entity
     const onChangeEntity = () => {
-        axios.patch(`http://10.10.136.100:3002/machines/${machine.value}/update/maintenance`, {
+        axios.patch(`http://10.10.136.100:3002/api/machines/${machine.value}/update/maintenance`, {
             maintenance: 0,
         })
         .then((res) => {
@@ -113,7 +113,7 @@ export default function UpdateInput() {
             alert('Erro, o campo Data de Entrada está vazio!');
         }
         else{
-            axios.patch(`http://10.10.136.100:3002/inputs/${id}/update`, {
+            axios.patch(`http://10.10.136.100:3002/api/inputs/${id}/update`, {
                 entity: entity.value,
                 machine: machine.value,
                 responsable: responsable,
@@ -127,11 +127,11 @@ export default function UpdateInput() {
             .then(function (r) {
                 console.log(r)
                 //Alert if the Post was Successful
-                axios.patch(`http://10.10.136.100:3002/machines/${machine.value}/update/maintenance`, {
+                axios.patch(`http://10.10.136.100:3002/api/machines/${machine.value}/update/maintenance`, {
                     maintenance: 1,
                 })
                 alert('Atulizado!');
-                navigate('/inputs');
+                navigate(`/dmei-sys/inputs`);
             })
             .catch(function (e) {
                 alert('Erro de Conexão com o Banco!');
@@ -142,9 +142,9 @@ export default function UpdateInput() {
     //Cancel Update and Go Back to Input
     const cancelUpdate = () => {
         if (location.pathname.slice(0,20) === '/inputs/terminateds/') {
-            navigate(`/inputs/terminateds/${id}`);
+            navigate(`/dmei-sys/inputs/terminateds/${id}`);
         } else {
-            navigate(`/inputs/${id}`);
+            navigate(`/dmei-sys/inputs/${id}`);
         }
     };
 

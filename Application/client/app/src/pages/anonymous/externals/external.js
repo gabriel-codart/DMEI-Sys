@@ -14,7 +14,7 @@ export default function AnonExternal() {
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/externals/${externalId}`)
+        axios.get(`http://10.10.136.100:3002/api/externals/${externalId}`)
         .then((res) => {
             console.log(res);
             setExternalData(res.data);
@@ -24,7 +24,7 @@ export default function AnonExternal() {
 
     //Back to Entities Menu
     const goBack = () => {
-        navigate('/anon/externals');
+        navigate(`/dmei-sys/anon/externals`);
     }
 
     return(

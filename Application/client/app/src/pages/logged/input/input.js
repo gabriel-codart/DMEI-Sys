@@ -4,6 +4,10 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Button, Form, Label, Card, Alert } from "reactstrap";
 import { BiEdit } from 'react-icons/bi';
 import { GrDocumentPdf } from 'react-icons/gr';
+import { AiOutlineQrcode } from 'react-icons/ai';
+
+import { jsPDF } from "jspdf";
+import QRCode from "react-qr-code";
 
 import '../../styles/read-one.css';
 
@@ -17,7 +21,7 @@ export default function Input() {
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/inputs/${inputId}`)
+        axios.get(`http://10.10.136.100:3002/api/inputs/${inputId}`)
         .then((res) => {
             setInputData(res.data);
         });
@@ -27,13 +31,34 @@ export default function Input() {
     //Back to Inputs Menu
     const goBack = () => {
         if (location.pathname.slice(0,20) === '/inputs/terminateds/') {
-            navigate('/inputs/terminateds');
+            navigate(`/dmei-sys/inputs/terminateds`);
         } else {
-            navigate('/inputs');
+            navigate(`/dmei-sys/inputs`);
         }
     }
 
-    //Generate PDF
+    //Export QrCode to PDF
+    const handleExportPDF = () => {
+        const svg = document.getElementById("QrCode");
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const canvas = document.createElement('canvas');
+        const svgSize = svg.getBoundingClientRect();
+        canvas.width = svgSize.width;
+        canvas.height = svgSize.height;
+        const context = canvas.getContext('2d');
+        const img = new Image();
+        img.onload = () => {
+          context.drawImage(img, 0, 0);
+          const pdf = new jsPDF({
+            orientation: 'l',
+            unit: 'px',
+            format: [500, 500],
+          });
+          pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 150, 150, 200, 200);
+          pdf.save('qr-code.pdf');
+        };
+        img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+    };
 
     return(
         <div className="read-one">
@@ -131,6 +156,23 @@ export default function Input() {
                             <Alert color="secondary">{val.comment}</Alert>
                         </Label>
 
+                        <hr/>
+                            <div id="QrCode-Card" style={{padding: "30px", borderRadius: "10px"}}>
+                                <QRCode
+                                id="QrCode"
+                                size={200}
+                                style={{
+                                    width: "auto",
+                                    height: "auto",
+                                }}
+                                    value={`Escola: ${val.entity_name}\nCod.: ${val.entity_code}\n\nMáquina: ${val.machine_model}\nN/S: ${val.machine_num}\n\nProblema: ${val.problem}\nSolução: ${val.service_performed}\n\nData de Entrada: ${val.date_input}\nData de Saída: ${val.date_exit}\n`}
+                                />
+                            </div>
+                            
+                            <Button color="light"
+                                onClick={handleExportPDF}>
+                                Baixar <AiOutlineQrcode/>
+                            </Button>
                         <hr/>
                         <Button
                             title="Editar"

@@ -24,12 +24,12 @@ export default function Inputs() {
     useEffect(() => {
         //console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
 
-        axios.get(`http://10.10.136.100:3002/inputs/page=${(page-1)}/perPage=${perPage}`,)
+        axios.get(`http://10.10.136.100:3002/api/inputs/page=${(page-1)}/perPage=${perPage}`,)
         .then((res) => {
             setInputsList(res.data);
         });
 
-        axios.get('http://10.10.136.100:3002/inputs/')
+        axios.get('http://10.10.136.100:3002/api/inputs/')
         .then((res) => {
             setTotalRows(res.data.length);
         })
@@ -39,12 +39,12 @@ export default function Inputs() {
 
     //Open Input
     const openInput = (id) => {
-        navigate(`/inputs/${id}`);
+        navigate(`/dmei-sys/inputs/${id}`);
     }
 
     //Add input
     const goToAdd = () => {
-        navigate('/inputs/create');
+        navigate(`/dmei-sys/inputs/create`);
     }
 
     //Config Table and Search

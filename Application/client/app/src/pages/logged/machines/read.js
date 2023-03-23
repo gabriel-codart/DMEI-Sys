@@ -24,12 +24,12 @@ export default function Machines() {
     useEffect(() => {
         //console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
 
-        axios.get(`http://10.10.136.100:3002/machines/page=${(page-1)}/perPage=${perPage}`,)
+        axios.get(`http://10.10.136.100:3002/api/machines/page=${(page-1)}/perPage=${perPage}`,)
         .then((res) => {
             setMachinesList(res.data);
         });
 
-        axios.get('http://10.10.136.100:3002/machines/')
+        axios.get('http://10.10.136.100:3002/api/machines/')
         .then((res) => {
             setTotalRows(res.data.length);
         })
@@ -38,12 +38,12 @@ export default function Machines() {
 
     //Open Machine
     const openMachine = (id) => {
-        navigate(`/machines/${id}`);
+        navigate(`/dmei-sys/machines/${id}`);
     }
 
     //Add Machine
     const goToAdd = () => {
-        navigate('/machines/create');
+        navigate(`/dmei-sys/machines/create`);
     }
 
     //Config Table and Search

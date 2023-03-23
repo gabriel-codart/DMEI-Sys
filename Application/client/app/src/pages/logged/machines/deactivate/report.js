@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Form, Card } from "reactstrap";
+import { Button, Form, Card, Input } from "reactstrap";
 import { BiEdit } from 'react-icons/bi';
 import { GrDocumentDownload } from 'react-icons/gr';
 import { pdfFromReact } from "generate-pdf-from-react-html";
@@ -17,7 +17,7 @@ export default function MachineDeactivateDOC() {
 
     //Get the Machine data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/machines/${id}`)
+        axios.get(`http://10.10.136.100:3002/api/machines/${id}`)
         .then((res) => {
             setMachineData(res.data);
         });
@@ -26,12 +26,12 @@ export default function MachineDeactivateDOC() {
 
     //Go to update
     const goToUpdate = (id) => {
-        navigate(`/machines/${id}/update`)
+        navigate(`/dmei-sys/machines/${id}/update`)
     };
 
     //Go Back to Machine
     const goBack = () => {
-        navigate(`/machines/${id}/deactivate`);
+        navigate(`/dmei-sys/machines/${id}/deactivate`);
     };
 
     return(
@@ -68,9 +68,20 @@ export default function MachineDeactivateDOC() {
                                         Declaramos que o&#40;a&#41; <strong>{val.type_machine_name} {val.model} N/S:{val.num_serial}</strong> está
                                         danificado&#40;a&#41; e sem possibilidade de reparo, impossibilitando, assim, o funcionamento da mesma.
                                         Tendo em vista que não temos substitutos adequados para suprir a necessidade
-                                        da <strong>{val.entities_name}</strong> deve-se, assim, substituir a máquina por outro equipamento.
+                                        da <strong>{val.entities_name} / Cód: {val.entities_code}</strong> deve-se, assim, substituir a máquina por outro equipamento.
                                         Mediante isto, reiteramos a solicitação em caráter de necessidade de um novo substituto para continuar as
                                         atividades no setor.
+                                    </p>
+                                    <br/>
+                                    <p>
+                                        Problema:
+                                        <Input
+                                            style={{
+                                                fontFamily: 'Times',
+                                                fontSize: '12px',
+                                            }}
+                                            type='textarea'
+                                        />
                                     </p>
                                     <br/><br/>
                                     <hr/>

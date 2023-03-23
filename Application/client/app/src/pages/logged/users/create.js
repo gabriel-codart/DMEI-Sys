@@ -13,7 +13,7 @@ export default function CreateUser() {
     const [realname, setRealname ] = useState("");
 
     const addUser = () => {
-        axios.post("http://10.10.136.100:3002/users/create", {
+        axios.post("http://10.10.136.100:3002/api/users/create", {
             nickname: nickname,
             password: password,
             realname: realname,
@@ -23,7 +23,7 @@ export default function CreateUser() {
                 alert('Erro, nickname já cadastrado!');
             } else {
                 alert('Adicionado!');
-                navigate('/users');
+                navigate(`/dmei-sys/users`);
             }
         })
         .catch(function (e) {
@@ -32,7 +32,7 @@ export default function CreateUser() {
     };
 
     const cancelAdd = () => {
-        navigate('/users');
+        navigate(`/dmei-sys/users`);
     }
 
     return(

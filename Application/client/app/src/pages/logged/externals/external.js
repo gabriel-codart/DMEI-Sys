@@ -16,7 +16,7 @@ export default function External() {
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/externals/${externalId}`)
+        axios.get(`http://10.10.136.100:3002/api/externals/${externalId}`)
         .then((res) => {
             setExternalData(res.data);
         });
@@ -25,12 +25,12 @@ export default function External() {
 
     //Go to update
     const goToUpdate = (id) => {
-        navigate(`/externals/${id}/update`)
+        navigate(`/dmei-sys/externals/${id}/update`)
     };
 
     //Back to Entities Menu
     const goBack = () => {
-        navigate('/externals');
+        navigate(`/dmei-sys/externals`);
     }
 
     return(

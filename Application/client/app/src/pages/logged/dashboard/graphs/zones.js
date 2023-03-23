@@ -8,7 +8,7 @@ export default function ZonesGraph(){
 
     //Getting users
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/zones`,)
+        axios.get(`http://10.10.136.100:3002/api/zones`,)
         .then((res) => {
             setZones(res.data);
         });

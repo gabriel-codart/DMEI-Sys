@@ -23,12 +23,12 @@ export default function AnonExternals() {
     useEffect(() => {
         //console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
 
-        axios.get(`http://10.10.136.100:3002/externals/page=${(page-1)}/perPage=${perPage}`,)
+        axios.get(`http://10.10.136.100:3002/api/externals/page=${(page-1)}/perPage=${perPage}`,)
         .then((res) => {
             setExternalsList(res.data);
         });
 
-        axios.get('http://10.10.136.100:3002/externals/')
+        axios.get('http://10.10.136.100:3002/api/externals/')
         .then((res) => {
             setTotalRows(res.data.length);
         })
@@ -38,7 +38,7 @@ export default function AnonExternals() {
 
     //Open External
     const openExternal = (id) => {
-        navigate(`/anon/externals/${id}`);
+        navigate(`/dmei-sys/anon/externals/${id}`);
     }
 
     //Config Table and Search

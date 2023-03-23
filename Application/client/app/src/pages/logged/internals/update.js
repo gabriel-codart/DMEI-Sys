@@ -25,7 +25,7 @@ export default function UpdateInternal() {
     const [usersList, setUsersList] = useState([]);
 
     useEffect(() => {
-        axios.get('http://10.10.136.100:3002/entities').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/entities').then((res) => {
             setEntitiesNameList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -43,7 +43,7 @@ export default function UpdateInternal() {
                 }
             }));
         });
-        axios.get('http://10.10.136.100:3002/users').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/users').then((res) => {
             setUsersList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -51,7 +51,7 @@ export default function UpdateInternal() {
                 }
             }));
         });
-        axios.get(`http://10.10.136.100:3002/internals/${internalId}`).then((res) => {
+        axios.get(`http://10.10.136.100:3002/api/internals/${internalId}`).then((res) => {
             setInternalData(res.data);
 
             setEntity({value: res.data[0].id_entity_si, name: res.data[0].entity_name, code: res.data[0].entity_code});
@@ -64,7 +64,7 @@ export default function UpdateInternal() {
     },[id, internalId])
 
     useEffect(() => {        
-        axios.get(`http://10.10.136.100:3002/machines/entity/${entity.value}`).then((res) => {
+        axios.get(`http://10.10.136.100:3002/api/machines/entity/${entity.value}`).then((res) => {
             setMachinesList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -90,7 +90,7 @@ export default function UpdateInternal() {
             alert('Erro, o campo Serviço Realizado está vazio!');
         }
         else{
-            axios.patch(`http://10.10.136.100:3002/internals/${id}/update`, {
+            axios.patch(`http://10.10.136.100:3002/api/internals/${id}/update`, {
                 entity: entity.value,
                 machine: machine.value,
                 problem: problem,
@@ -99,7 +99,7 @@ export default function UpdateInternal() {
             })
             .then(function (r) {
                 alert('Atulizado!');
-                navigate('/internals');
+                navigate(`/dmei-sys/internals`);
             })
             .catch(function (e) {
                 alert('Erro de Conexão com o Banco!');
@@ -109,7 +109,7 @@ export default function UpdateInternal() {
 
     //Cancel update
     const cancelUpdate = () => {
-        navigate('/internals');
+        navigate(`/dmei-sys/internals`);
     }
 
     return(

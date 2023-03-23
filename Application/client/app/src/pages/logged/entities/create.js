@@ -27,7 +27,7 @@ export default function CreateEntity() {
     const [zonesList, setZonesList] = useState([]);
 
     useEffect(() => {
-        axios.get('http://10.10.136.100:3002/zones/all').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/zones/all').then((res) => {
             setZonesList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -38,7 +38,7 @@ export default function CreateEntity() {
     },[ver]);
 
     const addEntity = () => {
-        axios.post("http://10.10.136.100:3002/entities/create", {
+        axios.post("http://10.10.136.100:3002/api/entities/create", {
             code: code,
             name: name,
             phone: phone,
@@ -95,7 +95,7 @@ export default function CreateEntity() {
             }
             else {
                 alert('Adicionado!');
-                navigate('/entities');
+                navigate(`/dmei-sys/entities`);
             }
         })
         .catch(function (e) {
@@ -113,7 +113,7 @@ export default function CreateEntity() {
     };
 
     const cancelAdd = () => {
-        navigate('/entities');
+        navigate(`/dmei-sys/entities`);
     }
 
     return(

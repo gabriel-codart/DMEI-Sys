@@ -27,7 +27,7 @@ export default function TerminateInput() {
     const [secondaryUsersList, setSecondaryUsersList] = useState([]);
 
     useEffect(() => {
-        axios.get('http://10.10.136.100:3002/inputs/not/terminateds').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/inputs/not/terminateds').then((res) => {
             setInputsList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -36,7 +36,7 @@ export default function TerminateInput() {
             }));
         });
 
-        axios.get('http://10.10.136.100:3002/users').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/users').then((res) => {
             setUsersList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -49,7 +49,7 @@ export default function TerminateInput() {
 
     useEffect(() => {
         if (user != null) {
-            axios.get(`http://10.10.136.100:3002/users/not=${user.value}`).then((res) => {
+            axios.get(`http://10.10.136.100:3002/api/users/not=${user.value}`).then((res) => {
                 setSecondaryUsersList(res.data?.map((obj) => {
                     return {
                         value: obj.id,
@@ -62,7 +62,7 @@ export default function TerminateInput() {
 
     useEffect(() => {
         if (input !== null) {
-            axios.get(`http://10.10.136.100:3002/inputs/${input.value}`).then((res) => {
+            axios.get(`http://10.10.136.100:3002/api/inputs/${input.value}`).then((res) => {
                 console.log(res)
                 setInputData(res.data);
 
@@ -82,13 +82,13 @@ export default function TerminateInput() {
                 {
                 label: 'Sim',
                 onClick: () => {
-                    navigate(`/inputs/terminateds/${insertId}/exit`);
+                    navigate(`/dmei-sys/inputs/terminateds/${insertId}/exit`);
                     }
                 },
                 {
                 label: 'Não',
                 onClick: () => {
-                    navigate('/inputs/terminateds');
+                    navigate(`/dmei-sys/inputs/terminateds`);
                     }
                 },
             ]
@@ -104,14 +104,14 @@ export default function TerminateInput() {
             alert("Erro, o campo Serviço Realizado está vazio!");
         }
         else {
-            axios.patch(`http://10.10.136.100:3002/inputs/${input.value}/terminate`, {
+            axios.patch(`http://10.10.136.100:3002/api/inputs/${input.value}/terminate`, {
                 user: user.value,
                 secondUser: secondUser.value,
                 service: service,
                 comment: comment,
             })
             .then((r) => {
-                axios.patch(`http://10.10.136.100:3002/machines/${machine}/update/maintenance`, {
+                axios.patch(`http://10.10.136.100:3002/api/machines/${machine}/update/maintenance`, {
                     maintenance: 0,
                 })
                 generatePDF(input.value);
@@ -133,7 +133,7 @@ export default function TerminateInput() {
 
     //Cancel update
     const cancelUpdate = () => {
-        navigate('/inputs/terminateds');
+        navigate(`/dmei-sys/inputs/terminateds`);
     }
 
     return(

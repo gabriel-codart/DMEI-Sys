@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Form, Alert, Label } from "reactstrap";
+import useAuth from '../../../contexts/useAuth.js';
+
+import { Button, Form, Alert, Label, Input } from "reactstrap";
 import { BiEdit } from 'react-icons/bi';
 import { RiDeleteBin2Line } from "react-icons/ri";
 
@@ -9,7 +11,10 @@ import '../../styles/read-one.css';
 import { confirmAlert } from "react-confirm-alert";
 
 export default function User() {
+    const { signed, signout } = useAuth();
     const navigate = useNavigate();
+
+    const userPassword = JSON.parse(localStorage.getItem("user")).password;
 
     const {id} = useParams();
     const [userId] = useState(id);
@@ -17,46 +22,106 @@ export default function User() {
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/users/${userId}`)
+        axios.get(`http://10.10.136.100:3002/api/users/${userId}`)
         .then((res) => {
             setUserData(res.data);
         });
     }, [userId]);
 
     //Go to update
+    const dialogUpdate= (id) => {
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                  <div className='react-confirm-alert-body'>
+                    <h1>Editar Dados</h1>
+                    <p>Para alterar dados sensíveis, confirme sua senha:</p>
+                    <Input
+                        id="password"
+                        placeholder="Senha"
+                        type="text"
+                    />
+                    <hr/>
+                    <p>Ir para edição de dados?</p>
+                    <div className="react-confirm-alert-button-group">
+                        <button
+                        onClick={() => {
+                            if (document.getElementById('password').value === userPassword) {
+                                goToUpdate(id);
+                                onClose();
+                            } else {
+                                alert('Senha Incorreta!');
+                                onClose();
+                            }
+                        }}
+                        >
+                        Sim, Editar
+                        </button>
+                        <button onClick={onClose}>Não, Cancelar</button>
+                    </div>
+                  </div>
+                );
+            }
+        });
+    };
     const goToUpdate = (id) => {
-        navigate(`/users/${id}/update`)
+        navigate(`/dmei-sys/users/${id}/update`)
     };
 
     //Delete User
     const dialogDelete = (id) => {
         confirmAlert({
-            title: 'Confirme a remoção',
-            message: 'Você tem certeza?',
-            buttons: [
-                {
-                label: 'Sim',
-                onClick: () => {
-                        deleteUser(id);
-                        navigate('/entities');
-                    }
-                },
-                {
-                label: 'Não'
-                }
-            ]
+            customUI: ({ onClose }) => {
+                return (
+                  <div className='react-confirm-alert-body'>
+                    <h1>Confirme a Remoção</h1>
+                    <p>Para deletar dados sensíveis, confirme sua senha:</p>
+                    <Input
+                        id="password"
+                        placeholder="Senha"
+                        type="text"
+                    />
+                    <hr/>
+                    <p>Você tem certeza que quer deletar?</p>
+                    <div className="react-confirm-alert-button-group">
+                        <button
+                        onClick={() => {
+                            if (document.getElementById('password').value === userPassword) {
+                                deleteUser(id);
+                                onClose();
+                            } else {
+                                alert('Senha Incorreta!');
+                                onClose();
+                            }
+                        }}
+                        >
+                        Sim, Deletar
+                        </button>
+                        <button onClick={onClose}>Não, Cancelar</button>
+                    </div>
+                  </div>
+                );
+            }
         });
     };
     const deleteUser = (id) => {
-        axios.delete(`http://10.10.136.100:3002/users/${id}/delete`)
-        .then((res) => {
-            alert('Usuário deletado!');
-        });
+        if (id === signed.id) {
+            axios.delete(`http://10.10.136.100:3002/api/users/${id}/delete`)
+            .then((res) => {
+                alert('Seu Usuário foi Deletado!');
+                signout();
+            });
+        } else {
+            axios.delete(`http://10.10.136.100:3002/api/users/${id}/delete`)
+            .then((res) => {
+                alert('Usuário Deletado!');
+            });
+        }
     }
 
     //Back to Users Menu
     const goBack = () => {
-        navigate('/users');
+        navigate(`/dmei-sys/users`);
     }
 
     return(
@@ -71,7 +136,7 @@ export default function User() {
                         <hr/>
 
                         <div className='column'>
-                            <Label>Apelido: 
+                            <Label>Nome de Usuário: 
                                 <Alert color="secondary">{val.nickname}</Alert>
                             </Label>
 
@@ -88,15 +153,27 @@ export default function User() {
                         <Button
                             title="Editar"
                             color="primary"
-                            onClick={() => {goToUpdate(val.id)}}>
+                            onClick={() => {dialogUpdate(val.id)}}>
                                 <BiEdit/>
                         </Button>
-                        <Button
-                            title="Deletar"
-                            color="danger"
-                            onClick={() => {dialogDelete(val.id)}}>
+
+                        {val.id === 1 ? (
+                            <Button
+                                color="danger"
+                                disabled
+                            >
                                 <RiDeleteBin2Line/>
-                        </Button>
+                            </Button>
+                        ) : (
+                            <Button
+                                title="Deletar"
+                                color="danger"
+                                onClick={() => {dialogDelete(val.id)}}
+                            >
+                                    <RiDeleteBin2Line/>
+                            </Button>
+                        )}
+                        
                         <Button color="secondary" onClick={goBack}>Voltar</Button>
                     </Form>
                 )

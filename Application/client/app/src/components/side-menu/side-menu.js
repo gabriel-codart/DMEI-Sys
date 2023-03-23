@@ -63,7 +63,7 @@ export default function SideMenu() {
 
                         <MenuItem
                             icon={<AiFillLayout />}
-                            onClick={()=>{navigate('/dashboard')}}>
+                            onClick={()=>{navigate(`/dmei-sys/dashboard`)}}>
                             Dashboard
                         </MenuItem>
 
@@ -71,22 +71,22 @@ export default function SideMenu() {
                         <SubMenu label="Entradas" icon={<VscServer />}>
                             <MenuItem
                                 icon={<FaListUl />}
-                                onClick={()=>{navigate('/inputs')}}>
+                                onClick={()=>{navigate(`/dmei-sys/inputs`)}}>
                                 Listar
                             </MenuItem>
                             <MenuItem
                                 icon={<GoDiffAdded />}
-                                onClick={()=>{navigate('/inputs/create')}}>
+                                onClick={()=>{navigate(`/dmei-sys/inputs/create`)}}>
                                 Adicionar
                             </MenuItem>
                             <MenuItem
                                 icon={<GoTasklist />}
-                                onClick={()=>{navigate('/inputs/terminateds')}}>
+                                onClick={()=>{navigate(`/dmei-sys/inputs/terminateds`)}}>
                                 Concluídos
                             </MenuItem>
                             <MenuItem
                                 icon={<FaCheck />}
-                                onClick={()=>{navigate('/inputs/terminate')}}>
+                                onClick={()=>{navigate(`/dmei-sys/inputs/terminate`)}}>
                                 Finalizar
                             </MenuItem>
                         </SubMenu>
@@ -94,12 +94,12 @@ export default function SideMenu() {
                         <SubMenu label="Externos" icon={<VscServerEnvironment />}>
                             <MenuItem
                                 icon={<FaListUl />}
-                                onClick={()=>{navigate('/externals')}}>
+                                onClick={()=>{navigate(`/dmei-sys/externals`)}}>
                                 Listar
                             </MenuItem>
                             <MenuItem
                                 icon={<GoDiffAdded />}
-                                onClick={()=>{navigate('/externals/create')}}>
+                                onClick={()=>{navigate(`/dmei-sys/externals/create`)}}>
                                 Adicionar
                             </MenuItem>
                         </SubMenu>
@@ -107,12 +107,12 @@ export default function SideMenu() {
                         <SubMenu label="Internos" icon={<VscServerProcess />}>
                             <MenuItem
                                 icon={<FaListUl />}
-                                onClick={()=>{navigate('/internals')}}>
+                                onClick={()=>{navigate(`/dmei-sys/internals`)}}>
                                 Listar
                             </MenuItem>
                             <MenuItem
                                 icon={<GoDiffAdded />}
-                                onClick={()=>{navigate('/internals/create')}}>
+                                onClick={()=>{navigate(`/dmei-sys/internals/create`)}}>
                                 Adicionar
                             </MenuItem>
                         </SubMenu>
@@ -122,17 +122,17 @@ export default function SideMenu() {
                         <SubMenu label="Máquinas" icon={<BsCpuFill />}>
                             <MenuItem
                                 icon={<FaListUl />}
-                                onClick={()=>{navigate('/machines')}}>
+                                onClick={()=>{navigate(`/dmei-sys/machines`)}}>
                                 Listar
                             </MenuItem>
                             <MenuItem
                                 icon={<GoDiffAdded />}
-                                onClick={()=>{navigate('/machines/create')}}>
+                                onClick={()=>{navigate(`/dmei-sys/machines/create`)}}>
                                 Adicionar
                             </MenuItem>
                             <MenuItem
                                 icon={<RiHistoryLine />}
-                                onClick={()=>{navigate('/machines/records')}}>
+                                onClick={()=>{navigate(`/dmei-sys/machines/records`)}}>
                                 Registros
                             </MenuItem>
                         </SubMenu>
@@ -140,12 +140,12 @@ export default function SideMenu() {
                         <SubMenu label="Entidades" icon={<FaBuilding />}>
                             <MenuItem
                                 icon={<FaListUl />}
-                                onClick={()=>{navigate('/entities')}}>
+                                onClick={()=>{navigate(`/dmei-sys/entities`)}}>
                                 Listar
                             </MenuItem>
                             <MenuItem
                                 icon={<GoDiffAdded />}
-                                onClick={()=>{navigate('/entities/create')}}>
+                                onClick={()=>{navigate(`/dmei-sys/entities/create`)}}>
                                 Adicionar
                             </MenuItem>
                         </SubMenu>
@@ -153,12 +153,12 @@ export default function SideMenu() {
                         <SubMenu label="Usuários" icon={<FaUsers />}>
                             <MenuItem
                                 icon={<FaListUl />}
-                                onClick={()=>{navigate('/users')}}>
+                                onClick={()=>{navigate(`/dmei-sys/users`)}}>
                                 Listar
                             </MenuItem>
                             <MenuItem
                                 icon={<GoDiffAdded />}
-                                onClick={()=>{navigate('/users/create')}}>
+                                onClick={()=>{navigate(`/dmei-sys/users/create`)}}>
                                 Adicionar
                             </MenuItem>
                         </SubMenu>
@@ -203,7 +203,7 @@ export default function SideMenu() {
 
                         <MenuItem
                             icon={<AiFillLayout />}
-                            onClick={()=>{navigate('/anon/dashboard')}}>
+                            onClick={()=>{navigate(`/dmei-sys/anon/dashboard`)}}>
                             Dashboard
                         </MenuItem>
 
@@ -212,7 +212,7 @@ export default function SideMenu() {
                         <SubMenu label="Externos" icon={<VscServerEnvironment />}>
                             <MenuItem
                                 icon={<FaListUl />}
-                                onClick={()=>{navigate('/anon/externals')}}>
+                                onClick={()=>{navigate(`/dmei-sys/anon/externals`)}}>
                                 Listar
                             </MenuItem>
                         </SubMenu>

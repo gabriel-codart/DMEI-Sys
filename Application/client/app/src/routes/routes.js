@@ -57,11 +57,11 @@ const Private = ({ Logged, Anonymous }) => {
     if (signed) {
         switch (signed.type) {
             case 1:
-                if (location.slice(0,6) === '/anon/') return navigate('/dashboard');
+                if (location.slice(0,15) === `/dmei-sys/anon/`) return navigate(`/dmei-sys/dashboard`);
                 else return <Logged/>;
             case 2:
-                if (location.slice(0,6) === '/anon/') return <Anonymous/>;
-                else return navigate('/anon/dashboard');
+                if (location.slice(0,15) === `/dmei-sys/anon/`) return <Anonymous/>;
+                else return navigate(`/dmei-sys/anon/dashboard`);
             default:
                 break;
         }
@@ -73,58 +73,58 @@ const Private = ({ Logged, Anonymous }) => {
 
 export default function UserRoutes() {
     return (
-        <Routes>
-            <Route path="/" element={<Login/>}/>
+        <Routes basename='/dmei-sys'>
+            <Route path="/dmei-sys" element={<Login/>}/>
 
-            <Route path="/dashboard" element={<Private Logged={Dashboard}/>}/>
+            <Route path="/dmei-sys/dashboard" element={<Private Logged={Dashboard}/>}/>
             
-            <Route path="/users" element={<Private Logged={Users}/>}/>
-            <Route path="/users/create" element={<Private Logged={CreateUser}/>}/>
-            <Route path="/users/:id/update" element={<Private Logged={UpdateUser}/>}/>
-            <Route path="/users/:id" element={<Private Logged={User}/>}/>
+            <Route path="/dmei-sys/users" element={<Private Logged={Users}/>}/>
+            <Route path="/dmei-sys/users/create" element={<Private Logged={CreateUser}/>}/>
+            <Route path="/dmei-sys/users/:id/update" element={<Private Logged={UpdateUser}/>}/>
+            <Route path="/dmei-sys/users/:id" element={<Private Logged={User}/>}/>
 
-            <Route path="/entities" element={<Private Logged={Entities}/>}/>
-            <Route path="/entities/create" element={<Private Logged={CreateEntity}/>}/>
-            <Route path="/entities/:id/update" element={<Private Logged={UpdateEntity}/>}/>
-            <Route path="/entities/:id" element={<Private Logged={Entity}/>}/>
+            <Route path="/dmei-sys/entities" element={<Private Logged={Entities}/>}/>
+            <Route path="/dmei-sys/entities/create" element={<Private Logged={CreateEntity}/>}/>
+            <Route path="/dmei-sys/entities/:id/update" element={<Private Logged={UpdateEntity}/>}/>
+            <Route path="/dmei-sys/entities/:id" element={<Private Logged={Entity}/>}/>
 
-            <Route path="/machines" element={<Private Logged={Machines}/>}/>
-            <Route path="/machines/create" element={<Private Logged={CreateMachine}/>}/>
-            <Route path="/machines/:id/update" element={<Private Logged={UpdateMachine}/>}/>
-            <Route path="/machines/:id" element={<Private Logged={Machine}/>}/>
-            <Route path="/machines/:id/deactivate/" element={<Private Logged={MachineDeactivateMenu}/>}/>
-            <Route path="/machines/:id/deactivate/doc" element={<Private Logged={MachineDeactivateDOC}/>}/>
-            <Route path="/machines/:id/deactivate/finalize" element={<Private Logged={MachineDeactivateFinalize}/>}/>
-            <Route path="/machines/records" element={<Private Logged={Records}/>}/>
+            <Route path="/dmei-sys/machines" element={<Private Logged={Machines}/>}/>
+            <Route path="/dmei-sys/machines/create" element={<Private Logged={CreateMachine}/>}/>
+            <Route path="/dmei-sys/machines/:id/update" element={<Private Logged={UpdateMachine}/>}/>
+            <Route path="/dmei-sys/machines/:id" element={<Private Logged={Machine}/>}/>
+            <Route path="/dmei-sys/machines/:id/deactivate/" element={<Private Logged={MachineDeactivateMenu}/>}/>
+            <Route path="/dmei-sys/machines/:id/deactivate/doc" element={<Private Logged={MachineDeactivateDOC}/>}/>
+            <Route path="/dmei-sys/machines/:id/deactivate/finalize" element={<Private Logged={MachineDeactivateFinalize}/>}/>
+            <Route path="/dmei-sys/machines/records" element={<Private Logged={Records}/>}/>
 
-            <Route path="/internals" element={<Private Logged={Internals}/>}/>
-            <Route path="/internals/create" element={<Private Logged={CreateInternal}/>}/>
-            <Route path="/internals/:id/update" element={<Private Logged={UpdateInternal}/>}/>
-            <Route path="/internals/:id" element={<Private Logged={Internal}/>}/>
+            <Route path="/dmei-sys/internals" element={<Private Logged={Internals}/>}/>
+            <Route path="/dmei-sys/internals/create" element={<Private Logged={CreateInternal}/>}/>
+            <Route path="/dmei-sys/internals/:id/update" element={<Private Logged={UpdateInternal}/>}/>
+            <Route path="/dmei-sys/internals/:id" element={<Private Logged={Internal}/>}/>
 
-            <Route path="/externals" element={<Private Logged={Externals}/>}/>
-            <Route path="/externals/create" element={<Private Logged={CreateExternal}/>}/>
-            <Route path="/externals/:id/update" element={<Private Logged={UpdateExternal}/>}/>
-            <Route path="/externals/:id" element={<Private Logged={External}/>}/>
-            <Route path="/externals/:id/report" element={<Private Logged={ExternalReport}/>}/>
+            <Route path="/dmei-sys/externals" element={<Private Logged={Externals}/>}/>
+            <Route path="/dmei-sys/externals/create" element={<Private Logged={CreateExternal}/>}/>
+            <Route path="/dmei-sys/externals/:id/update" element={<Private Logged={UpdateExternal}/>}/>
+            <Route path="/dmei-sys/externals/:id" element={<Private Logged={External}/>}/>
+            <Route path="/dmei-sys/externals/:id/report" element={<Private Logged={ExternalReport}/>}/>
 
-            <Route path="/inputs" element={<Private Logged={Inputs}/>}/>
-            <Route path="/inputs/create" element={<Private Logged={CreateInput}/>}/>
-            <Route path="/inputs/:id/update" element={<Private Logged={UpdateInput}/>}/>
-            <Route path="/inputs/:id" element={<Private Logged={Input}/>}/>
-            <Route path="/inputs/:id/entry" element={<Private Logged={InputGenerateEntry}/>}/>
-            <Route path="/inputs/:id/exit" element={<Private Logged={InputGenerateExit}/>}/>
+            <Route path="/dmei-sys/inputs" element={<Private Logged={Inputs}/>}/>
+            <Route path="/dmei-sys/inputs/create" element={<Private Logged={CreateInput}/>}/>
+            <Route path="/dmei-sys/inputs/:id/update" element={<Private Logged={UpdateInput}/>}/>
+            <Route path="/dmei-sys/inputs/:id" element={<Private Logged={Input}/>}/>
+            <Route path="/dmei-sys/inputs/:id/entry" element={<Private Logged={InputGenerateEntry}/>}/>
+            <Route path="/dmei-sys/inputs/:id/exit" element={<Private Logged={InputGenerateExit}/>}/>
 
-            <Route path="/inputs/terminate" element={<Private Logged={TerminateInput}/>}/>
-            <Route path="/inputs/terminateds" element={<Private Logged={InputsTerminateds}/>}/>
-            <Route path="/inputs/terminateds/:id/update" element={<Private Logged={UpdateInput}/>}/>
-            <Route path="/inputs/terminateds/:id" element={<Private Logged={Input}/>}/>
-            <Route path="/inputs/terminateds/:id/entry" element={<Private Logged={InputGenerateEntry}/>}/>
-            <Route path="/inputs/terminateds/:id/exit" element={<Private Logged={InputGenerateExit}/>}/>
+            <Route path="/dmei-sys/inputs/terminate" element={<Private Logged={TerminateInput}/>}/>
+            <Route path="/dmei-sys/inputs/terminateds" element={<Private Logged={InputsTerminateds}/>}/>
+            <Route path="/dmei-sys/inputs/terminateds/:id/update" element={<Private Logged={UpdateInput}/>}/>
+            <Route path="/dmei-sys/inputs/terminateds/:id" element={<Private Logged={Input}/>}/>
+            <Route path="/dmei-sys/inputs/terminateds/:id/entry" element={<Private Logged={InputGenerateEntry}/>}/>
+            <Route path="/dmei-sys/inputs/terminateds/:id/exit" element={<Private Logged={InputGenerateExit}/>}/>
 
-            <Route path="/anon/externals" element={<Private Anonymous={AnonExternals}/>}/>
-            <Route path="/anon/externals/:id" element={<Private Anonymous={AnonExternal}/>}/>
-            <Route path="/anon/dashboard" element={<Private Anonymous={Dashboard}/>}/>
+            <Route path="/dmei-sys/anon/externals" element={<Private Anonymous={AnonExternals}/>}/>
+            <Route path="/dmei-sys/anon/externals/:id" element={<Private Anonymous={AnonExternal}/>}/>
+            <Route path="/dmei-sys/anon/dashboard" element={<Private Anonymous={Dashboard}/>}/>
             
         </Routes>
     )

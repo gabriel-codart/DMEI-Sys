@@ -1,38 +1,54 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
+import useAuth from '../../../contexts/useAuth.js';
+
 import { Button, Form, Input, Label } from "reactstrap";
 
 import '../../styles/create-update.css';
 
 export default function UpdateUser() {
+    const { signed } = useAuth();
     const navigate = useNavigate();
 
     const {id} = useParams();
     const [userId] = useState(id);
     const [userData, setUserData] = useState([]);
 
+    const [nickname, setNickname ] = useState(null);
+    const [password, setPassword ] = useState(null);
+    const [realname, setRealname ] = useState(null);
+
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/users/${userId}`)
+        axios.get(`http://10.10.136.100:3002/api/users/${userId}`)
         .then((res) => {
             setUserData(res.data);
+
+            setNickname(res.data[0].nickname);
+            setPassword(res.data[0].password);
+            setRealname(res.data[0].realname);
         });
     }, [userId]);
 
     //Confirm update
     const updateUser = () => {
-        axios.patch(`http://10.10.136.100:3002/users/${id}/update`,{
-            nickname: document.getElementById('nickname').value,
-            password: document.getElementById('password').value,
-            realname: document.getElementById('realname').value,
+        axios.patch(`http://10.10.136.100:3002/api/users/${id}/update`,{
+            nickname: nickname,
+            password: password,
+            realname: realname,
         })
         .then(function (r) {
             if (r.data.code === 'ER_DUP_ENTRY') {
                 alert('Erro, nickname já cadastrado!');
             } else {
+                console.log(id + " + " + signed.id);
+                if (id === String(signed.id)) {
+                    console.log('Teste');
+                    localStorage.setItem("user", JSON.stringify({id: Number(id), nickname: nickname, password: password, type: 1}));
+                }
                 alert('Atulizado!');
-                navigate('/users');
+                navigate(`/dmei-sys/users`);
             }
         })
         .catch(function (e) {
@@ -42,7 +58,7 @@ export default function UpdateUser() {
 
     //Cancel update
     const cancelUpdate = () => {
-        navigate('/users');
+        navigate(`/dmei-sys/users/${id}`);
     }
 
     return(
@@ -57,26 +73,44 @@ export default function UpdateUser() {
                         <h5>Id: <strong>{val.id}</strong></h5>
                         <hr/>
 
-                        <Label>Nickname:</Label>
+                        <Label>Nome de Usuário:</Label>
                         <Input
-                            id="nickname"
                             defaultValue={val.nickname}
-                            placeholder="Nickname"
+                            placeholder="Nome de Usuário"
                             type='text'
+                            onChange={(event) =>{
+                                if (!event.target.value === true) {
+                                    setNickname(null);
+                                } else {
+                                    setNickname(event.target.value);
+                                }
+                            }}
                         />
-                        <Label>Password:</Label>
+                        <Label>Senha:</Label>
                         <Input
-                            id="password"
                             defaultValue={val.password}
-                            placeholder="Password"
+                            placeholder="Senha"
                             type='text'
+                            onChange={(event) =>{
+                                if (!event.target.value === true) {
+                                    setPassword(null);
+                                } else {
+                                    setPassword(event.target.value);
+                                }
+                            }}
                         />
-                        <Label>Realname:</Label>
+                        <Label>Nome Completo:</Label>
                         <Input
-                            id="realname"
                             defaultValue={val.realname}
-                            placeholder="Realname"
+                            placeholder="Nome Completo"
                             type='text'
+                            onChange={(event) =>{
+                                if (!event.target.value === true) {
+                                    setRealname(null);
+                                } else {
+                                    setRealname(event.target.value);
+                                }
+                            }}
                         />
                         <br/>
                         <hr/>

@@ -23,7 +23,7 @@ export default function CreateInternal() {
     const [machinesList, setMachinesList] = useState([]);
     const [usersList, setUsersList] = useState([]);
     useEffect(() => {
-        axios.get('http://10.10.136.100:3002/entities').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/entities').then((res) => {
             setEntitiesNameList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -41,7 +41,7 @@ export default function CreateInternal() {
                 }
             }));
         });
-        axios.get('http://10.10.136.100:3002/users').then((res) => {
+        axios.get('http://10.10.136.100:3002/api/users').then((res) => {
             setUsersList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -52,7 +52,7 @@ export default function CreateInternal() {
     },[ver])
     useEffect(() => {
         if (entity !== '') {
-        axios.get(`http://10.10.136.100:3002/machines/entity/${entity.value}`).then((res) => {
+        axios.get(`http://10.10.136.100:3002/api/machines/entity/${entity.value}`).then((res) => {
             setMachinesList(res.data?.map((obj) => {
                 return {
                     value: obj.id,
@@ -70,7 +70,7 @@ export default function CreateInternal() {
 
     //Confirm ADD
     const addInternal = () => {
-        axios.post("http://10.10.136.100:3002/internals/create", {
+        axios.post("http://10.10.136.100:3002/api/internals/create", {
             entity: entity.value,
             machine: machine.value,
             problem: problem,
@@ -103,7 +103,7 @@ export default function CreateInternal() {
             //Alert if the Post was Successful
             else {
                 alert('Adicionado!');
-                navigate('/internals');
+                navigate(`/dmei-sys/internals`);
             }
         })
         .catch(function (e) {
@@ -112,7 +112,7 @@ export default function CreateInternal() {
     };
 
     const cancelAdd = () => {
-        navigate('/internals');
+        navigate(`/dmei-sys/internals`);
     };
 
     return(

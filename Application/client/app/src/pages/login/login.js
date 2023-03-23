@@ -22,13 +22,13 @@ export default function Login() {
         let nickname = document.getElementById('nickname').value;
         let password = document.getElementById('password').value;
 
-        axios.get('http://10.10.136.100:3002/users')
+        axios.get('http://10.10.136.100:3002/api/users')
         .then((res) => {
             for (let i = 0; i < res.data.length; i++) {
                 if (nickname === res.data[i].nickname && password === res.data[i].password) {
-                    signin(nickname, password, 1);
+                    signin(res.data[i].id, nickname, password, 1);
                     alert('Você está logado!');
-                    navigate('/dashboard');
+                    navigate(`/dmei-sys/dashboard`);
                     return;
                 };
             };
@@ -39,11 +39,17 @@ export default function Login() {
         });
     };
     const anonymous = () => {
-        signin("anonymous", "", 2);
+        signin("", "anonymous", "", 2);
         alert('Você entrou como visitante!');
-        navigate('/anon/dashboard');
+        navigate(`/dmei-sys/anon/dashboard`);
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+          login();
+        }
+    };
+    
     const [state, setState] = useState(false);
     useEffect(() => {
         if (state === false) {
@@ -60,17 +66,20 @@ export default function Login() {
                 <hr />
                 <Input
                     id="nickname"
-                    placeholder="Nickname">
+                    placeholder="Nickname"
+                    onKeyDown={handleKeyDown}>
                 </Input>
                 <Input
                     id="password"
                     placeholder="Password"
-                    type="password">
+                    type="password"
+                    onKeyDown={handleKeyDown}>
                 </Input>
                 <FormGroup switch style={{textAlign:'left'}}>
                     <Input
                     type="switch"
                     defaultChecked={false}
+                    onKeyDown={handleKeyDown}
                     onClick={() => {
                         setState(!state);
                     }}

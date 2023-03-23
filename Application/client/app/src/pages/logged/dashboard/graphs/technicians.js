@@ -8,7 +8,7 @@ export default function TechnicianGraph() {
 
   //Getting users
   useEffect(() => {
-    axios.get(`http://10.10.136.100:3002/calls`,)
+    axios.get(`http://10.10.136.100:3002/api/calls`,)
     .then((res) => {
       setCalls(res.data);
     });

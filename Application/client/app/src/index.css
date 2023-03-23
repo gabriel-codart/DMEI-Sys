@@ -28,6 +28,9 @@ div#root.dark button.btn, div#root.dark button.btn:hover{
 div#root.dark .css-jn69v9, div#root.dark .css-honxw6, div#root.dark .sc-lllmON.gMliOo path{
     filter: none;
 }
+div#root.dark #QrCode-Card{
+    background: black;
+}
 
 /***** Light *****/
 div#root.light{
@@ -53,7 +56,16 @@ div#root.light button.btn path, div#root.light button.btn path:hover{
     filter: grayscale(1);
     color: white;
 }
-
+div#root.light button.btn.btn-light, div#root.light button.btn.btn-light:hover{
+    color: black;
+}
+div#root.light button.btn.btn-light path, div#root.light button.btn.btn-light path:hover{
+    filter: grayscale(1);
+    color: black;
+}
+div#root.light #QrCode-Card{
+    background: white;
+}
 
 /**** Default ****/
 html, body, div#root{
