@@ -13,3 +13,6 @@
 .recharts-responsive-container, .recharts-wrapper{
     margin: auto;
 }
+.dashboard hr{
+    margin: 5% 0%;
+}

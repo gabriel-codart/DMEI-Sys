@@ -10,7 +10,11 @@ export default function ZonesGraph(){
     useEffect(() => {
         axios.get(`http://10.10.136.100:3002/api/zones`,)
         .then((res) => {
-            setZones(res.data);
+            if (res.data.length !== 0){
+                setZones(res.data);
+            } else {
+                setZones([{zonename:'Aguardando Atendimentos', zonecolor:'#378', score:1}])
+            }
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ver]);

@@ -177,8 +177,6 @@ export default function UpdateEntity() {
                                     placeholder="(00) 00000-0000"
                                     defaultValue={val.phone}
                                     type='text'
-                                    mask="(00) 00000-0000"
-                                    tag={IMaskInput}
                                     onChange={(event) => {
                                         if (!event.target.value === true) {
                                             setPhone(null);
@@ -207,8 +205,6 @@ export default function UpdateEntity() {
                                     placeholder="(00) 00000-0000"
                                     defaultValue={val.phone_manager}
                                     type='text'
-                                    mask="(00) 00000-0000"
-                                    tag={IMaskInput}
                                     onChange={(event) => {
                                         if (!event.target.value === true) {
                                             setPhone_manager(null);

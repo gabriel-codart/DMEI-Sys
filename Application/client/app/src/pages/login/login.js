@@ -26,7 +26,8 @@ export default function Login() {
         .then((res) => {
             for (let i = 0; i < res.data.length; i++) {
                 if (nickname === res.data[i].nickname && password === res.data[i].password) {
-                    signin(res.data[i].id, nickname, password, 1);
+                    if(res.data[i].id === 1) signin(res.data[i].id, nickname, password, 1); // Usuário ADM
+                    else signin(res.data[i].id, nickname, password, 2); // Usuário Comum
                     alert('Você está logado!');
                     navigate(`/dmei-sys/dashboard`);
                     return;
@@ -39,7 +40,7 @@ export default function Login() {
         });
     };
     const anonymous = () => {
-        signin("", "anonymous", "", 2);
+        signin("", "anonymous", "", 3); // Usuário Anônimo
         alert('Você entrou como visitante!');
         navigate(`/dmei-sys/anon/dashboard`);
     }

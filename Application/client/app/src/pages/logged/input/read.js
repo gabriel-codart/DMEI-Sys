@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import DataTable from 'react-data-table-component';
 
-import { Button, Form, Input } from "reactstrap";
+import { Button, Form, Input, UncontrolledPopover, PopoverHeader, PopoverBody } from "reactstrap";
 import { MdClear, MdOpenInNew } from 'react-icons/md';
+import { GrTextAlignCenter } from 'react-icons/gr';
 
 import '../../styles/read.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -22,9 +23,13 @@ export default function Inputs() {
 
     //Getting inputs
     useEffect(() => {
-        //console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
-
-        axios.get(`http://10.10.136.100:3002/api/inputs/page=${(page-1)}/perPage=${perPage}`,)
+        let search = "";
+        if (filterText === "") {
+            search = 'null';
+        } else {
+            search = filterText;
+        }
+        axios.get(`http://10.10.136.100:3002/api/inputs/page=${(page-1)}/perPage=${perPage}/search=${search}`,)
         .then((res) => {
             setInputsList(res.data);
         });
@@ -54,23 +59,19 @@ export default function Inputs() {
             id: 'id',
             selector: row => row.id,
             sortable: true,
-            width: '80px',
+            width: '10%',
             center: 'yes'
         },
         {
             name: 'Entidade',
             selector: row => row.entity_name,
+            width: '30%',
             center: 'yes'
         },
         {
             name: 'Máquina',
             selector: row => row.machine_num,
-            center: 'yes'
-        },
-        {
-            name: 'Problema',
-            width: '120px',
-            selector: row => row.problem,
+            width: '15%',
             center: 'yes'
         },
         {
@@ -81,6 +82,7 @@ export default function Inputs() {
                 date.setMinutes(date.getMinutes() - offset);
                 return String(date.toLocaleString('pt-BR', { timeZone: 'UTC' }));
             },
+            width: '25%',
             center: 'yes'
         },
         {
@@ -91,15 +93,29 @@ export default function Inputs() {
                             >
                                 <MdOpenInNew/>
                             </Button>,
-            width: '100px',
+            width: '10%',
+            center: 'yes'
+        },
+        {
+            name: 'Problema',
+            width: '10%',
+            selector: row => <>
+                            <Button id={`Popover${row.id}`} type="button" title="Problema">
+                                <GrTextAlignCenter/>
+                            </Button>
+                            <br></br>
+                            <UncontrolledPopover
+                                placement="left"
+                                target={`Popover${row.id}`}
+                                trigger="click">
+                                <PopoverHeader>Problema</PopoverHeader>
+                                <PopoverBody>{row.problem}</PopoverBody>
+                            </UncontrolledPopover>
+                            </>,
             center: 'yes'
         },
     ];
-    const tableData = inputsList?.filter(
-      (obj) =>
-        obj.entity_name && obj.entity_name.toLowerCase().includes(filterText.toLowerCase())
-    )
-    .map((obj) => {
+    const tableData = inputsList?.map((obj) => {
       return {
         id: obj.id,
         machine_num: obj.machine_num,

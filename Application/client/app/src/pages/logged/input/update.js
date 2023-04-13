@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button, Card, CardBody, Form, Input, Label } from "reactstrap";
 import Select from 'react-select';
-import { IMaskInput } from 'react-imask';
 
 import '../../styles/create-update.css';
 
@@ -211,8 +210,6 @@ export default function UpdateInput() {
                                         placeholder="(00) 00000-0000"
                                         defaultValue={val.phone_responsable}
                                         type='text'
-                                        mask="(00) 00000-0000"
-                                        tag={IMaskInput}
                                         onChange={(event) =>{
                                             if (!event.target.value === true) {
                                                 setPhone_Responsable(null);

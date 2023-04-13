@@ -24,7 +24,13 @@ export default function Entities() {
 
     //Getting users
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/api/entities/page=${(page-1)}/perPage=${perPage}`,)
+        let search = "";
+        if (filterText === "") {
+            search = 'null';
+        } else {
+            search = filterText;
+        }
+        axios.get(`http://10.10.136.100:3002/api/entities/page=${(page-1)}/perPage=${perPage}/search=${search}`,)
         .then((res) => {
             setEntitiesList(res.data);
         });
@@ -77,19 +83,20 @@ export default function Entities() {
         {
             name: 'Código',
             selector: row => row.code,
-            width: '100px',
+            width: '15%',
             center: 'yes'
         },
         {
             name: 'Nome',
             selector: row => row.name,
-            width: '300px',
+            width: '25%',
             sortable: true,
             center: 'yes'
         },
         {
             name: 'Telefone',
             selector: row => row.phone,
+            width: '15%',
             center: 'yes'
         },
         {
@@ -99,6 +106,7 @@ export default function Entities() {
                                 style={{background: row.zone_color, cursor:'default'}}>
                                 {row.zone_name}
                             </button>,
+            width: '25%',
             center: 'yes'
         },
         {
@@ -109,26 +117,37 @@ export default function Entities() {
                             >
                                 <MdOpenInNew/>
                             </Button>,
-            width: '100px',
+            width: '10%',
             center: 'yes'
         },
         {
             name: 'Remover',
-            selector: row => <Button
-                                color="danger"
-                                onClick={() => dialogDelete(row.id)}
-                            >
-                                <RiDeleteBin2Line/>
-                            </Button>,
-            width: '100px',
+            selector: row => {
+                if (JSON.parse(localStorage.getItem("user")).type === 1) {
+                    return(
+                        <Button
+                            color="danger"
+                            onClick={() => dialogDelete(row.id)}
+                        >
+                            <RiDeleteBin2Line/>
+                        </Button>)
+                } else {
+                    return(
+                        <Button
+                            color="danger"
+                            disabled
+                        >
+                            <RiDeleteBin2Line/>
+                        </Button>)
+                }
+            },
+            width: '10%x',
             center: 'yes'
         },
     ];
-    const tableData = entitiesList?.filter(
-      (entities) =>
-        entities.name && entities.name.toLowerCase().includes(filterText.toLowerCase())
-    )
-    .map((entities) => {
+
+
+    const tableData = entitiesList?.map((entities) => {
       return {
         id: entities.id,
         code: entities.code,
@@ -188,7 +207,7 @@ export default function Entities() {
                     selectAllRowsItem: true,
                     selectAllRowsItemText: 'Todos',
                 }}
-                paginationRowsPerPageOptions={[2,10,50,100]}
+                paginationRowsPerPageOptions={[5,10,50,100]}
                 onChangeRowsPerPage={handlePerRowsChange}
                 onChangePage={handlePageChange}
             />

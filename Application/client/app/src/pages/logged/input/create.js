@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import { Button, Card, CardBody, Form, Input, Label } from "reactstrap";
 import Select from 'react-select';
-import { IMaskInput } from 'react-imask';
 
 import '../../styles/create-update.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -221,8 +220,6 @@ export default function CreateInput() {
                             <Input 
                                 placeholder="(00) 00000-0000"
                                 type='text'
-                                mask="(00) 00000-0000"
-                                tag={IMaskInput}
                                 onChange={(event) =>{
                                     if (!event.target.value === true) {
                                         setPhone_Responsable(null);

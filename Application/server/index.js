@@ -45,12 +45,18 @@ const upload = multer({ storage: storage });
         });
 
     // Route to get one User by limit
-    app.get("/api/users/page=:page/perPage=:perPage", (req,res)=>{
+    app.get("/api/users/page=:page/perPage=:perPage/search=:search", (req,res)=>{
 
     const perPage = Number(req.params.perPage);
     const page = Number(req.params.page) * perPage;
+    let search = '';
+    if (req.params.search !== "null") {
+        search = `%${req.params.search}%`;
+    } else {
+        search = `%`;
+    }
 
-    db.query(`SELECT * FROM users LIMIT ?, ?`, [page, perPage], 
+    db.query(`SELECT * FROM users WHERE id LIKE ? OR nickname LIKE ? OR realname LIKE ? LIMIT ?, ?`, [search, search, search, page, perPage], 
         (err,result)=>{
         if(err) {
             //console.log(err)
@@ -152,12 +158,18 @@ const upload = multer({ storage: storage });
     });
 
     // Route to get one Entities by limit
-    app.get("/api/entities/page=:page/perPage=:perPage", (req,res)=>{
+    app.get("/api/entities/page=:page/perPage=:perPage/search=:search", (req,res)=>{
 
         const perPage = Number(req.params.perPage);
         const page = Number(req.params.page) * perPage;
+        let search = '';
+        if (req.params.search !== "null") {
+            search = `%${req.params.search}%`;
+        } else {
+            search = `%`;
+        }
     
-        db.query('SELECT entities.id, entities.code, entities.name, entities.phone, zone.name as zone_name, zone.color as zone_color FROM entities LEFT JOIN zone ON zone.id = entities.id_zone_adress LIMIT ?, ?', [page, perPage], 
+        db.query('SELECT entities.id, entities.code, entities.name, entities.phone, zone.name as zone_name, zone.color as zone_color FROM entities LEFT JOIN zone ON zone.id = entities.id_zone_adress WHERE entities.code LIKE ? OR entities.name LIKE ? OR zone.name LIKE ? LIMIT ?, ?', [search, search, search, page, perPage], 
             (err,result)=>{
             if(err) {
                 //console.log(err)
@@ -304,12 +316,18 @@ const upload = multer({ storage: storage });
     });
 
     // Route to get one Machine by limit
-    app.get("/api/machines/page=:page/perPage=:perPage", (req,res)=>{
+    app.get("/api/machines/page=:page/perPage=:perPage/search=:search", (req,res)=>{
 
         const perPage = Number(req.params.perPage);
         const page = Number(req.params.page) * perPage;
+        let search = '';
+        if (req.params.search !== "null") {
+            search = `%${req.params.search}%`;
+        } else {
+            search = `%`;
+        }
     
-        db.query(`SELECT machines.id, machines.num_serial, machines.model, entities.name AS entities_name, type_machine.name AS type_machine_name, status_machine.name as status_name, status_machine.color as status_color FROM machines LEFT JOIN entities ON machines.id_entities_m = entities.id LEFT JOIN type_machine ON machines.id_type_m = type_machine.id LEFT JOIN status_machine ON machines.id_status_m = status_machine.id LIMIT ?, ?`, [page, perPage], 
+        db.query(`SELECT machines.id, machines.num_serial, machines.model, entities.name AS entities_name, type_machine.name AS type_machine_name, status_machine.name as status_name, status_machine.color as status_color FROM machines LEFT JOIN entities ON machines.id_entities_m = entities.id LEFT JOIN type_machine ON machines.id_type_m = type_machine.id LEFT JOIN status_machine ON machines.id_status_m = status_machine.id WHERE machines.num_serial LIKE ? OR machines.model LIKE ? OR entities.name LIKE ? OR type_machine.name LIKE ? OR status_machine.name LIKE ? LIMIT ?, ?`, [search, search, search, search, search, page, perPage], 
             (err,result)=>{
             if(err) {
                 //console.log(err);
@@ -481,12 +499,18 @@ const upload = multer({ storage: storage });
     });
     
     // Route to get Records by limit
-    app.get("/api/records/page=:page/perPage=:perPage", (req,res)=>{
+    app.get("/api/records/page=:page/perPage=:perPage/search=:search", (req,res)=>{
 
     const perPage = Number(req.params.perPage);
     const page = Number(req.params.page) * perPage;
+    let search = '';
+    if (req.params.search !== "null") {
+        search = `%${req.params.search}%`;
+    } else {
+        search = `%`;
+    }
 
-    db.query("SELECT historic_machines.*, machines.id as machine_id, machines.num_serial as machine_serial, entities.name as entity FROM historic_machines LEFT JOIN machines ON machines.id = historic_machines.id_machine_h LEFT JOIN entities ON entities.id = historic_machines.id_entity_h ORDER BY historic_machines.date DESC LIMIT ?, ?", [page, perPage], 
+    db.query("SELECT historic_machines.*, machines.id as machine_id, machines.num_serial as machine_serial, entities.name as entity FROM historic_machines LEFT JOIN machines ON machines.id = historic_machines.id_machine_h LEFT JOIN entities ON entities.id = historic_machines.id_entity_h WHERE historic_machines.id LIKE ? OR historic_machines.date LIKE ? OR historic_machines.action LIKE ? OR entities.name LIKE ? OR machines.num_serial LIKE ? ORDER BY historic_machines.id DESC LIMIT ?, ?", [search, search, search, search, search, page, perPage], 
         (err,result)=>{
         if(err) {
             //console.log(err)
@@ -732,12 +756,18 @@ const upload = multer({ storage: storage });
     });
     
     // Route to get Inputs by limit
-    app.get("/api/inputs/page=:page/perPage=:perPage", (req,res)=>{
+    app.get("/api/inputs/page=:page/perPage=:perPage/search=:search", (req,res)=>{
 
     const perPage = Number(req.params.perPage);
     const page = Number(req.params.page) * perPage;
+    let search = '';
+    if (req.params.search !== "null") {
+        search = `%${req.params.search}%`;
+    } else {
+        search = `%`;
+    }
 
-    db.query("SELECT input_equipment.*, entities.name as entity_name, machines.num_serial as machine_num, users.realname as user_name FROM input_equipment LEFT JOIN entities ON entities.id = input_equipment.id_entity_ie LEFT JOIN machines ON machines.id = input_equipment.id_machine_ie LEFT JOIN users ON users.id = input_equipment.id_user_ie ORDER BY input_equipment.id DESC LIMIT ?, ?", [page, perPage], 
+    db.query("SELECT input_equipment.*, entities.name as entity_name, machines.num_serial as machine_num, users.realname as user_name FROM input_equipment LEFT JOIN entities ON entities.id = input_equipment.id_entity_ie LEFT JOIN machines ON machines.id = input_equipment.id_machine_ie LEFT JOIN users ON users.id = input_equipment.id_user_ie WHERE input_equipment.id LIKE ? OR entities.name LIKE ? OR machines.num_serial LIKE ? OR input_equipment.date_input LIKE ? ORDER BY input_equipment.id DESC LIMIT ?, ?", [search, search, search, search, page, perPage], 
         (err,result)=>{
         if(err) {
             //console.log(err)
@@ -851,12 +881,18 @@ const upload = multer({ storage: storage });
     });
 
     // Route to get Inputs TERMINATEDs by limit
-    app.get("/api/inputs/terminateds/page=:page/perPage=:perPage", (req,res)=>{
+    app.get("/api/inputs/terminateds/page=:page/perPage=:perPage/search=:search", (req,res)=>{
 
     const perPage = Number(req.params.perPage);
     const page = Number(req.params.page) * perPage;
+    let search = '';
+    if (req.params.search !== "null") {
+        search = `%${req.params.search}%`;
+    } else {
+        search = `%`;
+    }
 
-    db.query("SELECT input_equipment.*, entities.name as entity_name, machines.num_serial as machine_num, users.realname as user_name FROM input_equipment LEFT JOIN entities ON entities.id = input_equipment.id_entity_ie LEFT JOIN machines ON machines.id = input_equipment.id_machine_ie LEFT JOIN users ON users.id = input_equipment.id_user_ie WHERE input_equipment.date_exit IS NOT NULL ORDER BY input_equipment.date_exit DESC LIMIT ?, ?", [page, perPage], 
+    db.query("SELECT input_equipment.*, entities.name as entity_name, machines.num_serial as machine_num, users.realname as user_name FROM input_equipment LEFT JOIN entities ON entities.id = input_equipment.id_entity_ie LEFT JOIN machines ON machines.id = input_equipment.id_machine_ie LEFT JOIN users ON users.id = input_equipment.id_user_ie WHERE input_equipment.date_exit IS NOT NULL AND (input_equipment.id LIKE ? OR entities.name LIKE ? OR machines.num_serial LIKE ? OR input_equipment.date_exit LIKE ? OR users.realname LIKE ?) ORDER BY input_equipment.date_exit DESC LIMIT ?, ?", [search, search, search, search, search, page, perPage], 
         (err,result)=>{
         if(err) {
             //console.log(err)
@@ -939,6 +975,48 @@ const upload = multer({ storage: storage });
     // Route to get all Historic Years
     app.get("/api/historic-years", (req,res)=>{
         db.query("SELECT year(date_input) as year FROM input_equipment GROUP BY year(date_input)", 
+            (err,result)=>{
+            if(err) {
+                //console.log(err)
+                res.send(err)
+            } else {
+                //console.log(result)
+                res.send(result)
+            }
+        });
+    });
+
+    // Route to get Count Users
+    app.get("/api/count-users", (req,res)=>{
+        db.query("SELECT COUNT(id) as count FROM users", 
+            (err,result)=>{
+            if(err) {
+                //console.log(err)
+                res.send(err)
+            } else {
+                //console.log(result)
+                res.send(result)
+            }
+        });
+    });
+
+    // Route to get Count Machines
+    app.get("/api/count-machines", (req,res)=>{
+        db.query("SELECT COUNT(id) as count FROM machines", 
+            (err,result)=>{
+            if(err) {
+                //console.log(err)
+                res.send(err)
+            } else {
+                //console.log(result)
+                res.send(result)
+            }
+        });
+    });
+
+    // Route to get Count Entities
+    app.get("/api/count-entities", (req,res)=>{
+        db.query("SELECT COUNT(id) as count FROM entities", 
             (err,result)=>{
             if(err) {
                 //console.log(err)

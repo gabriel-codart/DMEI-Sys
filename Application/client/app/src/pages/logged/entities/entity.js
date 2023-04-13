@@ -123,12 +123,24 @@ export default function Entity() {
                             onClick={() => {goToUpdate(val.id)}}>
                                 <BiEdit/>
                         </Button>
-                        <Button
-                            title="Deletar"
-                            color="danger"
-                            onClick={() => {dialogDelete(val.id)}}>
-                                <RiDeleteBin2Line/>
-                        </Button>
+
+                        {JSON.parse(localStorage.getItem("user")).type === 1 ? (
+                            <Button
+                                title="Deletar"
+                                color="danger"
+                                onClick={() => {dialogDelete(val.id)}}>
+                                    <RiDeleteBin2Line/>
+                            </Button>
+                        ) : (
+                            <Button
+                                title="Deletar"
+                                color="danger"
+                                disabled>
+                                    <RiDeleteBin2Line/>
+                            </Button>
+                        )}
+                        
+                        
                         <Button color="secondary" onClick={goBack}>Voltar</Button>
                     </Form>
                 )

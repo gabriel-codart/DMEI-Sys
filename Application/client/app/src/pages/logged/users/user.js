@@ -20,12 +20,17 @@ export default function User() {
     const [userId] = useState(id);
     const [userData, setUserData] = useState([]);
 
-    //Get the user data
+    //Get the user data AND Check the Permission
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/api/users/${userId}`)
-        .then((res) => {
-            setUserData(res.data);
-        });
+        if (JSON.parse(localStorage.getItem("user")).id == userId || JSON.parse(localStorage.getItem("user")).type === 1) {
+            axios.get(`http://10.10.136.100:3002/api/users/${userId}`)
+            .then((res) => {
+                setUserData(res.data);
+            })
+        } else {
+            navigate(`/dmei-sys/users`);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userId]);
 
     //Go to update
@@ -157,7 +162,14 @@ export default function User() {
                                 <BiEdit/>
                         </Button>
 
-                        {val.id === 1 ? (
+                        {JSON.parse(localStorage.getItem("user")).type !== 1 ? (
+                            <Button
+                                color="danger"
+                                disabled
+                            >
+                                <RiDeleteBin2Line/>
+                            </Button>
+                        ) : val.id === 1 ? (
                             <Button
                                 color="danger"
                                 disabled

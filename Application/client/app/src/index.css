@@ -7,6 +7,36 @@
     src: url("./font/MAKISUPA.TTF");
 }
 
+/**** Default ****/
+html, body, div#root{
+    filter: contrast(95%) saturate(115%);
+    height: 100%;
+}
+body{
+    font-family: 'FontAll';
+    margin: 0;
+}
+a, span{
+    text-decoration: none;
+}
+input, textarea, .css-1jqq78o-placeholder, .css-1dimb5e-singleValue, .alert{
+    font-family: 'FontInput';
+}
+.alert{
+    background-color: white;
+}
+button.btn{
+    border-radius: 25px;
+}
+.react-confirm-alert-overlay{
+    background: rgb(0 0 0 / 90%);
+}
+.react-confirm-alert-body{
+    background: #222;
+    color: white;
+}
+
+
 /***** Dark *****/
 div#root.dark{
     background-color: #f8f8f8;
@@ -65,33 +95,6 @@ div#root.light button.btn.btn-light path, div#root.light button.btn.btn-light pa
 }
 div#root.light #QrCode-Card{
     background: white;
-}
-
-/**** Default ****/
-html, body, div#root{
-    filter: contrast(95%) saturate(115%);
-    height: 100%;
-}
-body{
-    font-family: 'FontAll';
-    margin: 0;
-}
-a, span{
-    text-decoration: none;
-}
-input, textarea, .css-1jqq78o-placeholder, .css-1dimb5e-singleValue, .alert{
-    font-family: 'FontInput';
-}
-.alert{
-    background-color: white;
-}
-
-.react-confirm-alert-overlay{
-    background: rgb(0 0 0 / 90%);
-}
-.react-confirm-alert-body{
-    background: #222;
-    color: white;
 }
 
 

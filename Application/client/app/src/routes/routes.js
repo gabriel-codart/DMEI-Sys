@@ -47,6 +47,7 @@ import InputGenerateEntry from '../pages/logged/input/doc_generate/entry.js';
 import AnonExternals from '../pages/anonymous/externals/read.js';
 import AnonExternal from '../pages/anonymous/externals/external.js';
 import InputGenerateExit from '../pages/logged/input/doc_generate/exit.js';
+import NotFounded from '../components/not_founded/not_founded.js';
 
 
 const Private = ({ Logged, Anonymous }) => {
@@ -56,10 +57,10 @@ const Private = ({ Logged, Anonymous }) => {
 
     if (signed) {
         switch (signed.type) {
-            case 1:
+            case 1: case 2: // Usuário ADM ou Comum
                 if (location.slice(0,15) === `/dmei-sys/anon/`) return navigate(`/dmei-sys/dashboard`);
                 else return <Logged/>;
-            case 2:
+            case 3: // Usuário Anônimo
                 if (location.slice(0,15) === `/dmei-sys/anon/`) return <Anonymous/>;
                 else return navigate(`/dmei-sys/anon/dashboard`);
             default:
@@ -74,6 +75,8 @@ const Private = ({ Logged, Anonymous }) => {
 export default function UserRoutes() {
     return (
         <Routes basename='/dmei-sys'>
+            <Route path="*" element={<NotFounded/>}/>
+            
             <Route path="/dmei-sys" element={<Login/>}/>
 
             <Route path="/dmei-sys/dashboard" element={<Private Logged={Dashboard}/>}/>

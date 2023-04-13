@@ -23,8 +23,13 @@ export default function Machines() {
     //Getting Machines
     useEffect(() => {
         //console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
-
-        axios.get(`http://10.10.136.100:3002/api/machines/page=${(page-1)}/perPage=${perPage}`,)
+        let search = "";
+        if (filterText === "") {
+            search = 'null';
+        } else {
+            search = filterText;
+        }
+        axios.get(`http://10.10.136.100:3002/api/machines/page=${(page-1)}/perPage=${perPage}/search=${search}`,)
         .then((res) => {
             setMachinesList(res.data);
         });
@@ -51,22 +56,25 @@ export default function Machines() {
         {
             name: 'Nº Série',
             selector: row => row.num_serial,
-            width: '150px',
+            width: '15%',
             center: 'yes'
         },
         {
             name: 'Modelo',
             selector: row => row.model,
+            width: '25%',
             center: 'yes'
         },
         {
             name: 'Tipo',
             selector: row => row.type_machine_name,
+            width: '15%',
             center: 'yes'
         },
         {
             name: 'Entidade',
             selector: row => row.entities_name,
+            width: '25%',
             sortable: true,
             center: 'yes'
         },
@@ -77,6 +85,7 @@ export default function Machines() {
                                 style={{background: row.status_color, cursor:'default'}}>
                                 {row.status_name}
                             </button>,
+            width: '10%',
             center: 'yes'
         },
         {
@@ -87,15 +96,11 @@ export default function Machines() {
                             >
                                 <MdOpenInNew/>
                             </Button>,
-            width: '100px',
+            width: '10%',
             center: 'yes'
         },
     ];
-    const tableData = machinesList?.filter(
-      (obj) =>
-        obj.num_serial && obj.num_serial.toLowerCase().includes(filterText.toLowerCase())
-    )
-    .map((obj) => {
+    const tableData = machinesList?.map((obj) => {
       return {
         id: obj.id,
         model: obj.model,

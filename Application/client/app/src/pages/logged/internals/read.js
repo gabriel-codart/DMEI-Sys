@@ -87,7 +87,9 @@ export default function Internals() {
     ];
     const tableData = internalsList?.filter(
       (internal) =>
-        internal.user_name && internal.user_name.toLowerCase().includes(filterText.toLowerCase())
+        (internal.user_name && internal.user_name.toLowerCase().includes(filterText.toLowerCase())) ||
+        (internal.entity_name && internal.entity_name.toLowerCase().includes(filterText.toLowerCase())) ||
+        (internal.zone_name && internal.zone_name.toLowerCase().includes(filterText.toLowerCase()))
     )
     .map((internal) => {
       return {

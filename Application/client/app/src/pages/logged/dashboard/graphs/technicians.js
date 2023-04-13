@@ -28,20 +28,20 @@ export default function TechnicianGraph() {
   });
 
   return (
-    <ResponsiveContainer width={"100%"} height={300}>
+    <ResponsiveContainer width={"100%"} height={500}>
       <BarChart
         layout='vertical'
         width={'100%'}
-        height={300}
+        height={500}
         data={data}
         margin={{
           top: 30,
-          right: 20,
-          left: 20,
+          right: 50,
+          left: 50,
           bottom: 10,
         }}
       >
-        <CartesianGrid strokeDasharray='5 5' layout={'vertical'} />
+        <CartesianGrid strokeDasharray='2 2' layout={'vertical'} />
         <XAxis dataKey="Concluídos" type='number'/>
         <YAxis dataKey="name" type="category"/>
         <Tooltip />

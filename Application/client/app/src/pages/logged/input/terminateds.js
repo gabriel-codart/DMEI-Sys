@@ -22,9 +22,13 @@ export default function InputsTerminateds() {
 
     //Getting inputs
     useEffect(() => {
-        //console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
-
-        axios.get(`http://10.10.136.100:3002/api/inputs/terminateds/page=${(page-1)}/perPage=${perPage}`,)
+        let search = "";
+        if (filterText === "") {
+            search = 'null';
+        } else {
+            search = filterText;
+        }
+        axios.get(`http://10.10.136.100:3002/api/inputs/terminateds/page=${(page-1)}/perPage=${perPage}/search=${search}`,)
         .then((res) => {
             setInputsList(res.data);
         });
@@ -54,22 +58,25 @@ export default function InputsTerminateds() {
             id: 'id',
             selector: row => row.id,
             sortable: true,
-            width: '80px',
+            width: '10%',
             center: 'yes'
         },
         {
             name: 'Entidade',
             selector: row => row.entity_name,
+            width: '25%',
             center: 'yes'
         },
         {
             name: 'Máquina',
             selector: row => row.machine_num,
+            width: '15%',
             center: 'yes'
         },
         {
             name: 'Usuário',
             selector: row => row.user_name,
+            width: '20%',
             center: 'yes'
         },
         {
@@ -80,6 +87,7 @@ export default function InputsTerminateds() {
                 date.setMinutes(date.getMinutes() - offset);
                 return String(date.toLocaleString('pt-BR', { timeZone: 'UTC' }));
             },
+            width: '20%',
             center: 'yes'
         },
         {
@@ -90,15 +98,11 @@ export default function InputsTerminateds() {
                             >
                                 <MdOpenInNew/>
                             </Button>,
-            width: '100px',
+            width: '10%',
             center: 'yes'
         },
     ];
-    const tableData = inputsList?.filter(
-      (input) =>
-        input.entity_name && input.entity_name.toLowerCase().includes(filterText.toLowerCase())
-    )
-    .map((input) => {
+    const tableData = inputsList?.map((input) => {
       return {
         id: input.id,
         machine_num: input.machine_num,

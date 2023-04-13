@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, Label } from "reactstrap";
@@ -11,6 +11,12 @@ export default function CreateUser() {
     const [nickname, setNickname ] = useState("");
     const [password, setPassword ] = useState("");
     const [realname, setRealname ] = useState("");
+
+    //Check the Permission
+    useEffect(() => {
+        if (JSON.parse(localStorage.getItem("user")).type !== 1) navigate(`/dmei-sys/users`);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    });
 
     const addUser = () => {
         axios.post("http://10.10.136.100:3002/api/users/create", {

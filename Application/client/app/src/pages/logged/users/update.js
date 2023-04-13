@@ -21,14 +21,19 @@ export default function UpdateUser() {
 
     //Get the user data
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/api/users/${userId}`)
-        .then((res) => {
-            setUserData(res.data);
+        if (JSON.parse(localStorage.getItem("user")).id == userId || JSON.parse(localStorage.getItem("user")).type === 1) {
+            axios.get(`http://10.10.136.100:3002/api/users/${userId}`)
+            .then((res) => {
+                setUserData(res.data);
 
-            setNickname(res.data[0].nickname);
-            setPassword(res.data[0].password);
-            setRealname(res.data[0].realname);
-        });
+                setNickname(res.data[0].nickname);
+                setPassword(res.data[0].password);
+                setRealname(res.data[0].realname);
+            });
+        } else {
+            navigate(`/dmei-sys/users`);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userId]);
 
     //Confirm update

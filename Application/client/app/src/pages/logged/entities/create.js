@@ -48,7 +48,7 @@ export default function CreateEntity() {
             street_adress: street_adress,
             number_adress: number_adress,
             district_adress: district_adress,
-            zone_adress: zone_adress
+            zone_adress: zone_adress.value
         })
         .then(function (r) {
             if (r.data.code === 'ER_DUP_ENTRY') {
@@ -153,10 +153,8 @@ export default function CreateEntity() {
 
                         <Label>Telefone:</Label>
                         <Input
-                            placeholder="(00) 00000-0000"
+                            placeholder="00 00000-0000"
                             type='text'
-                            mask="(00) 00000-0000"
-                            tag={IMaskInput}
                             onChange={(event) => {
                                 if (!event.target.value === true) {
                                     setPhone(null);
@@ -181,10 +179,8 @@ export default function CreateEntity() {
                         
                         <Label>Telefone do Diretor(a):</Label>
                         <Input
-                            placeholder="(00) 00000-0000"
+                            placeholder="00 00000-0000"
                             type='text'
-                            mask="(00) 00000-0000"
-                            tag={IMaskInput}
                             onChange={(event) => {
                                 if (!event.target.value === true) {
                                     setPhone_manager(null);

@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Container, Row } from 'reactstrap';
 import ZonesGraph from "./graphs/zones";
+import Counts from "./graphs/counts";
 import TechnicianGraph from "./graphs/technicians";
 import HistoryGraph from "./graphs/history";
 
@@ -12,12 +13,23 @@ export default function Dashboard() {
     return(
         <div className="dashboard">
             <Container>
-                <Row>
+                <Row xs={2}>
                     <Col>
                         <h4>Atendimentos</h4>
                         <h5>Por Zona</h5>
                         <ZonesGraph/>
                     </Col>
+                    
+                    <Col>
+                        <h4>Contagens</h4>
+                        <h5>Registradas</h5>
+                        <br/><br/>
+                        <Counts/>
+                    </Col>
+                </Row>
+                <hr/>
+
+                <Row>
                     <Col>
                         <h4>Conclusões</h4>
                         <h5>Por Técnicos</h5>

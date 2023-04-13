@@ -21,11 +21,14 @@ export default function Records() {
 
     //Getting records
     useEffect(() => {
-        console.log('page = ',page-1, '\nperPage = ',perPage, '\ntotalRows = ', totalRows);
-
-        axios.get(`http://10.10.136.100:3002/api/records/page=${(page-1)}/perPage=${perPage}`,)
+        let search = "";
+        if (filterText === "") {
+            search = 'null';
+        } else {
+            search = filterText;
+        }
+        axios.get(`http://10.10.136.100:3002/api/records/page=${(page-1)}/perPage=${perPage}/search=${search}`,)
         .then((res) => {
-            console.log(res)
             setRecordsList(res.data);
         });
 
@@ -58,17 +61,19 @@ export default function Records() {
             name: 'Registro',
             id: 'id',
             selector: row => row.id,
-            width: '100px',
+            width: '10%',
             center: 'yes'
         },
         {
             name: 'Máquina N/S',
             selector: row => row.machine_serial,
+            width: '15%',
             center: 'yes'
         },
         {
             name: 'Entidade',
             selector: row => row.entity,
+            width: '20%',
             center: 'yes'
         },
         {
@@ -79,13 +84,13 @@ export default function Records() {
                 date.setMinutes(date.getMinutes() - offset);
                 return String(date.toLocaleString('pt-BR', { timeZone: 'UTC' }));
             },
-            sortable: true,
+            width: '20%',
             center: 'yes'
         },
         {
             name: 'Ação',
             selector: row => row.action,
-            width: '140px',
+            width: '15%',
             center: 'yes'
         },
         {
@@ -99,7 +104,7 @@ export default function Records() {
                             >
                                 <GrDocumentPdf/>
                             </Button>) : ("- - - -"),
-            width: '100px',
+            width: '10%',
             center: 'yes'
         },
         {
@@ -118,15 +123,11 @@ export default function Records() {
                                 <PopoverBody>{row.observation}</PopoverBody>
                             </UncontrolledPopover>
                             </>) : ("- - - -"),
-            width: '100px',
+            width: '10%',
             center: 'yes'
         },
     ];
-    const tableData = recordsList?.filter(
-      (record) =>
-        String(record.machine) && String(record.machine).toLowerCase().includes(filterText.toLowerCase())
-    )
-    .map((record) => {
+    const tableData = recordsList?.map((record) => {
       return {
         id: record.id,
         machine_id: record.machine_id,

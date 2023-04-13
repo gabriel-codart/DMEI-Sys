@@ -18,7 +18,9 @@ div#root.dark .side-bar{
 div#root.dark .side-menu svg{
     filter: invert(1);
 }
-
+div#root.dark .ps-disabled{
+    color: gray;
+}
 
 /**** Light ****/
 div#root.light .side-bar{
@@ -26,4 +28,7 @@ div#root.light .side-bar{
 }
 div#root.light .side-menu svg{
     filter: invert(0);
+}
+div#root.light .ps-disabled{
+    color: gray;
 }

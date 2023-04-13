@@ -101,7 +101,9 @@ export default function Externals() {
     ];
     const tableData = externalsList?.filter(
       (external) =>
-        external.entity_name && external.entity_name.toLowerCase().includes(filterText.toLowerCase())
+        (external.entity_name && external.entity_name.toLowerCase().includes(filterText.toLowerCase())) ||
+        (external.machine_num && external.machine_num.toLowerCase().includes(filterText.toLowerCase())) ||
+        (external.zone_name && external.zone_name.toLowerCase().includes(filterText.toLowerCase()))
     )
     .map((external) => {
       return {

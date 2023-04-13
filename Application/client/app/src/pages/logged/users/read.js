@@ -28,7 +28,13 @@ export default function Users() {
 
     //Getting users
     useEffect(() => {
-        axios.get(`http://10.10.136.100:3002/api/users/page=${(page-1)}/perPage=${perPage}`,)
+        let search = "";
+        if (filterText === "") {
+            search = 'null';
+        } else {
+            search = filterText;
+        }
+        axios.get(`http://10.10.136.100:3002/api/users/page=${(page-1)}/perPage=${perPage}/search=${search}`,)
         .then((res) => {
             setUsersList(res.data);
         });
@@ -108,35 +114,57 @@ export default function Users() {
         {
             name: 'Id',
             selector: row => row.id,
-            width: '80px',
+            width: '10%',
             center: 'yes'
         },
         {
             name: 'Nome de Usuário',
             selector: row => row.nickname,
+            width: '20%',
             sortable: true,
             center: 'yes'
         },
         {
             name: 'Senha',
             selector: row => "• • • • • • • • • •",
+            width: '20%',
             center: 'yes'
         },
         {
             name: 'Nome Completo',
             selector: row => row.realname,
+            width: '30%',
             sortable: true,
             center: 'yes'
         },
         {
             name: 'Abrir',
-            selector: row => <Button
+            selector: row => {
+                if (JSON.parse(localStorage.getItem("user")).type === 1) {
+                    return (<Button
                                 color="primary"
                                 onClick={() => openUser(row.id)}
                             >
                                 <MdOpenInNew/>
-                            </Button>,
-            width: '100px',
+                            </Button>)
+                } else {
+                    if (row.id === JSON.parse(localStorage.getItem("user")).id) {
+                        return (<Button
+                                    color="primary"
+                                    onClick={() => openUser(row.id)}
+                                >
+                                    <MdOpenInNew/>
+                                </Button>)
+                    } else {
+                        return (<Button
+                                    color="primary"
+                                    disabled
+                                >
+                                    <MdOpenInNew/>
+                                </Button>)
+                    }
+                }},
+            width: '10%',
             center: 'yes'
         },
         {
@@ -150,22 +178,29 @@ export default function Users() {
                                 <RiDeleteBin2Line/>
                             </Button>)
                 } else {
-                    return (<Button
-                                color="danger"
-                                onClick={() => dialogDelete(row.id)}
-                            >
-                                <RiDeleteBin2Line/>
-                            </Button>)
+                    if (JSON.parse(localStorage.getItem("user")).type === 1) {
+                        return (
+                        <Button
+                            color="danger"
+                            onClick={() => dialogDelete(row.id)}
+                        >
+                            <RiDeleteBin2Line/>
+                        </Button>)
+                    } else {
+                        return (
+                        <Button
+                            color="danger"
+                            disabled
+                        >
+                            <RiDeleteBin2Line/>
+                        </Button>)
+                    }
                 }},
-            width: '100px',
+            width: '10%',
             center: 'yes'
         },
     ];
-    const tableData = usersList?.filter(
-      (user) =>
-        user.nickname && user.nickname.toLowerCase().includes(filterText.toLowerCase())
-    )
-    .map((user) => {
+    const tableData = usersList?.map((user) => {
       return {
         id: user.id,
         nickname: user.nickname,
@@ -192,7 +227,11 @@ export default function Users() {
         <div className="read">
             <div className='read-title'>
                 <h1>Usuários</h1>
-                <Button color='primary' onClick={goToAdd}>Adicionar</Button>
+                {JSON.parse(localStorage.getItem("user")).type === 1 ? (
+                    <Button color='primary' onClick={goToAdd}>Adicionar</Button>
+                ) : (
+                    <Button color='primary' disabled>Adicionar</Button>
+                )}
             </div>
 
             <Form className="read-search">
