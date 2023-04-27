@@ -1,28 +1,110 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { Button, Form, Label, Card, Alert } from "reactstrap";
+import { PDFDocument } from 'pdf-lib';
+import { confirmAlert } from "react-confirm-alert";
+
+import { Button, Input, Form, Label, Card, Alert } from "reactstrap";
 import { BiEdit } from 'react-icons/bi';
-import { GrDocumentPdf } from 'react-icons/gr';
+import { GrDocumentPdf, GrDocumentDownload, GrDocumentUpload } from 'react-icons/gr';
+import { RiDeleteBin2Line } from 'react-icons/ri';
 
 import '../../styles/read-one.css';
 
-export default function Input() {
+export default function InputEquip() {
     const navigate = useNavigate();
     const location = useLocation();
+    const [ver, setVer] = useState(true);
 
     const {id} = useParams();
     const [inputId] = useState(id);
     const [inputData, setInputData] = useState([]);
 
-    //Get the user data
+    const [exitDocument, setExitDocument] = useState(null);
+    const [docSelected, setDocSelected] = useState(null);
+
+    //Get the Input data
     useEffect(() => {
         axios.get(`http://10.10.136.100:3002/api/inputs/${inputId}`)
         .then((res) => {
             setInputData(res.data);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [id,ver]);
+
+    //Save Exit Document
+    const saveExitDocument = () => {
+        //Alert if there is Empty Fields
+        if (exitDocument === null) {
+            alert('Erro, o campo Documento está vazio!');
+        }
+        else{
+            axios.patch(`http://10.10.136.100:3002/api/inputs/${id}/exit/doc/add`, exitDocument, {
+                headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then((r)=>{
+                alert('Saída assinada salva com sucesso!');
+                setVer(!ver);
+                //console.log(r);
+            })
+            .catch((e)=>{
+                alert('Erro de Conexão com o Banco!');
+                //console.log(e);
+            })
+        }
+    }
+
+    //Download Report
+    async function downloadExitDoc(buffer) {
+        console.log(buffer);
+        const pdfDoc = await PDFDocument.load(new Uint8Array(buffer.data));
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `OS ${id} - Assinado.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    };
+
+    //Delete Exit Document
+    const removeDialog = () => {
+        confirmAlert({
+            title: 'Confirme a remoção',
+            message: 'Você tem certeza que quer remover um documento de saída assinado?',
+            buttons: [
+                {
+                label: 'Sim',
+                onClick: () => {
+                        removeExitDocument();
+                        setDocSelected(null);
+                        setVer(!ver);
+                    }
+                },
+                {
+                label: 'Não'
+                }
+            ]
+        });
+    };
+    //Remove Exit Document
+    const removeExitDocument = () => {
+        axios.patch(`http://10.10.136.100:3002/api/inputs/${id}/exit/doc/remove`)
+        .then((r)=>{
+            alert('Documento removido!');
+            //console.log(r);
+        })
+        .catch((e)=>{
+            alert('Erro de Conexão com o Banco!');
+            //console.log(e);
+        })
+    }
 
     //Back to Inputs Menu
     const goBack = () => {
@@ -131,12 +213,66 @@ export default function Input() {
                         </div>
                         
                         <hr/>
-                        
-                        <Button color="warning" disabled>
-                            Documentos
-                        </Button>
 
-                        <hr/>
+                        {val.date_exit ? (
+                            <>
+                            <p>Documento de Saída &#40;Assinado&#41;</p>
+
+                            {!val.exit_assined ? (
+                                <>
+                                <Input
+                                    placeholder="Laudo de Saída"
+                                    type="file"
+                                    name="file"
+                                    accept="application/pdf"
+                                    onChange={(event) =>{
+                                        if (!event.target.value === true) {
+                                            setExitDocument(null);
+                                            setDocSelected(null);
+                                        } else {
+                                            const file = event.target.files[0];
+                                            const formData = new FormData();
+                                            formData.append('file', file);
+                                            setExitDocument(formData);
+                                            setDocSelected(event.target.value);
+                                        }
+                                    }}
+                                />
+                                {docSelected ? (
+                                    <Button color="light"
+                                        title="Guardar Saída"
+                                        onClick={saveExitDocument}
+                                    >
+                                        Salvar <GrDocumentUpload/>
+                                    </Button>
+                                ):(
+                                    <Button color="light"
+                                        title="Guardar Saída"
+                                        disabled
+                                    >
+                                        Salvar <GrDocumentUpload/>
+                                    </Button>
+                                )}
+                                </>
+                            ):('')}
+
+                            {val.exit_assined ? (
+                                <>
+                                <Button color="success"
+                                    onClick={() => downloadExitDoc(val.exit_assined)}
+                                >
+                                    Imprimir Saída <GrDocumentDownload/>
+                                </Button>
+                                <Button color="danger"
+                                    onClick={removeDialog}>
+                                    <RiDeleteBin2Line/>
+                                </Button>
+                                </>
+                            ) : ("")}
+
+                            <hr/>
+                            </>
+                        ):('')}
 
                         <Button
                             title="Editar"
@@ -150,13 +286,12 @@ export default function Input() {
                             Entrada <GrDocumentPdf/>
                         </Button>
 
-                        {val.date_exit ? (
+                        {val.date_exit && !val.exit_assined ? (
                             <Button color="warning"
                                 onClick={() => {navigate('exit')}}>
                                 Saída <GrDocumentPdf/>
                             </Button>
                         ) : ("")}
-                        
 
                         <Button color="secondary" onClick={goBack}>Voltar</Button>
                     </Form>

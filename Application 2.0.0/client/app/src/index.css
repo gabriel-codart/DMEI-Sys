@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'FontAll';
-    src: url("./font/Charge\ Vector\ Bold.otf");
+    src: url("./font/Gontserrat-Medium.ttf");
 }
 @font-face {
     font-family: 'FontInput';
-    src: url("./font/MAKISUPA.TTF");
+    src: url("./font/Gontserrat-Regular.ttf");
 }
 
 /**** Default ****/

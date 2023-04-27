@@ -92,9 +92,9 @@ export default function DeactivateFinalize() {
 
             <Card color="light" outline>
                 <CardBody>
-                    <Label>Máquina:</Label>
+                    <Label>Desativação:</Label>
                     <Select
-                        placeholder='Código da Máquina...'
+                        placeholder='Código da Desativação...'
                         options={deactivateList}
                         defaultValue={deactivate}
                         value={deactivate}

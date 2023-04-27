@@ -446,22 +446,6 @@ const upload = multer({ storage: storage });
             }
             });
         });
-
-    // Route to Deactivate Machine
-    app.patch('/api/machines/:id/deactivate', (req,res)=>{
-        const id = req.params.id;
-    
-        db.query("UPDATE machines SET id_status_m = 0, maintenance = 0 WHERE id = ?",
-            [id],
-            (err,result)=>{
-            if(err) {
-                //console.log(err);
-                res.send(err);
-            } else{
-                //console.log(result);
-                res.send(result);
-            }});
-        })
 }
 
 // Historic Machines
@@ -603,10 +587,9 @@ const upload = multer({ storage: storage });
 
     const id = req.body.id;
     const machine = req.body.machine;
-    const observation = req.body.observation;
 
-    db.query("INSERT INTO deactivateds (id, id_machine_d, date, observation) VALUES (?,?,CURDATE(),?)",
-        [id, machine, observation],
+    db.query("INSERT INTO deactivateds (id, id_machine_d, date) VALUES (?,?,CURDATE())",
+        [id, machine],
         (err,result)=>{
         if(err) {
             //console.log(err)
@@ -637,7 +620,227 @@ const upload = multer({ storage: storage });
                 res.send(result);
             }});
         })
+
+    // Route to delete a Deactivate
+    app.delete('/api/deactivateds/:id/:year/delete',(req,res)=>{
+    const id = req.params.id;
+    const year = req.params.year;
+
+    const cod = `GA/DMEI Nº ${id} / ${year} - PT`;
+
+    db.query("DELETE FROM deactivateds WHERE id = ?", cod,
+        (err,result)=>{
+        if(err) {
+            //console.log(err)
+            res.send(err)
+        } else {
+            //console.log(result)
+            res.send(result)
+        }});
+    });
+
+    // Route to Deactivate Machine
+    app.patch('/api/machines/:id/deactivate', (req,res)=>{
+        const id = req.params.id;
+    
+        db.query("UPDATE machines SET id_status_m = 0, maintenance = 0 WHERE id = ?",
+            [id],
+            (err,result)=>{
+            if(err) {
+                //console.log(err);
+                res.send(err);
+            } else{
+                //console.log(result);
+                res.send(result);
+            }});
+        })
 }
+
+// Dispatch Routes
+{
+    // Route to get all Dispatches
+    app.get("/api/dispatches", (req,res)=>{
+        db.query("SELECT * FROM dispatch",
+            (err,result)=>{
+            if(err) {
+                //console.log(err)
+                res.send(err)
+            } else {
+                //console.log(result)
+                res.send(result)
+            }
+            });
+        });
+    
+    // Route to get all Dispatches
+    app.get("/api/dispatches/this-year", (req,res)=>{
+        db.query("SELECT * FROM dispatch WHERE YEAR(dispatch.date) = YEAR(CURDATE())",
+            (err,result)=>{
+            if(err) {
+                //console.log(err)
+                res.send(err)
+            } else {
+                //console.log(result)
+                res.send(result)
+            }
+            });
+        });
+
+    // Route to get Dispatches document null
+    app.get("/api/dispatches/doc-null", (req,res)=>{
+
+        db.query(`SELECT * FROM dispatch WHERE dispatch.document IS NULL`, 
+            (err,result)=>{
+            if(err) {
+                //console.log(err)
+                res.send(err)
+            } else{
+                //console.log(result)
+                res.send(result)
+            }
+            });
+        });
+    
+    // Route to get Dispatches Itens
+    app.get("/api/dispatches/:id/:year/itens", (req,res)=>{
+        const id = req.params.id;
+        const year = req.params.year;
+
+        const cod = `GA/DMEI Nº ${id} / ${year} - MD`;
+
+        db.query(`SELECT * FROM item_dispatch WHERE id_dispatch_dis = ?`,cod, 
+            (err,result)=>{
+            if(err) {
+                //console.log(err)
+                res.send(err)
+            } else{
+                //console.log(result)
+                res.send(result)
+            }
+            });
+        });
+
+    // Route to get Dispatches by limit
+    app.get("/api/dispatches/page=:page/perPage=:perPage/search=:search", (req,res)=>{
+
+        const perPage = Number(req.params.perPage);
+        const page = Number(req.params.page) * perPage;
+        let search = '';
+        if (req.params.search !== "null") {
+            search = `%${req.params.search}%`;
+        } else {
+            search = `%`;
+        }
+    
+        db.query(`SELECT * FROM dispatch WHERE id LIKE ? OR date LIKE ? LIMIT ?, ?`, [search, search, page, perPage], 
+            (err,result)=>{
+            if(err) {
+                //console.log(err)
+                res.send(err)
+            } else{
+                //console.log(result)
+                res.send(result)
+            }
+            });
+        });
+
+    // Route for creating a Dispatch
+    app.post('/api/dispatches/create/', (req,res)=> {
+        const id = req.body.id;
+    
+        db.query("INSERT INTO dispatch (id, date) VALUES (?,CURDATE())",[id],
+            (err,result)=>{
+            if(err) {
+                //console.log(err)
+                res.send(err);
+            } else{
+                //console.log(result)
+                res.send(result);
+            }});
+        });
+    
+    // Route for creating a Dispatch Item
+    app.post('/api/dispatches/create/item', (req,res)=> {
+        const id_dispatch = req.body.id_dispatch;
+        const id_machine = req.body.id_machine;
+    
+        db.query("INSERT INTO item_dispatch (id_dispatch_dis, id_machine_dis) VALUES (?,?)",[id_dispatch,id_machine],
+            (err,result)=>{
+            if(err) {
+                //console.log(err)
+                res.send(err);
+            } else{
+                //console.log(result)
+                res.send(result);
+            }});
+        });
+
+    // Route to ADD Document Dispatch
+    app.patch('/api/dispatches/create/doc/:id/:year', upload.single('file'), (req,res)=>{
+        const id = req.params.id;
+        const year = req.params.year;
+
+        const cod = `GA/DMEI Nº ${id} / ${year} - MD`;
+
+        const document = req.file.buffer;
+    
+        db.query("UPDATE dispatch SET document = ? WHERE id = ?",
+            [document, cod],
+            (err,result)=>{
+            if(err) {
+                console.log(err);
+                res.send(err);
+            } else{
+                console.log(result);
+                res.send(result);
+            }});
+        })
+
+    // Route to delete a Dispatch
+    app.delete('/api/dispatches/:id/:year/delete',(req,res)=>{
+    const id = req.params.id;
+    const year = req.params.year;
+
+    const cod = `GA/DMEI Nº ${id} / ${year} - MD`;
+
+        db.query("DELETE FROM item_dispatch WHERE id_dispatch_dis = ?", cod,
+        (err,result)=>{
+        if(err) {
+            //console.log(err)
+            res.send(err)
+        } else {
+            //console.log(result)
+            res.send(result)
+        }});
+
+        db.query("DELETE FROM dispatch WHERE id = ?", cod,
+        (err,result)=>{
+        if(err) {
+            //console.log(err)
+            res.send(err)
+        } else {
+            //console.log(result)
+            res.send(result)
+        }});
+    });
+
+    // Route to Dispatch Machine
+    app.patch('/api/machines/:id/dispatch', (req,res)=>{
+        const id = req.params.id;
+    
+        db.query("UPDATE machines SET id_entities_m = 330 WHERE id = ?",
+            [id],
+            (err,result)=>{
+            if(err) {
+                //console.log(err);
+                res.send(err);
+            } else{
+                //console.log(result);
+                res.send(result);
+            }});
+        })
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 //Services Internal
@@ -1020,6 +1223,40 @@ const upload = multer({ storage: storage });
         }
         });    
     });
+
+    // Route to ADD Exit Document
+    app.patch('/api/inputs/:id/exit/doc/add', upload.single('file'), (req,res)=>{
+    const id = req.params.id;
+
+    const document = req.file.buffer;
+
+    db.query("UPDATE input_equipment SET exit_assined = ? WHERE id = ?",
+        [document, id],
+        (err,result)=>{
+        if(err) {
+            //console.log(err);
+            res.send(err);
+        } else{
+            //console.log(result);
+            res.send(result);
+        }});
+    })
+
+    // Route to Remove Exit Document
+    app.patch('/api/inputs/:id/exit/doc/remove',(req,res)=>{
+        const id = req.params.id;
+    
+        db.query("UPDATE input_equipment SET exit_assined = NULL WHERE id = ?",
+            [id],
+            (err,result)=>{
+            if(err) {
+                //console.log(err);
+                res.send(err);
+            } else{
+                //console.log(result);
+                res.send(result);
+            }});
+        })
 }
 
 // Dashboard

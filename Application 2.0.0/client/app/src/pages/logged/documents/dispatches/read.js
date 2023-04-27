@@ -13,14 +13,14 @@ import { RiDeleteBin2Line } from 'react-icons/ri';
 import '../../../styles/read.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-export default function Deactivateds() {
+export default function Dispatches() {
     const navigate = useNavigate();
 
     const [page, setPage] = useState(1);
     const [totalRows, setTotalRows] = useState(0);
     const [perPage, setPerPage] = useState(10);
 
-    const [deactivatedsList, setDeactivatedsList] = useState([]);
+    const [dispatchesList, setDispatchesList] = useState([]);
     const [filterText, setFilterText] = useState("");
 
 
@@ -33,12 +33,13 @@ export default function Deactivateds() {
         } else {
             search = filterText;
         }
-        axios.get(`http://10.10.136.100:3002/api/deactivateds/page=${(page-1)}/perPage=${perPage}/search=${search}`,)
+        axios.get(`http://10.10.136.100:3002/api/dispatches/page=${(page-1)}/perPage=${perPage}/search=${search}`,)
         .then((res) => {
-            setDeactivatedsList(res.data);
+            console.log(res.data);
+            setDispatchesList(res.data);
         });
 
-        axios.get('http://10.10.136.100:3002/api/deactivateds/')
+        axios.get('http://10.10.136.100:3002/api/dispatches/')
         .then((res) => {
             setTotalRows(res.data.length);
         })
@@ -46,7 +47,7 @@ export default function Deactivateds() {
     }, [filterText, page, perPage]);
 
 
-     //Delete Deactivation
+     //Delete user
      const dialogDelete = (cod) => {
         confirmAlert({
             title: 'Confirme a remoção',
@@ -55,7 +56,7 @@ export default function Deactivateds() {
                 {
                 label: 'Sim',
                 onClick: () => {
-                        deleteDeactivate(cod);
+                        deleteDispatch(cod);
                         setFilterText(" ");
                     }
                 },
@@ -65,13 +66,17 @@ export default function Deactivateds() {
             ]
         });
     };
-    const deleteDeactivate = (cod) => {
+    const deleteDispatch = (cod) => {
         let id = cod.split(' ')[2];
         let year = cod.split(' ')[4];
-        axios.delete(`http://10.10.136.100:3002/api/deactivateds/${id}/${year}/delete`)
+        axios.delete(`http://10.10.136.100:3002/api/dispatches/${id}/${year}/delete`)
         .then((res) => {
-            alert('Desativação removida!');
+            alert('Despacho removido!');
             setFilterText("");
+        })
+        .catch((e)=>{
+            alert('Erro de Conexão com o Banco!');
+            //console.log(e);
         });
     }
 
@@ -95,7 +100,7 @@ export default function Deactivateds() {
 
     //Add Machine
     const goToAdd = () => {
-        navigate(`/dmei-sys/documents/deactivateds/menu`);
+        navigate(`/dmei-sys/documents/dispatches/menu`);
     }
 
     //Config Table and Search
@@ -109,14 +114,14 @@ export default function Deactivateds() {
         },
         {
             name: 'Nº Série',
-            selector: row => row.num_serial,
+            selector: row => ' - - - - - ',
             width: '20%',
             center: 'yes'
         },
         {
             name: 'Modelo',
-            selector: row => row.model,
-            width: '25%',
+            selector: row => ' - - - - - ',
+            width: '20%',
             center: 'yes'
         },
         {
@@ -127,7 +132,7 @@ export default function Deactivateds() {
                 date.setMinutes(date.getMinutes() - offset);
                 return String(date.toLocaleString('pt-BR', { timeZone: 'UTC' })).slice(0,10);
             },
-            width: '15%',
+            width: '20%',
             center: 'yes'
         },
         {
@@ -159,30 +164,30 @@ export default function Deactivateds() {
             name: 'Remover',
             selector: row => {
                 if (JSON.parse(localStorage.getItem("user")).type === 1) {
-                    return(
+                    return (
                         <Button
                             color="danger"
                             onClick={() => dialogDelete(row.id)}
                         >
                             <RiDeleteBin2Line/>
-                        </Button>)
+                        </Button>
+                    )
                 } else {
-                    return(
+                    return (
                         <Button
                             color="danger"
                             disabled
                         >
                             <RiDeleteBin2Line/>
-                        </Button>)
+                        </Button>
+                    )
                 }
             },
         }    
     ];
-    const tableData = deactivatedsList?.map((obj) => {
+    const tableData = dispatchesList?.map((obj) => {
       return {
         id: obj.id,
-        num_serial: obj.machine_serial,
-        model: obj.machine_model,
         date: obj.date,
         document: obj.document,
       };
@@ -205,7 +210,7 @@ export default function Deactivateds() {
     return(
         <div className="read">
             <div className='read-title'>
-                <h1>Desativações</h1>
+                <h1>Despachos</h1>
                 <Button color='primary' onClick={goToAdd}>Adicionar</Button>
             </div>
 

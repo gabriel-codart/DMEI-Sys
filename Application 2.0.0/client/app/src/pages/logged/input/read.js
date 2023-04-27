@@ -55,7 +55,7 @@ export default function Inputs() {
     //Config Table and Search
     const columns = [
         {
-            name: 'Id',
+            name: 'OS',
             id: 'id',
             selector: row => row.id,
             sortable: true,

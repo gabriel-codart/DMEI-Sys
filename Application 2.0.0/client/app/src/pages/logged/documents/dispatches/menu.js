@@ -1,41 +1,40 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form } from "reactstrap";
-import { GrDocumentPdf } from 'react-icons/gr';
-import { GiDeathSkull } from 'react-icons/gi';
+import { GrDocumentPdf, GrDocumentUpload } from 'react-icons/gr';
 
 import '../../../styles/read-one.css';
 
-export default function DeactivateMenu() {
+export default function DispatchMenu() {
     const navigate = useNavigate();
 
     //Go Back to Machine
     const goBack = () => {
-        navigate(`/dmei-sys/documents/deactivateds/`);
+        navigate(`/dmei-sys/documents/dispatches/`);
     };
 
     return(
         <div className="read-one">
-            <h1>Desativação</h1>
+            <h1>Despacho</h1>
             <h5>Menu</h5>
 
             <Form className="form-read-one">
                 <hr/>
 
-                <p style={{fontWeight:'100'}}>Para desativar uma máquina é necessário gerar um laudo,
+                <p style={{fontWeight:'100'}}>Para despachar uma máquina é necessário gerar um memorando,
                     e, posteriormente, com ele assinado, carregá-lo no sistema.</p>
 
                 <hr/>
 
                 <div className="column" style={{justifyItems:'center'}}>
                     <Button color="warning"
-                        onClick={() => {navigate(`/dmei-sys/documents/deactivateds/doc`)}}>
+                        onClick={() => {navigate(`/dmei-sys/documents/dispatches/doc`)}}>
                         1 - Gerar Laudo <GrDocumentPdf/>
                     </Button>
 
-                    <Button color="danger"
-                        onClick={() => {navigate(`/dmei-sys/documents/deactivateds/finalize`)}}>
-                        2 - Finalizar <GiDeathSkull/>
+                    <Button color="success"
+                        onClick={() => {navigate(`/dmei-sys/documents/dispatches/finalize`)}}>
+                        2 - Salvar <GrDocumentUpload/>
                     </Button>
                 </div>
 

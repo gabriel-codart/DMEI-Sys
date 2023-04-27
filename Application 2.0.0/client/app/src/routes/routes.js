@@ -22,6 +22,11 @@ import CreateMachine from '../pages/logged/machines/create.js';
 import UpdateMachine from '../pages/logged/machines/update.js';
 import Machine from '../pages/logged/machines/machine.js';
 
+import Dispatches from '../pages/logged/documents/dispatches/read.js';
+import DispatchMenu from '../pages/logged/documents/dispatches/menu.js';
+import DispatchDOC from '../pages/logged/documents/dispatches/report.js';
+import DispatchUpload from '../pages/logged/documents/dispatches/finalize.js';
+
 import Deactivateds from '../pages/logged/documents/deactivateds/read.js';
 import DeactivateDOC from '../pages/logged/documents/deactivateds/report.js';
 import DeactivateMenu from '../pages/logged/documents/deactivateds/menu.js';
@@ -41,7 +46,7 @@ import ExternalReport from '../pages/logged/externals/doc_generate/report.js';
 import Inputs from '../pages/logged/input/read.js';
 import CreateInput from '../pages/logged/input/create.js';
 import UpdateInput from '../pages/logged/input/update.js';
-import Input from '../pages/logged/input/input.js';
+import InputEquip from '../pages/logged/input/input.js';
 import InputsTerminateds from '../pages/logged/input/terminateds.js';
 import TerminateInput from '../pages/logged/input/terminate.js';
 import InputGenerateEntry from '../pages/logged/input/doc_generate/entry.js';
@@ -105,6 +110,11 @@ export default function UserRoutes() {
             <Route path="/dmei-sys/documents/deactivateds/doc" element={<Private Logged={DeactivateDOC}/>}/>
             <Route path="/dmei-sys/documents/deactivateds/finalize" element={<Private Logged={DeactivateFinalize}/>}/>
 
+            <Route path="/dmei-sys/documents/dispatches/" element={<Private Logged={Dispatches}/>}/>
+            <Route path="/dmei-sys/documents/dispatches/menu" element={<Private Logged={DispatchMenu}/>}/>
+            <Route path="/dmei-sys/documents/dispatches/doc" element={<Private Logged={DispatchDOC}/>}/>
+            <Route path="/dmei-sys/documents/dispatches/finalize" element={<Private Logged={DispatchUpload}/>}/>
+
 
             <Route path="/dmei-sys/internals" element={<Private Logged={Internals}/>}/>
             <Route path="/dmei-sys/internals/create" element={<Private Logged={CreateInternal}/>}/>
@@ -120,14 +130,14 @@ export default function UserRoutes() {
             <Route path="/dmei-sys/inputs" element={<Private Logged={Inputs}/>}/>
             <Route path="/dmei-sys/inputs/create" element={<Private Logged={CreateInput}/>}/>
             <Route path="/dmei-sys/inputs/:id/update" element={<Private Logged={UpdateInput}/>}/>
-            <Route path="/dmei-sys/inputs/:id" element={<Private Logged={Input}/>}/>
+            <Route path="/dmei-sys/inputs/:id" element={<Private Logged={InputEquip}/>}/>
             <Route path="/dmei-sys/inputs/:id/entry" element={<Private Logged={InputGenerateEntry}/>}/>
             <Route path="/dmei-sys/inputs/:id/exit" element={<Private Logged={InputGenerateExit}/>}/>
 
             <Route path="/dmei-sys/inputs/terminate" element={<Private Logged={TerminateInput}/>}/>
             <Route path="/dmei-sys/inputs/terminateds" element={<Private Logged={InputsTerminateds}/>}/>
             <Route path="/dmei-sys/inputs/terminateds/:id/update" element={<Private Logged={UpdateInput}/>}/>
-            <Route path="/dmei-sys/inputs/terminateds/:id" element={<Private Logged={Input}/>}/>
+            <Route path="/dmei-sys/inputs/terminateds/:id" element={<Private Logged={InputEquip}/>}/>
             <Route path="/dmei-sys/inputs/terminateds/:id/entry" element={<Private Logged={InputGenerateEntry}/>}/>
             <Route path="/dmei-sys/inputs/terminateds/:id/exit" element={<Private Logged={InputGenerateExit}/>}/>
 

@@ -105,7 +105,7 @@ export default function SideMenu() {
                             </MenuItem>
                             <MenuItem
                                 icon={<FaWarehouse/>}
-                                onClick={()=>{navigate(`/dmei-sys/documents/dispatch`)}}>
+                                onClick={()=>{navigate(`/dmei-sys/documents/dispatches`)}}>
                                 Despacho
                             </MenuItem>
                             <MenuItem
