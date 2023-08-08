@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-08-03T13:48:12.051Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" etag="pnD47iRHlI0DcC01Z3AI" version="21.6.6" type="device">
+<mxfile host="app.diagrams.net" modified="2023-08-08T12:32:16.206Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" etag="oBLHiKXg0KPgVe_MeTWf" version="21.6.6" type="github">
   <diagram name="Página-1" id="_ztdQ0o23Xt5jeBJuLl9">
-    <mxGraphModel dx="2911" dy="1852" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2534" dy="1647" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -154,10 +154,10 @@
             <mxPoint x="-440" y="-720" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="psjTonOst0-r3hH9afJ6-1" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;Fazer login&lt;/span&gt;" style="ellipse;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+        <mxCell id="psjTonOst0-r3hH9afJ6-1" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;Fazer login&lt;/span&gt;" style="ellipse;html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
           <mxGeometry x="-832.5" y="-1070" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="psjTonOst0-r3hH9afJ6-2" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="aofZ769MqnTKh6Z_ZmiD-3" target="psjTonOst0-r3hH9afJ6-1">
+        <mxCell id="psjTonOst0-r3hH9afJ6-2" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="aofZ769MqnTKh6Z_ZmiD-3" target="psjTonOst0-r3hH9afJ6-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="-380" y="-920" as="sourcePoint" />
             <mxPoint x="-330" y="-970" as="targetPoint" />
